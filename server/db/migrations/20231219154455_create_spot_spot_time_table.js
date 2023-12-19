@@ -1,3 +1,5 @@
+// NAVITIMEのAPIが使えた場合、このテーブルは後で削除
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> }
