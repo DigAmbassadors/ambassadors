@@ -1,0 +1,16 @@
+{
+  "name": "ambassadors",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "setup": "npm install && npm install --prefix client && npm install --prefix server && npm run migrate --prefix server && npm run seed --prefix server",
+    "start": "concurrently \"npm run dev --prefix client\" \"npm run startmon --prefix server\""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
