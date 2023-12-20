@@ -1,0 +1,140 @@
+/* reset.cssを適用しているのでcss使用時は全て自分でスタイルを作成すること */
+
+/* # 共通で使用するスタイル ########################################### */
+h1 {
+  font-size: 30px;
+}
+
+/* # header ########################################### */
+* {
+  box-sizing: border-box;
+}
+
+header {
+  height: 60px;
+  width: 100%;
+  padding: 0px 15px;
+  background-color: white;
+  position: fixed;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  border-bottom: 1.5px solid;
+  border-bottom-color: rgb(225, 225, 225);
+}
+
+.logo {
+  margin-top: 15px;
+  font-size: 25px;
+}
+
+.logo a {
+  color: rgb(61, 182, 242);
+  font-family: Hiragino Kaku Gothic Std;
+  text-decoration: none;
+}
+
+.navigationbar {
+  margin: 0 0 0 auto;
+}
+
+.navigationbar ul {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navigationbar ul li a {
+  color: black;
+  text-decoration: none;
+  display: block;
+  line-height: 60px;
+  padding: 0 20px;
+}
+
+/* # navber ########################################### */
+
+.img-container {
+  margin-top: 60px;
+  position: relative;
+}
+
+.mainImg {
+  width: 100%;
+  object-fit: cover;
+  aspect-ratio: 5 / 2;
+}
+
+nav {
+  width: 600px;
+  height: 400px;
+  padding: 20px;
+  background-color: rgb(255, 255, 255);
+  opacity: 0.8;
+  /* ポシション設定 */
+  position: absolute;
+  left: 27%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+nav form {
+  /* display: flex; */
+  justify-content: center;
+}
+
+/* # MainBody ########################################### */
+
+.MainBody {
+  background-color: rgb(139, 222, 218);
+  width: 100%;
+  height: 1000px;
+}
+
+.timeline {
+  list-style: none;
+  margin: 0px auto;
+  padding: 10px 20px;
+  width: 80%;
+  background-color: white;
+}
+.timeline > li {
+  margin-bottom: 60px;
+  font-size: 20px;
+}
+
+@media (min-width: 640px) {
+  .timeline > li {
+    overflow: hidden;
+    margin: 0;
+    position: relative;
+  }
+  .timeline-date {
+    width: 120px;
+    float: left;
+    margin-top: 20px;
+  }
+  .timeline-content {
+    width: 75%;
+    float: left;
+    border-left: 3px #e5e5d1 solid;
+    padding-left: 30px;
+  }
+  .timeline-content:before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #0080ff;
+    position: absolute;
+    left: 116px;
+    top: 24px;
+    border-radius: 100%;
+  }
+}
+
+/* # footer ########################################### */
+footer {
+  height: 50px;
+  background-color: rgb(111, 111, 255);
+}
