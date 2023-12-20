@@ -1,9 +1,9 @@
 function Footer() {
   return (
     <>
-      <header>
+      <footer>
         <a href="/">Footer</a>
-      </header>
+      </footer>
     </>
   );
 }
