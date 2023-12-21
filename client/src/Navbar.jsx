@@ -1,6 +1,18 @@
 import mainImg from './assets/image/main.jpg';
 
-function Navbar() {
+function Navbar(props) {
+  const { setLoading, setPlan } = props;
+
+  const handleSearch = () => {
+    setLoading(true);
+
+    // ここでランダムなプランを生成する処理を行う
+    setTimeout(() => {
+      setPlan(true);
+      setLoading(false);
+    }, 5000); // 3秒後にプランを表示
+  };
+
   return (
     <div className="img-container">
       <img className="mainImg" src={mainImg} alt="マップの画像" />
@@ -40,7 +52,10 @@ function Navbar() {
             <label>予算(総額)</label>
             <input type="number" placeholder="200000" />
           </div>
-          <button type="submit">ランダム作成</button>
+          <button type="button" onClick={handleSearch}>
+            ランダム作成
+            {/* ボタンを押すとレンダリングするためsubmitからbuttonに変更 */}
+          </button>
         </form>
       </nav>
     </div>
