@@ -1,10 +1,14 @@
+import loadingImg from './assets/image/loading.gif';
+
 function MainBody(props) {
   const { loading, plan } = props;
 
   return (
     <div>
       {loading ? (
-        <p>ローディング中...</p>
+        <div className="loading-container">
+          <img className="loadingImg" src={loadingImg} alt="ロード中の画像" />
+        </div>
       ) : plan ? (
         <div className="MainBody">
           {/* <a href="/">MainBody</a> */}
@@ -46,9 +50,7 @@ function MainBody(props) {
             </li>
           </ul>
         </div>
-      ) : (
-        <p>何もない</p>
-      )}
+      ) : null}
     </div>
   );
 }

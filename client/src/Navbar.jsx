@@ -1,4 +1,4 @@
-import mainImg from "./assets/image/main.jpg";
+import mainImg from './assets/image/main.jpg';
 
 function Navbar(props) {
   const { setLoading, setPlan } = props;
@@ -10,7 +10,7 @@ function Navbar(props) {
     setTimeout(() => {
       setPlan(true);
       setLoading(false);
-    }, 3000); // 3秒後にプランを表示
+    }, 5000); // 3秒後にプランを表示
   };
 
   return (
