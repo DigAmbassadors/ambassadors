@@ -20,10 +20,14 @@ app.get('/api/test', (req, res) => {
 app.get('/api/db-test', async (req, res) => {
   try {
     const result = await knex.raw('SELECT 1+1 AS result'); // シンプルなクエリ
-    res.status(200).json({ message: 'データベース接続成功', result: result.rows });
+    res
+      .status(200)
+      .json({ message: 'データベース接続成功', result: result.rows });
   } catch (error) {
     console.error('データベース接続エラー:', error);
-    res.status(500).json({ message: 'データベース接続失敗', error: error.message });
+    res
+      .status(500)
+      .json({ message: 'データベース接続失敗', error: error.message });
   }
 });
 
@@ -37,9 +41,9 @@ app.get('/api/db-test', async (req, res) => {
 //     });
 // });
 
-app.use(express.static(path.resolve(__dirname, '../frontend', 'dist')));
+app.use(express.static(path.resolve(__dirname, '../client', 'dist')));
 app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend', 'dist', 'index.html'));
+  res.sendFile(path.join(__dirname, '../client', 'dist', 'index.html'));
 });
 
 app.listen(3000, () => {
