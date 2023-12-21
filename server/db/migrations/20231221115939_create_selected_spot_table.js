@@ -8,6 +8,7 @@ exports.up = function (knex) {
     table.text('photo');
     table.decimal('longitude', 32, 4);
     table.decimal('latitude', 32, 4);
+    table.boolean('achievement');
     table.integer('plan_id').references('plan.id');
     table.integer('prepared_spot_id').references('prepared_spot.id');
   });
