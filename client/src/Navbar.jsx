@@ -10,7 +10,7 @@ function Navbar(props) {
     setTimeout(() => {
       setPlan(true);
       setLoading(false);
-    }, 3000); // 3秒後にプランを表示
+    }, 5000); // 5秒後にプランを表示
   };
 
   return (
