@@ -2,14 +2,18 @@
 import { useEffect } from 'react';
 
 const redirectToCognito = () => {
+	//各種パラメータを設定
+	const cognitoDomain = import.meta.env.VITE_cognitoDomain;
 	const clientId = import.meta.env.VITE_clientId;
-	const redirectUri = encodeURIComponent(import.meta.env.VITE_redirectUri);
 	const responseType = 'code';
 	const scope = import.meta.env.VITE_scope;
-	const cognitoDomain = import .meta.env.VITE_cognitoDomain;
+	const redirectUri = encodeURIComponent(import.meta.env.VITE_redirectUri);
 
+	//ログイン認証用URLを完成
 	const loginUrl = `${cognitoDomain}/login?client_id=${clientId}&response_type=${responseType}&scope=${scope}&redirect_uri=${redirectUri}`;
+	console.log(loginUrl);
 
+	//ログイン認証用URLにアクセス
 	window.location.href = loginUrl;
 };
 
