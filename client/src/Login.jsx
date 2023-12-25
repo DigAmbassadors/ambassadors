@@ -9,7 +9,6 @@ const redirectToCognito = () => {
 	const cognitoDomain = import .meta.env.VITE_cognitoDomain;
 
 	const loginUrl = `${cognitoDomain}/login?client_id=${clientId}&response_type=${responseType}&scope=${scope}&redirect_uri=${redirectUri}`;
-    // console.log(loginUrl);
 
 	window.location.href = loginUrl;
 };

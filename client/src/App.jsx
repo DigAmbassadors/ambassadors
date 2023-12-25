@@ -11,7 +11,7 @@ function App() {
 			<Routes>
 				<Route path='/' element={<Login />}></Route>
 				<Route path='/login' element={<Login />}></Route>
-				<Route path='/callback' element={<LoginCB />} />
+				<Route path='/cog' element={<LoginCB />} />
 				{/* <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>}/> */}
 			</Routes>
 		</AuthProvider>
