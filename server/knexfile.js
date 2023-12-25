@@ -22,8 +22,15 @@ module.exports = {
   },
 
   production: {
-    client: 'postgresql',
-    connection: process.env.DATABASE_URL,
+    client: 'pg', // PostgreSQL用のクライアント
+    connection: {
+      host: process.env.RDS_HOST, // RDSデータベースエンドポイント
+      user: process.env.RDS_USER, // RDSユーザー名
+      password: process.env.RDS_PASSWORD, // RDSパスワード
+      database: process.env.RDS_DATABASE, // RDSデータベース名
+      port: process.env.RDS_PORT || 5432, // RDSポート（デフォルトは5432）
+      ssl: { rejectUnauthorized: false } // SSL接続を有効にする
+    },
     migrations: {
       directory: './db/migrations',
     },
