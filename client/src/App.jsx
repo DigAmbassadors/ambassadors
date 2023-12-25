@@ -15,6 +15,7 @@ function App() {
                     <Route path='/login' element={<Login />}></Route>
                     <Route path='/cog' element={<LoginCB />} />
                     <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
+                    <Route path='/usertopsub' element={<UserTop />}/>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
