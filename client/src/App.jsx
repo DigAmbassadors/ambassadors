@@ -16,8 +16,8 @@ function App() {
                     <Route path='/login' element={<Login />}></Route>
                     <Route path='/cognito' element={<LoginCallback />} />
                     <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
-                    <Route path='/usertopsub' element={<UserTop />}/>
-                    <Route path='/usertoptest' element={<UserTopTest />}/>
+                    <Route path='/usertop_pass' element={<UserTop />}/>
+                    <Route path='/usertop_test' element={<UserTopTest />}/>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
