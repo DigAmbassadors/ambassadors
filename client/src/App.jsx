@@ -1,42 +1,24 @@
-import { useState } from "react";
-import "./assets/style/App.css";
-import Header from "./Header";
-import Navbar from "./Navbar";
-import MainBody from "./MainBody";
-import Footer from "./Footer";
-import { Routes, Route, Link } from "react-router-dom";
+import { useState } from 'react';
+import { Routes, Route, BrowserRouter } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import ProtectedRoute from './components/ProtectedRout';
+import Login from './components/Login';
+import LoginCB from './components/LoginCB';
+import UserTop from './components/UserTop';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [plan, setPlan] = useState(false);
-
-  return (
-    <div>
-      <Header />
-      <Routes>
-        <Route
-          path="/nav"
-          element={<Navbar setLoading={setLoading} setPlan={setPlan}></Navbar>}
-        ></Route>
-        <Route
-          path="/main"
-          element={<MainBody loading={loading} plan={plan}></MainBody>}
-        ></Route>
-      </Routes>
-      {/* <Navbar setLoading={setLoading} setPlan={setPlan} /> */}
-      {/* <MainBody loading={loading} plan={plan} /> */}
-      <Footer />
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/nav">Nav</Link>
-        </li>
-      </ul>
-    </div>
-  );
+    return (
+        <AuthProvider>
+            <BrowserRouter>
+                <Routes>
+                    <Route path='/' element={<Login />}></Route>
+                    <Route path='/login' element={<Login />}></Route>
+                    <Route path='/cog' element={<LoginCB />} />
+                    <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
+                </Routes>
+            </BrowserRouter>
+        </AuthProvider>
+    );
 }
 
 export default App;

@@ -3,9 +3,11 @@
  * @returns { Promise<void> }
  */
 exports.up = function (knex) {
-  return knex.schema.createTable('hotel', function (table) {
+  return knex.schema.createTable('plan', function (table) {
     table.increments('id').primary();
     table.string('name', 32);
+    table.integer('user_id').references('users.id');
+    table.timestamps(true, true);
   });
 };
 
@@ -14,5 +16,5 @@ exports.up = function (knex) {
  * @returns { Promise<void> }
  */
 exports.down = function (knex) {
-  return knex.schema.dropTable('hotel');
+  return knex.schema.dropTable('plan');
 };
