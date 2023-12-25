@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { jwtDecode } from 'jwt-decode';
 
 const LoginCB = () => {
 	const navigate = useNavigate();
@@ -28,7 +27,7 @@ const LoginCB = () => {
 				})
 				.then((reply) => {
 					console.log('reply', reply);
-					
+
 					// トークンを保存
 					localStorage.setItem('accessToken', reply.access_token);
 					localStorage.setItem('refreshToken', reply.refresh_token);
