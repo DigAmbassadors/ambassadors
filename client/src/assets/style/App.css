@@ -35,10 +35,34 @@ header {
   display: flex;
   border-bottom: 1.5px solid;
   border-bottom-color: rgb(225, 225, 225);
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-icon img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.ham-close-icon {
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.ham-menu {
+  margin-right: 10px;
+  text-align: right;
+}
+
+.ham-menu li {
+  padding: 8px 0;
 }
 
 .logo {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   font-size: 25px;
 }
 
@@ -188,6 +212,6 @@ nav form {
 
 /* # footer ########################################### */
 footer {
-  height: 50px;
+  height: 300px;
   background-color: rgb(111, 111, 255);
 }

@@ -97,7 +97,9 @@ function MainBody(props) {
             </li>
           </ul>
         </div>
-      ) : null}
+      ) : (
+        <p>データなし</p>
+      )}
     </div>
   );
 }
