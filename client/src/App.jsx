@@ -1,23 +1,21 @@
-import { useState } from "react";
-import "./assets/style/App.css";
-import Header from "./Header";
-import Navbar from "./Navbar";
-import MainBody from "./MainBody";
-import Footer from "./Footer";
+import { useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { AuthProvider, useAuth } from './AuthContext';
+import ProtectedRoute from './ProtectedRout';
+import Login from './Login';
+import LoginCB from './LoginCB';
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(false);
-  const [plan, setPlan] = useState(false);
-
-  return (
-    <div>
-      <Header />
-      <Navbar setLoading={setLoading} setPlan={setPlan} />
-      <MainBody loading={loading} plan={plan} />
-      <Footer />
-    </div>
-  );
+	return (
+		<AuthProvider>
+			<Routes>
+				<Route path='/' element={<Login />}></Route>
+				<Route path='/login' element={<Login />}></Route>
+				<Route path='/callback' element={<LoginCB />} />
+				{/* <Route path='/main' element={<ProtectedRoute><MainPage /></ProtectedRoute>}/> */}
+			</Routes>
+		</AuthProvider>
+	);
 }
 
 export default App;
