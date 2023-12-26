@@ -1,24 +1,38 @@
-import { useState } from 'react';
-import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
-import ProtectedRoute from './components/ProtectedRout';
-import Login from './components/Login';
-import LoginCB from './components/LoginCB';
-import UserTop from './components/UserTop';
+import { useState } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRout";
+import Login from "./components/Login";
+import LoginCB from "./components/LoginCB";
+import UserTop from "./components/UserTop";
+import TripStart from "./components/TripStart";
+import TripSummary from "./components/TripSummary";
+import TripDetail from "./components/TripDetail";
+import "./assets/style/App.css";
 
 function App() {
-    return (
-        <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<Login />}></Route>
-                    <Route path='/login' element={<Login />}></Route>
-                    <Route path='/cog' element={<LoginCB />} />
-                    <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/cog" element={<LoginCB />} />
+          <Route
+            path="/usertop"
+            element={
+              <ProtectedRoute>
+                <UserTop />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/usertopsub" element={<UserTop />} />
+          <Route path="/tripstart" element={<TripStart />} />
+          <Route path="/tripsummary" element={<TripSummary />} />
+          <Route path="/tripdetail" element={<TripDetail />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;
