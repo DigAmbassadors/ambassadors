@@ -8,16 +8,22 @@ function UserMenu() {
           <Link to="/tripstart">📸　冒険に出かける</Link>
         </li>
         <li>
-          <Link to="/">📸　過去の冒険を見る</Link>
+          <Link>👀　過去の冒険を見る＠</Link>
         </li>
         <li>
-          <Link to="/">📸　みんなの冒険を見る</Link>
+          <Link>👫　みんなの冒険を見る＠</Link>
         </li>
         <li>
-          <Link to="/">📸　おもしろスポットを投稿する</Link>
+          <Link>📮　おもしろスポットを投稿する＠</Link>
         </li>
         <li>
-          <Link to="/">📸　ランキング</Link>
+          <Link>🏆　ランキング＠</Link>
+        </li>
+        <li>
+          <Link>ー以下、開発用リンクー</Link>
+        </li>
+        <li>
+          <Link to="/tripdetail">(to tripDetail)</Link>
         </li>
       </ul>
     </div>
