@@ -112,6 +112,45 @@ header {
   font-size: 1.4em;
 }
 
+/* # tripstart ########################################### */
+.tripstart-content {
+  font-family: arial;
+  font-size: 24px;
+  text-align: center;
+}
+.tripstart-button {
+  background-color: hotpink;
+  border-radius: 10%;
+}
+
+/* # tripsummary ########################################### */
+.tripsummary-content {
+  font-family: arial;
+  font-size: 24px;
+  text-align: center;
+}
+
+.tripsummary-content-image {
+  width: 300px;
+  height: 300px;
+}
+
+.tripsummary-content-image-icon {
+  width: 50px;
+  height: 50px;
+}
+
+.tripsummary-content-hatching {
+  background-color: blue;
+  height: 27vw;
+  width: 25vw;
+  border: solid 0px;
+  border-radius: 2em;
+  margin: 0 auto;
+  /* overflow: hidden; */
+  opacity: 0.1;
+}
+
 /* # tripdetail ########################################### */
 .trip-detail-content {
   display: flex;

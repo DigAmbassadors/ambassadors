@@ -15,28 +15,62 @@ function TripSummary() {
   return (
     <>
       <Header />
-      <div>
+      <div className="tripsummary-content">
         <br />
         <br />
         <br />
         <br />
         <p>次の行き先はここだ！！</p>
+        <br />
+        <br />
         {/* <img src={morikoroImg} alt="#" /> */}
-        <img src={morikoroMapImg} alt="#" />
+
+        <img
+          src={morikoroMapImg}
+          alt="#"
+          className="tripsummary-content-image"
+        />
         <br />
-        <img src={iconMapImg} alt="#" />
+        <img
+          src={iconMapImg}
+          alt="#"
+          className="tripsummary-content-image-icon"
+        />
         <p>モリコロパーク</p>
+
         <br />
-        <img src={legoLandMapImg} alt="#" />
-        <br />
-        <img src={iconMapImg} alt="#" />
-        <p>レゴランド</p>
         <br />
 
-        <img src={irakoMapImg} alt="#" />
+        <div className="tripsummary-content-hatching">
+          <img
+            src={legoLandMapImg}
+            alt="#"
+            className="tripsummary-content-image"
+          />
+          <br />
+          <img
+            src={iconMapImg}
+            alt="#"
+            className="tripsummary-content-image-icon"
+          />
+          <p>レゴランド</p>
+        </div>
         <br />
-        <img src={iconMapImg} alt="#" />
-        <p>伊良子岬</p>
+        <br />
+        <div className="tripsummary-content-hatching">
+          <img
+            src={irakoMapImg}
+            alt="#"
+            className="tripsummary-content-image"
+          />
+          <br />
+          <img
+            src={iconMapImg}
+            alt="#"
+            className="tripsummary-content-image-icon"
+          />
+          <p>伊良子岬</p>
+        </div>
       </div>
     </>
   );
