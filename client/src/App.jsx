@@ -17,8 +17,12 @@ function App() {
                 <Routes>
                     <Route path='/' element={<Login />}></Route>
                     <Route path='/login' element={<Login />}></Route>
-                    <Route path='/cog' element={<LoginCallback />} />
+                    <Route path='/cognito' element={<LoginCallback />} />
                     <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
+                    <Route path='/usertopsub' element={<UserTop />}/>
+                    <Route path='/tripstart' element={<ProtectedRoute><TripStart /></ProtectedRoute>}/>
+                    <Route path='/tripsummary' element={<ProtectedRoute><TripSummary /></ProtectedRoute>}/>
+                    <Route path='/tripdetail' element={<ProtectedRoute><TripDetail /></ProtectedRoute>}/>
                 </Routes>
             </BrowserRouter>
         </AuthProvider>
