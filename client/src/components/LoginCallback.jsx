@@ -11,8 +11,16 @@ const LoginCB = () => {
 		const code = queryParams.get('code');
 
 		if (code) {
+			//url定義
+			let url;
+			if (import.meta.env.VITE_NODE_ENV === 'production') {
+				url = import.meta.env.VITE_deploy_url;
+			} else {
+				url = 'http://localhost:3000';
+			}
+
 			// バックエンドに認可コードを送信し、トークンを取得------------------
-			fetch('http://localhost:3000/api/token-exchange', {
+			fetch(url + '/api/token-exchange', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',

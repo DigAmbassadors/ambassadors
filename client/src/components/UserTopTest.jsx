@@ -5,7 +5,15 @@ const UserTopTest = () => {
 	const { userId } = useAuth();
 
 	const getTrips = () => {
-		fetch(`http://localhost:3000/api/trips/${userId}`, {
+		//url定義
+		let url;
+		if (import.meta.env.VITE_NODE_ENV === 'production') {
+			url = import.meta.env.VITE_deploy_url;
+		} else {
+			url = 'http://localhost:3000';
+		}
+
+		fetch(url + `/api/trips/${userId}`, {
 			method: 'GET',
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -25,7 +33,7 @@ const UserTopTest = () => {
 				console.error('Error:', error);
 				if (error.message === 'Token expired') {
 					// リフレッシュトークンを使用して新しいアクセストークンを取得
-					fetch('http://localhost:3000/api/refresh-token', {
+					fetch(url + '/api/refresh-token', {
 						method: 'POST',
 						headers: {
 							'Content-Type': 'application/json',
