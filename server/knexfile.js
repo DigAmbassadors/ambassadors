@@ -9,7 +9,7 @@ module.exports = {
   development: {
     client: 'pg',
     connection: {
-      database: process.env.DB_NAME || 'ambassador', //自分のDB設定に合わせて変更
+      database: process.env.DB_NAME || 'ambassadors', //自分のDB設定に合わせて変更
       user: process.env.DB_USER || 'user', //自分のDB設定に合わせて変更
       password: process.env.DB_PASSWORD || null, //自分のDB設定に合わせて変更
     },

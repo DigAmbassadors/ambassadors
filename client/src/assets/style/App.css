@@ -22,6 +22,11 @@ h3 {
 /* # header ########################################### */
 * {
   box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 header {
@@ -29,16 +34,40 @@ header {
   width: 100%;
   padding: 0px 15px;
   background-color: white;
-  position: fixed;
+  position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
   border-bottom: 1.5px solid;
   border-bottom-color: rgb(225, 225, 225);
+
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-icon img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+.ham-close-icon {
+  margin-top: 15px;
+  margin-right: 15px;
+  margin-bottom: 10px;
+  text-align: right;
+}
+
+.ham-menu {
+  margin-right: 10px;
+  text-align: right;
+}
+
+.ham-menu li {
+  padding: 8px 0;
 }
 
 .logo {
-  margin-top: 15px;
+  /* margin-top: 15px; */
   font-size: 25px;
 }
 
@@ -65,6 +94,57 @@ header {
   display: block;
   line-height: 60px;
   padding: 0 20px;
+}
+
+/* # userMenu ########################################### */
+.user-menu-content {
+  display: flex;
+  justify-content: center;
+}
+.user-menu-list {
+  margin-top: 40px;
+  margin-bottom: 100px;
+  padding-left: 5%;
+}
+
+.user-menu-list li {
+  padding: 16px 0;
+  font-size: 1.4em;
+}
+
+/* # tripdetail ########################################### */
+.trip-detail-content {
+  display: flex;
+  justify-content: center;
+}
+.trip-detail-list {
+  margin-top: 20px;
+  margin-bottom: 100px;
+  /* padding-left: 5%; */
+}
+
+.trip-detail-list li {
+  padding: 16px 0;
+  font-size: 1.4em;
+  font-weight: bold;
+}
+.trip-detail-list li p {
+  padding: 16px 0;
+  padding-left: 16px;
+  font-size: 0.8em;
+  font-weight: normal;
+}
+.trip-detail-img img {
+  width: 90vw;
+}
+
+.trip-detail-mission {
+  display: flex;
+  justify-content: space-between;
+}
+
+.trip-detail-mission input {
+  background-color: aqua;
 }
 
 /* # navber ########################################### */
@@ -188,6 +268,6 @@ nav form {
 
 /* # footer ########################################### */
 footer {
-  height: 50px;
+  height: 300px;
   background-color: rgb(111, 111, 255);
 }
