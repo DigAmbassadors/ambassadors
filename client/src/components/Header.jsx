@@ -5,6 +5,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import Drawer from "@mui/material/Drawer";
 import portImg from "../assets/image/ishigakiAirport.jpg";
+import iconImg from "../assets/image/icon.png";
 
 function Header() {
   useEffect(() => {}, []);
@@ -20,13 +21,13 @@ function Header() {
   return (
     <header>
       <div className="user-icon">
-        <img src={portImg} alt="仮の画像" width="1000px" />
+        <img src={iconImg} alt="仮の画像" />
       </div>
-      <div className="logo">
-        <a href="/">AMBASSADORS</a>
-      </div>
+      {/* <div className="logo">
+        <a href="/usertop">AMBASSADORS</a>
+      </div> */}
       <div className="hamburger-menu">
-        <MenuIcon onClick={handleDrawerOpen} />
+        <MenuIcon onClick={handleDrawerOpen} fontSize="large" />
       </div>
 
       <Drawer
@@ -34,7 +35,7 @@ function Header() {
         open={open}
         onClose={handleDrawerClose}
         PaperProps={{
-          style: { width: "45%", backgroundColor: "rgba(255,255,255,0.8)" },
+          style: { width: "35%", backgroundColor: "rgba(255,215,0,0.8)" },
         }}
       >
         <div className="ham-close-icon">
@@ -42,13 +43,15 @@ function Header() {
         </div>
         <ul className="ham-menu">
           <li>
-            <Link to="/" onClick={handleDrawerClose}>
-              TOP MENU(リンク未)
+            <Link to="/usertop" onClick={handleDrawerClose}>
+              <strong>TOP MENU</strong>
             </Link>
           </li>
           <li>
             <Link to={`#`} onClick={handleDrawerClose}>
-              LOGOUT(リンク未)
+              <strong>LOGOUT</strong>
+              <br />
+              (リンク未)
             </Link>
           </li>
         </ul>
