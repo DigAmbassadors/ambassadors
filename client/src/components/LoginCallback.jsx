@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const LoginCB = () => {
+const LoginCallback = () => {
 	const navigate = useNavigate();
 	const { login, setUserId, setUserName } = useAuth();
 
@@ -14,10 +14,11 @@ const LoginCB = () => {
 			//url定義
 			let url;
 			if (import.meta.env.VITE_NODE_ENV === 'production') {
-				url = import.meta.env.VITE_deploy_url;
+				url = 'https://ambassadors-btc5.com';
 			} else {
 				url = 'http://localhost:3000';
 			}
+			console.log('url', url + '/api/token-exchange');
 
 			// バックエンドに認可コードを送信し、トークンを取得------------------
 			fetch(url + '/api/token-exchange', {
@@ -59,4 +60,4 @@ const LoginCB = () => {
 	return <div>認証中...</div>;
 };
 
-export default LoginCB;
+export default LoginCallback;

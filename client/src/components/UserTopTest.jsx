@@ -8,7 +8,7 @@ const UserTopTest = () => {
 		//url定義
 		let url;
 		if (import.meta.env.VITE_NODE_ENV === 'production') {
-			url = import.meta.env.VITE_deploy_url;
+			url = 'https://ambassadors-btc5.com';
 		} else {
 			url = 'http://localhost:3000';
 		}

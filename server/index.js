@@ -27,33 +27,32 @@ function getKey(header, callback) {
 }
 
 function verifyToken(req, res, next) {
-  const bearerHeader = req.headers['authorization'];
+	const bearerHeader = req.headers['authorization'];
 
-  if (typeof bearerHeader !== 'undefined') {
-      const token = bearerHeader.split(' ')[1];
+	if (typeof bearerHeader !== 'undefined') {
+		const token = bearerHeader.split(' ')[1];
 
-      // トークンの署名を検証
-      jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
-          if (err) {
-              res.sendStatus(403); // Forbidden
-          } else {
-              // トークンの有効期限をチェック
-              const currentTime = Date.now() / 1000; // 現在の時刻をUNIXタイムスタンプで取得
-              if (decoded.exp < currentTime) {
-                  // トークンが期限切れの場合
-                  res.status(401).json({ message: 'Token expired' });
-              } else {
-                  // トークンが有効な場合、次の処理へ
-                  req.decoded = decoded;
-                  next();
-              }
-          }
-      });
-  } else {
-      res.sendStatus(401); // Unauthorized
-  }
+		// トークンの署名を検証
+		jwt.verify(token, getKey, { algorithms: ['RS256'] }, (err, decoded) => {
+			if (err) {
+				res.sendStatus(403); // Forbidden
+			} else {
+				// トークンの有効期限をチェック
+				const currentTime = Date.now() / 1000; // 現在の時刻をUNIXタイムスタンプで取得
+				if (decoded.exp < currentTime) {
+					// トークンが期限切れの場合
+					res.status(401).json({ message: 'Token expired' });
+				} else {
+					// トークンが有効な場合、次の処理へ
+					req.decoded = decoded;
+					next();
+				}
+			}
+		});
+	} else {
+		res.sendStatus(401); // Unauthorized
+	}
 }
-
 
 //接続テスト
 app.get('/api/test', (req, res) => {
@@ -77,8 +76,13 @@ app.post('/api/token-exchange', async (req, res) => {
 	const code = req.body.code;
 	const clientId = process.env.clientId;
 	const clientSecret = process.env.clientSecret;
-	const redirectUri = process.env.redirectUri;
 	const cognitoTokenEndpoint = process.env.cognitoTokenEndpoint;
+	let redirectUri;
+	if(process.env.NODE_ENV === 'production'){
+		redirectUri = 'https://ambassadors-btc5.com/cognito';
+	} else {
+		redirectUri = 'http://localhost:5173/cognito'
+	}
 
 	const params = new URLSearchParams();
 	params.append('grant_type', 'authorization_code');
@@ -125,34 +129,33 @@ app.post('/api/token-exchange', async (req, res) => {
 
 //アクセストークンのリフレッシュ
 app.post('/api/refresh-token', async (req, res) => {
-  const refreshToken = req.body.refreshToken;
-  const params = new URLSearchParams();
-  params.append('grant_type', 'refresh_token');
-  params.append('client_id', process.env.clientId);
-  params.append('client_secret', process.env.clientSecret);
-  params.append('refresh_token', refreshToken);
+	const refreshToken = req.body.refreshToken;
+	const params = new URLSearchParams();
+	params.append('grant_type', 'refresh_token');
+	params.append('client_id', process.env.clientId);
+	params.append('client_secret', process.env.clientSecret);
+	params.append('refresh_token', refreshToken);
 
-  try {
-      const response = await fetch(`${process.env.cognitoTokenEndpoint}/token`, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: params,
-      });
-      const newTokens = await response.json();
+	try {
+		const response = await fetch(`${process.env.cognitoTokenEndpoint}/token`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: params,
+		});
+		const newTokens = await response.json();
 
-      // 必要な情報をフロントエンドに返却
-      res.status(200).json({
-          access_token: newTokens.access_token,
-          refresh_token: newTokens.refresh_token || refreshToken, // 新しいリフレッシュトークンがなければ古いトークンを返す
-      });
-  } catch (error) {
-      console.error('Refresh token error:', error);
-      res.status(500).json({ message: 'Failed to refresh token', error: error.message });
-  }
+		// 必要な情報をフロントエンドに返却
+		res.status(200).json({
+			access_token: newTokens.access_token,
+			refresh_token: newTokens.refresh_token || refreshToken, // 新しいリフレッシュトークンがなければ古いトークンを返す
+		});
+	} catch (error) {
+		console.error('Refresh token error:', error);
+		res.status(500).json({ message: 'Failed to refresh token', error: error.message });
+	}
 });
-
 
 // tripsを取得
 app.get('/api/trips/:id', verifyToken, async (req, res) => {
@@ -164,8 +167,6 @@ app.get('/api/trips/:id', verifyToken, async (req, res) => {
 		res.status(500).json({ message: 'Error retrieving user data' });
 	}
 });
-
-
 
 app.listen(3000, () => {
 	console.log('server on PORT3000');

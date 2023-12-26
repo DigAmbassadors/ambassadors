@@ -7,7 +7,14 @@ const redirectToCognito = () => {
 	const clientId = import.meta.env.VITE_clientId;
 	const responseType = 'code';
 	const scope = import.meta.env.VITE_scope;
-	const redirectUri = encodeURIComponent(import.meta.env.VITE_redirectUri);
+
+	let redirectUri;
+	if(import.meta.env.VITE_NODE_ENV === 'production'){
+		redirectUri = 'https://ambassadors-btc5.com/cognito';
+	} else {
+		redirectUri = 'http://localhost:5173/cognito'
+	}
+	redirectUri = encodeURIComponent(redirectUri);
 
 	//ログイン認証用URLを完成
 	const loginUrl = `${cognitoDomain}/login?client_id=${clientId}&response_type=${responseType}&scope=${scope}&redirect_uri=${redirectUri}`;
