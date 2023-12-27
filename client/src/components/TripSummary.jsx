@@ -17,6 +17,17 @@ function TripSummary() {
   //   useEffect(() => {}, []);
   const navigate = useNavigate();
   navigate("/TripSummary");
+
+  const [clearFlg1, setClearFlg1] = useState(false);
+  const controlClearFlg1 = () => {
+    clearFlg1 ? setClearFlg1(false) : setClearFlg1(true);
+  };
+
+  const [clearFlg2, setClearFlg2] = useState(false);
+  const controlClearFlg2 = () => {
+    clearFlg2 ? setClearFlg2(false) : setClearFlg2(true);
+  };
+
   return (
     <>
       <Header />
@@ -28,7 +39,6 @@ function TripSummary() {
         <p>次の行き先はここだ！！</p>
         <br />
         <br />
-        {/* <img src={morikoroImg} alt="#" /> */}
 
         <Link to="/TripDetail">
           <img
@@ -37,35 +47,129 @@ function TripSummary() {
             className="tripsummary-content-image"
           />
           <br />
-          {/* <img
+        </Link>
+
+        <button onClick={controlClearFlg1}>クリアフラグ1</button>
+
+        {/* <Link to="/TripDetail">
+          <img
+            src={morikoroImg}
+            alt="#"
+            className="tripsummary-content-image"
+          />
+          <br />
+          <img
             src={iconMapImg}
             alt="#"
             className="tripsummary-content-image-icon"
           />
-          <p>モリコロパーク</p> */}
-        </Link>
+          <p>モリコロパーク</p>
+        </Link> */}
 
-        <br />
-        <br />
+        {/* {clearFlg1 ? (
+          <Link to="/TripDetail">
+            <img
+              src={legoLandImg}
+              alt="#"
+              className="tripsummary-content-image"
+            />
+            <br />
+          </Link>
+        ) : (
+          <>
+            <img
+              src={legoLandImg}
+              alt="#"
+              className="tripsummary-content-image-filter"
+            />
+            <br />
+          </>
+        )} */}
 
-        <div className="tripsummary-content-hatching">
+        {/* <div className="tripsummary-content-hatching">
           <img
             src={legoLandImg}
             alt="#"
             className="tripsummary-content-image"
           />
           <br />
-          {/* <img
+          <img
             src={iconMapImg}
             alt="#"
             className="tripsummary-content-image-icon"
           />
-          <p>レゴランド</p> */}
-        </div>
+          <p>レゴランド</p>
+        </div> */}
         <br />
         <br />
 
-        <div className="tripsummary-content-hatching">
+        {clearFlg1 ? (
+          <Link to="/TripDetail">
+            <img
+              src={legoLandImg}
+              alt="#"
+              className="tripsummary-content-image"
+            />
+          </Link>
+        ) : (
+          <>
+            <img
+              src={legoLandImg}
+              alt="#"
+              className="tripsummary-content-image-filter"
+            />
+            {/* <img
+              src={keyIconCloseImg}
+              alt="#"
+              className="tripsummary-content-image-keyclose"
+            /> */}
+            <br />
+            <img
+              src={iconMapImg}
+              alt="#"
+              className="tripsummary-content-image-icon"
+            />
+            <p>前のミッションをクリアするまで表示できません</p>
+          </>
+        )}
+        <button onClick={controlClearFlg2}>クリアフラグ2</button>
+
+        {clearFlg2 ? (
+          <Link to="/TripDetail">
+            <div className="tripsummary-content-hatching">
+              <div className="irakoImg-wrraped">
+                <img
+                  src={irakoImg}
+                  alt="#"
+                  className="tripsummary-content-image"
+                />
+              </div>
+              <br />
+            </div>
+          </Link>
+        ) : (
+          <>
+            <img
+              src={irakoImg}
+              alt="#"
+              className="tripsummary-content-image-filter"
+            />
+            {/* <img
+              src={keyIconCloseImg}
+              alt="#"
+              className="tripsummary-content-image-keyclose"
+            /> */}
+            <br />
+            <img
+              src={iconMapImg}
+              alt="#"
+              className="tripsummary-content-image-icon"
+            />
+            <p>前のミッションをクリアするまで表示できません</p>
+          </>
+        )}
+
+        {/* <div className="tripsummary-content-hatching">
           <div className="irakoImg-wrraped">
             <img src={irakoImg} alt="#" className="tripsummary-content-image" />
             <img
@@ -82,13 +186,7 @@ function TripSummary() {
             <p>前のミッションをクリアするまで表示できません</p>
           </div>
           <br />
-          {/* <img
-            src={iconMapImg}
-            alt="#"
-            className="tripsummary-content-image-icon"
-          />
-          <p>伊良子岬</p> */}
-        </div>
+        </div> */}
       </div>
     </>
   );

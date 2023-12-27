@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import StarIcon from "@mui/icons-material/Star";
 import Img from "../assets/image/kabirawan.jpg";
 import loadingGif from "../assets/image/loading.gif";
-import FileInputComponent from "react-file-input-previews-base64";
+// import FileInputComponent from "react-file-input-previews-base64";
 import { useRef } from "react";
 import { positions } from "@mui/system";
 

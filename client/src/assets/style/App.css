@@ -138,7 +138,13 @@ body {
   width: 300px;
   height: 300px;
   border-radius: 1em;
-  filter: opacity(95%);
+}
+
+.tripsummary-content-image-filter {
+  width: 300px;
+  height: 300px;
+  border-radius: 1em;
+  filter: opacity(5%);
 }
 
 .tripsummary-content-image-icon {
@@ -169,7 +175,7 @@ body {
 
 .irakoImg-wrraped {
   position: absolute;
-  /* padding-left: 0%; */
+  padding-left: 10%;
 }
 
 /* # tripdetail ########################################### */
