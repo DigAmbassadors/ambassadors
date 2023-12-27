@@ -32,8 +32,9 @@ h3 {
 header {
   height: 60px;
   width: 100%;
-  padding: 0px 15px;
-  background-color: white;
+  padding: 0px 20px 0px 30px;
+  /* background-color: white; */
+  background-color: #ffd700;
   position: sticky;
   top: 0;
   z-index: 10;
@@ -52,8 +53,8 @@ header {
 }
 .ham-close-icon {
   margin-top: 15px;
-  margin-right: 15px;
-  margin-bottom: 10px;
+  margin-right: 25px;
+  margin-bottom: 20px;
   text-align: right;
 }
 
@@ -96,6 +97,9 @@ header {
   padding: 0 20px;
 }
 
+body {
+  background-color: hsl(50, 100%, 80%);
+}
 /* # userMenu ########################################### */
 .user-menu-content {
   display: flex;
@@ -109,7 +113,63 @@ header {
 
 .user-menu-list li {
   padding: 16px 0;
-  font-size: 1.4em;
+  font-size: 1.3em;
+}
+
+/* # tripstart ########################################### */
+.tripstart-content {
+  font-family: arial;
+  font-size: 24px;
+  text-align: center;
+}
+.tripstart-button {
+  background-color: hotpink;
+  border-radius: 10%;
+}
+
+/* # tripsummary ########################################### */
+.tripsummary-content {
+  font-family: arial;
+  font-size: 24px;
+  text-align: center;
+}
+
+.tripsummary-content-image {
+  width: 300px;
+  height: 300px;
+  border-radius: 1em;
+  filter: opacity(95%);
+}
+
+.tripsummary-content-image-icon {
+  width: 50px;
+  height: 50px;
+}
+
+/* .tripsummary-content-hatching { */
+/* position: relative; */
+/* background-color: black; */
+/* height: 300px;
+  width: 300px; */
+/* border: solid 0px; */
+/* border-radius: 1em; */
+/* margin: 0 auto; */
+/* overflow: hidden; */
+/* opacity: 0.3; */
+/* } */
+
+.tripsummary-content-image-keyclose {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  top: 120px;
+  right: 160px;
+  /* opacity: 1; */
+}
+
+.irakoImg-wrraped {
+  position: absolute;
+  /* padding-left: 0%; */
 }
 
 /* # tripdetail ########################################### */
@@ -119,32 +179,30 @@ header {
 }
 .trip-detail-list {
   margin-top: 20px;
-  margin-bottom: 100px;
+
   /* padding-left: 5%; */
 }
 
 .trip-detail-list li {
-  padding: 16px 0;
+  padding: 8px 0;
   font-size: 1.4em;
   font-weight: bold;
 }
 .trip-detail-list li p {
-  padding: 16px 0;
+  padding: 8px 0;
   padding-left: 16px;
   font-size: 0.8em;
   font-weight: normal;
 }
+
 .trip-detail-img img {
   width: 90vw;
+  margin-bottom: 32px;
 }
 
 .trip-detail-mission {
   display: flex;
   justify-content: space-between;
-}
-
-.trip-detail-mission input {
-  background-color: aqua;
 }
 
 /* # navber ########################################### */
