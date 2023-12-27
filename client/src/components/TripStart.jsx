@@ -81,11 +81,27 @@ function TripStart() {
         <br />
         <br />
         <p>途中から始める</p>
-        <p>冒険1</p>
-        <p>冒険2</p>
-        <p>冒険3</p>
-        <p>冒険4</p>
-        <p>冒険5</p>
+        <ul>
+          <li>
+            <Link to="/tripstart">冒険1</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険2</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険3</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険4</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険5</Link>
+          </li>
+        </ul>
       </div>
     </>
   );

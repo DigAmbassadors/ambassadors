@@ -3,11 +3,14 @@ import Header from "./Header";
 import Button from "@mui/material/Button";
 import StarIcon from "@mui/icons-material/Star";
 import Img from "../assets/image/kabirawan.jpg";
+import morikoroMapImg from "../assets/image/morikoroMap.jpg";
 import loadingGif from "../assets/image/loading.gif";
 // import FileInputComponent from "react-file-input-previews-base64";
-import { useRef } from "react";
+import { useState, useRef } from "react";
 import { positions } from "@mui/system";
 import pageBackImg from "../assets/image/pageBackButton.jpg";
+import irakoMapImg from "../assets/image/irakoMap.jpg";
+import legoLandMapImg from "../assets/image/legoLandMap.jpg";
 
 function TripDetail() {
   const inputRef = useRef(null);
@@ -29,8 +32,14 @@ function TripDetail() {
     name: "モリコロ",
     mission1: "現地でボタンを押そう！",
     mission2: "〇〇している写真を撮ろう！",
-    photo: Img,
+    photo: morikoroMapImg,
   };
+
+  const [clearFlg, setClearFlg] = useState(false);
+  const controlClearFlg = () => {
+    clearFlg ? setClearFlg(false) : setClearFlg(true);
+  };
+
   return (
     <>
       <Header />
@@ -42,10 +51,18 @@ function TripDetail() {
           <li>
             <div className="trip-detail-mission">
               <div>{detailInfo.name}</div>
-              <div>
+              <button onClick={controlClearFlg}>クリアフラグ</button>
+              {clearFlg ? (
+                <div>
+                  <StarIcon sx={{ color: "red" }} fontSize="large" />
+                </div>
+              ) : (
+                <></>
+              )}
+              {/* <div>
                 達成したら→
                 <StarIcon sx={{ color: "red" }} fontSize="large" />
-              </div>
+              </div> */}
             </div>
           </li>
           <div className="trip-detail-img">

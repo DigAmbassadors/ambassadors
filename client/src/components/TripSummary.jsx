@@ -2,11 +2,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 // import morikoroImg from "./assets/image/morikoro.jpg";
-import morikoroMapImg from "../assets/image/morikoroMap.jpg";
 import morikoroImg from "../assets/image/morikoroEntrance.jpg";
-import legoLandMapImg from "../assets/image/legoLandMap.jpg";
 import legoLandImg from "../assets/image/legoLandEntrance.jpg";
-import irakoMapImg from "../assets/image/irakoMap.jpg";
 import irakoImg from "../assets/image/irakoEntrance.jpg";
 import iconMapImg from "../assets/image/iconMap.jpg";
 import keyIconCloseImg from "../assets/image/keyIconClose.jpg";
@@ -17,6 +14,19 @@ function TripSummary() {
   //   useEffect(() => {}, []);
   // const navigate = useNavigate();
   // navigate("/TripSummary");
+
+  const place0 = {
+    name: "モリコロ",
+    photo: morikoroImg,
+  };
+  const place1 = {
+    name: "レゴランド",
+    photo: legoLandImg,
+  };
+  const place2 = {
+    name: "伊良子岬",
+    photo: irakoImg,
+  };
 
   const [clearFlg1, setClearFlg1] = useState(false);
   const controlClearFlg1 = () => {
@@ -36,86 +46,37 @@ function TripSummary() {
       </Link>
       <div className="tripsummary-content">
         <br />
-        <p>次の行き先はここだ！！</p>
+        {clearFlg1 ? <></> : <p>次の行き先はここだ！！</p>}
         <br />
         <br />
 
         <Link to="/tripdetail">
           <img
-            src={morikoroImg}
+            src={place0.photo}
             alt="#"
             className="tripsummary-content-image"
           />
           <br />
         </Link>
-
         <button onClick={controlClearFlg1}>クリアフラグ1</button>
-
-        {/* <Link to="/TripDetail">
-          <img
-            src={morikoroImg}
-            alt="#"
-            className="tripsummary-content-image"
-          />
-          <br />
-          <img
-            src={iconMapImg}
-            alt="#"
-            className="tripsummary-content-image-icon"
-          />
-          <p>モリコロパーク</p>
-        </Link> */}
-
-        {/* {clearFlg1 ? (
-          <Link to="/TripDetail">
-            <img
-              src={legoLandImg}
-              alt="#"
-              className="tripsummary-content-image"
-            />
-            <br />
-          </Link>
-        ) : (
-          <>
-            <img
-              src={legoLandImg}
-              alt="#"
-              className="tripsummary-content-image-filter"
-            />
-            <br />
-          </>
-        )} */}
-
-        {/* <div className="tripsummary-content-hatching">
-          <img
-            src={legoLandImg}
-            alt="#"
-            className="tripsummary-content-image"
-          />
-          <br />
-          <img
-            src={iconMapImg}
-            alt="#"
-            className="tripsummary-content-image-icon"
-          />
-          <p>レゴランド</p>
-        </div> */}
         <br />
         <br />
-
         {clearFlg1 ? (
-          <Link to="/TripDetail">
-            <img
-              src={legoLandImg}
-              alt="#"
-              className="tripsummary-content-image"
-            />
-          </Link>
+          <>
+            {clearFlg2 ? <></> : <p>次の行き先はここだ！！</p>}
+            <Link to="/tripdetail">
+              <img
+                src={place1.photo}
+                alt="#"
+                className="tripsummary-content-image"
+              />
+            </Link>
+          </>
         ) : (
           <>
             <div className="tripsummary-content-wrapped">
               <img
-                src={legoLandImg}
+                src={place1.photo}
                 alt="#"
                 className="tripsummary-content-image-filter"
               />
@@ -137,16 +98,22 @@ function TripSummary() {
         <button onClick={controlClearFlg2}>クリアフラグ2</button>
         <br />
         <br />
-
         {clearFlg2 ? (
-          <Link to="/TripDetail">
-            <img src={irakoImg} alt="#" className="tripsummary-content-image" />
-          </Link>
+          <>
+            {clearFlg1 ? <p>次の行き先はここだ！！</p> : <></>}
+            <Link to="/tripdetail">
+              <img
+                src={place2.photo}
+                alt="#"
+                className="tripsummary-content-image"
+              />
+            </Link>
+          </>
         ) : (
           <>
             <div className="tripsummary-content-wrapped">
               <img
-                src={irakoImg}
+                src={place2.photo}
                 alt="#"
                 className="tripsummary-content-image-filter"
               />
@@ -165,25 +132,6 @@ function TripSummary() {
             <p>前のミッションをクリアするまで表示できません</p>
           </>
         )}
-
-        {/* <div className="tripsummary-content-hatching">
-          <div className="irakoImg-wrraped">
-            <img src={irakoImg} alt="#" className="tripsummary-content-image" />
-            <img
-              src={keyIconCloseImg}
-              alt="#"
-              className="tripsummary-content-image-keyclose"
-            />
-            <br />
-            <img
-              src={iconMapImg}
-              alt="#"
-              className="tripsummary-content-image-icon"
-            />
-            <p>前のミッションをクリアするまで表示できません</p>
-          </div>
-          <br />
-        </div> */}
       </div>
     </>
   );
