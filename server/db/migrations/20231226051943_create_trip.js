@@ -5,6 +5,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('trip', function (table) {
     table.increments('id').primary();
+    table.string('area', 32);
     table.specificType('trip', 'integer[]'); //数値データ(spot_id)を格納する配列
     table.timestamps(true, true);
   });
