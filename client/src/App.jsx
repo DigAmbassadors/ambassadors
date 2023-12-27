@@ -43,8 +43,15 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route path='/tripdetail' element={<ProtectedRoute><TripDetail /></ProtectedRoute>}/> */}
-          <Route path="/tripdetail" element={<TripDetail />} />
+          <Route
+            path="/tripdetail"
+            element={
+              <ProtectedRoute>
+                <TripDetail />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path="/tripdetail" element={<TripDetail />} /> */}
         </Routes>
       </BrowserRouter>
     </AuthProvider>
