@@ -60,6 +60,30 @@ function getRandomSpot(arr, n) {
   return shuffled.slice(0, n);
 }
 
+// 2地点間の緯度経度から距離を計算するメソッド
+function getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+  const earthRadius = 6371; // 地球の半径（km）
+
+  const deg2rad = (deg) => {
+    return deg * (Math.PI / 180);
+  };
+
+  const dLat = deg2rad(lat2 - lat1);
+  const dLon = deg2rad(lon2 - lon1);
+
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(deg2rad(lat1)) *
+      Math.cos(deg2rad(lat2)) *
+      Math.sin(dLon / 2) *
+      Math.sin(dLon / 2);
+
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  const distance = earthRadius * c;
+
+  return distance; // 距離（km）
+}
+
 //接続テスト
 app.get('/api/test', (req, res) => {
   res.status(200).send('フロント/バックの接続完了');
@@ -171,10 +195,21 @@ app.post('/api/refresh-token', async (req, res) => {
   }
 });
 
-// tripを生成
-app.get('/api/trips/new/:id', verifyToken, async (req, res) => {
+// tripsを取得
+app.get('/api/trips/:userId', verifyToken, async (req, res) => {
   try {
-    const userId = Number(req.params.id);
+    const userId = Number(req.params.userId);
+    res.status(200).json([userId, userId + 3]);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Error retrieving user data' });
+  }
+});
+
+// tripをランダム生成
+app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
+  try {
+    const userId = Number(req.params.userId);
     // ランダムでプランを作成
     const newTrip = await knex('spot')
       .select('id')
@@ -212,11 +247,115 @@ app.get('/api/trips/new/:id', verifyToken, async (req, res) => {
   }
 });
 
-// tripsを取得
-app.get('/api/trips/:id', verifyToken, async (req, res) => {
+// ミッション遂行(GPS)
+// app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
+app.post('/api/mission/gps/:userId', async (req, res) => {
   try {
-    const userId = Number(req.params.id);
-    res.status(200).json([userId, userId + 3]);
+    const userId = Number(req.params.userId);
+    const { latitude, longitude, spot_id } = req.body;
+
+    const arrOfLatLon = await knex('spot')
+      .select('latitude', 'longitude')
+      .where({ id: spot_id })
+      .then((spot) => {
+        const result = [];
+        result.push(spot[0].latitude);
+        result.push(spot[0].longitude);
+        return result;
+      });
+
+    const distance = getDistanceFromLatLonInKm(
+      arrOfLatLon[0],
+      arrOfLatLon[1],
+      latitude,
+      longitude
+    );
+
+    if (distance < 1) {
+      const record = await knex('users')
+        .select('record')
+        .where({ id: userId })
+        .then((record) => {
+          const arrOfRecord = (record && record[0] && record[0].record) || [];
+          return arrOfRecord;
+        });
+
+      let addFlag = true;
+      for (const obj of record) {
+        if (obj.spot_id === spot_id && obj.photo) {
+          obj.arrived = true;
+          obj.finish = true;
+          flag = false;
+        }
+      }
+
+      if (addFlag) {
+        const newRecord = {
+          photo: null,
+          arrived: true,
+          finish: false,
+          spot_id: spot_id,
+        };
+        record.push(newRecord);
+        console.log('確認：', JSON.stringify(record));
+      }
+      await knex('users')
+        .select('users')
+        .where({ id: userId })
+        .update({ record: JSON.stringify(record) })
+        .then(() => {
+          res.status(200).send('完了');
+        });
+    } else {
+      res.status(404).send('スポットに到着していないようです');
+    }
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ message: 'Error retrieving user data' });
+  }
+});
+
+// ミッション遂行(photo)
+// app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
+app.post('/api/mission/photo/:userId', async (req, res) => {
+  try {
+    const userId = Number(req.params.userId);
+    const { photo, spot_id } = req.body;
+
+    const record = await knex('users')
+      .select('record')
+      .where({ id: userId })
+      .then((record) => {
+        const arrOfRecord = (record && record[0] && record[0].record) || [];
+        return arrOfRecord;
+      });
+
+    let addFlag = true;
+    for (const obj of record) {
+      if (obj.spot_id === spot_id) {
+        obj.photo = photo;
+        obj.arrived = true;
+        obj.finish = true;
+        flag = false;
+      }
+    }
+
+    if (addFlag) {
+      const newRecord = {
+        photo: photo,
+        arrived: false,
+        finish: false,
+        spot_id: spot_id,
+      };
+      record.push(newRecord);
+    }
+    await knex('users')
+      .select('users')
+      .where({ id: userId })
+      .update({ record: record })
+      .then(() => {
+        res.status(200).send('完了');
+      });
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ message: 'Error retrieving user data' });
