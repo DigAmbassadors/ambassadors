@@ -8,24 +8,101 @@ import loadingGif from "../assets/image/loading.gif";
 // import FileInputComponent from "react-file-input-previews-base64";
 import { useState, useRef } from "react";
 import { positions } from "@mui/system";
+
 import pageBackImg from "../assets/image/pageBackButton.jpg";
 import irakoMapImg from "../assets/image/irakoMap.jpg";
 import legoLandMapImg from "../assets/image/legoLandMap.jpg";
 
+import { useAuth } from "../contexts/AuthContext";
+
+
 function TripDetail() {
   const inputRef = useRef(null);
-  // const latitude = position.coords.latitude;
+  const { userId } = useAuth();
+  console.log("ユーザID", userId);
+
+  //url定義
+  let url;
+  if (import.meta.env.VITE_NODE_ENV === "production") {
+    url = "https://ambassadors-btc5.com";
+  } else {
+    url = "http://localhost:3000";
+  }
 
   const handleSpotCheck = () => {
-    alert("来たぜボタンクリックされました！実装はまだです🙏");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        fetch(url + `/api/mission/gps/${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            latitude: latitude,
+            longitude: longitude,
+            // latitude: 35.1654,
+            // longitude: 136.899,
+            spot_id: 9,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("エラー");
+            }
+            console.log(response.body);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
+      (error) => {
+        //失敗した場合
+        console.log("失敗");
+      }
+    );
+
+    // alert("来たぜボタンクリックされました！実装はまだです🙏");
   };
 
-  const handleSelectPicture = (e) => {
-    console.log("ここ", e.target.files[0].name);
-    alert(`選択したファイル名は、 ${e.target.files[0].name}`);
-    console.log("ここ2", inputRef.current.files[0].name);
+  const getFileAsBase64 = (filePath) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = (e) => resolve(e.target.result);
+      reader.onerror = (error) => reject(error);
+      reader.readAsDataURL(filePath);
+      // ここまでで「resolve(e.target.result)」でbase64化された画像ファイルデータが返却される。
+      // https://fujiten3.hatenablog.com/entry/2019/07/10/133132
+      //
+      // input type=fileとFileReader()の使い方は↓当たりも参照。
+      // ここではreadAsDataURL()でBase64モードで読み込んだが、
+      // テキストデータならreadAsText()でもよい。
+      // https://into-the-program.com/javascript-read-the-file/
+    });
+  };
 
-    // alert("選択したファイル名は、", inputRef.current.files[0].name);
+  const handleSelectPicture = async (e) => {
+    const base64string = await getFileAsBase64(e.target.files[0]);
+    // console.log("ここ2", inputRef.current.files[0].name);
+
+    fetch(url + `/api/mission/photo/${userId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ photo: base64string, spot_id: 9 }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("エラー");
+        }
+        console.log(response.body);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   const detailInfo = {
@@ -51,6 +128,7 @@ function TripDetail() {
           <li>
             <div className="trip-detail-mission">
               <div>{detailInfo.name}</div>
+
               <button onClick={controlClearFlg}>クリアフラグ</button>
               {clearFlg ? (
                 <div>
@@ -61,6 +139,9 @@ function TripDetail() {
               )}
               {/* <div>
                 達成したら→
+
+
+
                 <StarIcon sx={{ color: "red" }} fontSize="large" />
               </div> */}
             </div>
