@@ -3,12 +3,16 @@ import { useState, useEffect } from "react";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import TripSummary from "./TripSummary";
 import Header from "./Header";
+import pageBackImg from "../assets/image/pageBackButton.jpg";
 
 function TripStart() {
   //   useEffect(() => {}, []);
   return (
     <>
       <Header />
+      <Link to="/usertop">
+        <img src={pageBackImg} alt="#" className="content-pageBackImg" />
+      </Link>
       <div className="tripstart-content">
         <p>新しい冒険を始める</p>
         <div>
@@ -68,7 +72,7 @@ function TripStart() {
         <br />
 
         <button className="tripstart-button">
-          <Link to="/TripSummary">冒険スタート</Link>
+          <Link to="/tripsummary">冒険スタート</Link>
         </button>
 
         <br />
@@ -77,11 +81,27 @@ function TripStart() {
         <br />
         <br />
         <p>途中から始める</p>
-        <p>冒険1</p>
-        <p>冒険2</p>
-        <p>冒険3</p>
-        <p>冒険4</p>
-        <p>冒険5</p>
+        <ul>
+          <li>
+            <Link to="/tripstart">冒険1</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険2</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険3</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険4</Link>
+          </li>
+          <br />
+          <li>
+            <Link to="/tripstart">冒険5</Link>
+          </li>
+        </ul>
       </div>
     </>
   );
