@@ -15,8 +15,8 @@ import Header from "./Header";
 
 function TripSummary() {
   //   useEffect(() => {}, []);
-  const navigate = useNavigate();
-  navigate("/TripSummary");
+  // const navigate = useNavigate();
+  // navigate("/TripSummary");
 
   const [clearFlg1, setClearFlg1] = useState(false);
   const controlClearFlg1 = () => {
@@ -113,16 +113,18 @@ function TripSummary() {
           </Link>
         ) : (
           <>
-            <img
-              src={legoLandImg}
-              alt="#"
-              className="tripsummary-content-image-filter"
-            />
-            {/* <img
-              src={keyIconCloseImg}
-              alt="#"
-              className="tripsummary-content-image-keyclose"
-            /> */}
+            <div className="tripsummary-content-wrapped">
+              <img
+                src={legoLandImg}
+                alt="#"
+                className="tripsummary-content-image-filter"
+              />
+              <img
+                src={keyIconCloseImg}
+                alt="#"
+                className="tripsummary-content-image-keyclose"
+              />
+            </div>
             <br />
             <img
               src={iconMapImg}
@@ -133,32 +135,27 @@ function TripSummary() {
           </>
         )}
         <button onClick={controlClearFlg2}>クリアフラグ2</button>
+        <br />
+        <br />
 
         {clearFlg2 ? (
           <Link to="/TripDetail">
-            <div className="tripsummary-content-hatching">
-              <div className="irakoImg-wrraped">
-                <img
-                  src={irakoImg}
-                  alt="#"
-                  className="tripsummary-content-image"
-                />
-              </div>
-              <br />
-            </div>
+            <img src={irakoImg} alt="#" className="tripsummary-content-image" />
           </Link>
         ) : (
           <>
-            <img
-              src={irakoImg}
-              alt="#"
-              className="tripsummary-content-image-filter"
-            />
-            {/* <img
-              src={keyIconCloseImg}
-              alt="#"
-              className="tripsummary-content-image-keyclose"
-            /> */}
+            <div className="tripsummary-content-wrapped">
+              <img
+                src={irakoImg}
+                alt="#"
+                className="tripsummary-content-image-filter"
+              />
+              <img
+                src={keyIconCloseImg}
+                alt="#"
+                className="tripsummary-content-image-keyclose"
+              />
+            </div>
             <br />
             <img
               src={iconMapImg}
