@@ -11,22 +11,44 @@ import TripDetail from "./components/TripDetail";
 import "./assets/style/App.css";
 
 function App() {
-    return (
-        <AuthProvider>
-            <BrowserRouter>
-                <Routes>
-                    <Route path='/' element={<Login />}></Route>
-                    <Route path='/login' element={<Login />}></Route>
-                    <Route path='/cognito' element={<LoginCallback />} />
-                    <Route path='/usertop' element={<ProtectedRoute><UserTop /></ProtectedRoute>}/>
-                    <Route path='/usertopsub' element={<UserTop />}/>
-                    <Route path='/tripstart' element={<ProtectedRoute><TripStart /></ProtectedRoute>}/>
-                    <Route path='/tripsummary' element={<ProtectedRoute><TripSummary /></ProtectedRoute>}/>
-                    <Route path='/tripdetail' element={<ProtectedRoute><TripDetail /></ProtectedRoute>}/>
-                </Routes>
-            </BrowserRouter>
-        </AuthProvider>
-    );
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />}></Route>
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/cognito" element={<LoginCallback />} />
+          <Route
+            path="/usertop"
+            element={
+              <ProtectedRoute>
+                <UserTop />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/usertopsub" element={<UserTop />} />
+          <Route
+            path="/tripstart"
+            element={
+              <ProtectedRoute>
+                <TripStart />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/tripsummary"
+            element={
+              <ProtectedRoute>
+                <TripSummary />
+              </ProtectedRoute>
+            }
+          />
+          {/* <Route path='/tripdetail' element={<ProtectedRoute><TripDetail /></ProtectedRoute>}/> */}
+          <Route path="/tripdetail" element={<TripDetail />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
+  );
 }
 
 export default App;
