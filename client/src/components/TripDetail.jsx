@@ -13,10 +13,53 @@ function TripDetail() {
   const inputRef = useRef(null);
   const { userId } = useAuth();
   console.log("ユーザID", userId);
-  // const latitude = position.coords.latitude;
 
+  //url定義
+  let url;
+  if (import.meta.env.VITE_NODE_ENV === "production") {
+    url = "https://ambassadors-btc5.com";
+  } else {
+    url = "http://localhost:3000";
+  }
+
+  let latitude;
+  let longitude;
   const handleSpotCheck = () => {
-    alert("来たぜボタンクリックされました！実装はまだです🙏");
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        latitude = position.coords.latitude;
+        longitude = position.coords.longitude;
+
+        fetch(url + `/api/mission/gps/${userId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            // latitude: latitude,
+            // longitude: longitude,
+            latitude: 35.1654,
+            longitude: 136.899,
+            spot_id: 6,
+          }),
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("エラー");
+            }
+            console.log(response.body);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+      },
+      (error) => {
+        //失敗した場合
+        console.log("失敗");
+      }
+    );
+
+    // alert("来たぜボタンクリックされました！実装はまだです🙏");
   };
 
   const getFileAsBase64 = (filePath) => {
@@ -45,20 +88,12 @@ function TripDetail() {
 
     // alert("選択したファイル名は、", inputRef.current.files[0].name);
 
-    //url定義
-    let url;
-    if (import.meta.env.VITE_NODE_ENV === "production") {
-      url = "https://ambassadors-btc5.com";
-    } else {
-      url = "http://localhost:3000";
-    }
-
     fetch(url + `/api/mission/photo/${userId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ photo: base64string, spot_id: 9 }),
+      body: JSON.stringify({ photo: base64string, spot_id: 6 }),
     })
       .then((response) => {
         if (!response.ok) {
