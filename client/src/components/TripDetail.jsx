@@ -22,13 +22,11 @@ function TripDetail() {
     url = "http://localhost:3000";
   }
 
-  let latitude;
-  let longitude;
   const handleSpotCheck = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        latitude = position.coords.latitude;
-        longitude = position.coords.longitude;
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
 
         fetch(url + `/api/mission/gps/${userId}`, {
           method: "POST",
@@ -36,11 +34,11 @@ function TripDetail() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            // latitude: latitude,
-            // longitude: longitude,
-            latitude: 35.1654,
-            longitude: 136.899,
-            spot_id: 6,
+            latitude: latitude,
+            longitude: longitude,
+            // latitude: 35.1654,
+            // longitude: 136.899,
+            spot_id: 9,
           }),
         })
           .then((response) => {
@@ -79,21 +77,15 @@ function TripDetail() {
   };
 
   const handleSelectPicture = async (e) => {
-    // console.log("ここ", e.target.files[0].name);
-    // console.log("ここ", e.target.files[0]);
     const base64string = await getFileAsBase64(e.target.files[0]);
-
-    // alert(`選択したファイル名は、 ${e.target.files[0].name}`);
     // console.log("ここ2", inputRef.current.files[0].name);
-
-    // alert("選択したファイル名は、", inputRef.current.files[0].name);
 
     fetch(url + `/api/mission/photo/${userId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ photo: base64string, spot_id: 6 }),
+      body: JSON.stringify({ photo: base64string, spot_id: 9 }),
     })
       .then((response) => {
         if (!response.ok) {
@@ -121,7 +113,7 @@ function TripDetail() {
             <div className="trip-detail-mission">
               <div>{detailInfo.name}</div>
               <div>
-                達成したら→
+                (仮)完了フラグ→
                 <StarIcon sx={{ color: "red" }} fontSize="large" />
               </div>
             </div>
