@@ -10,7 +10,7 @@ import irakoMapImg from "../assets/image/irakoMap.jpg";
 import irakoImg from "../assets/image/irakoEntrance.jpg";
 import iconMapImg from "../assets/image/iconMap.jpg";
 import keyIconCloseImg from "../assets/image/keyIconClose.jpg";
-import keyIconOpenImg from "../assets/image/keyIconOpen.jpg";
+import pageBackImg from "../assets/image/pageBackButton.jpg";
 import Header from "./Header";
 
 function TripSummary() {
@@ -31,16 +31,16 @@ function TripSummary() {
   return (
     <>
       <Header />
+      <Link to="/tripstart">
+        <img src={pageBackImg} alt="#" className="content-pageBackImg" />
+      </Link>
       <div className="tripsummary-content">
-        <br />
-        <br />
-        <br />
         <br />
         <p>次の行き先はここだ！！</p>
         <br />
         <br />
 
-        <Link to="/TripDetail">
+        <Link to="/tripdetail">
           <img
             src={morikoroImg}
             alt="#"

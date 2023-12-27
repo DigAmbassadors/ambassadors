@@ -100,6 +100,12 @@ header {
 body {
   background-color: hsl(50, 100%, 80%);
 }
+
+.content-pageBackImg {
+  width: 50px;
+  height: 50px;
+}
+
 /* # userMenu ########################################### */
 .user-menu-content {
   display: flex;

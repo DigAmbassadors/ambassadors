@@ -7,6 +7,7 @@ import loadingGif from "../assets/image/loading.gif";
 // import FileInputComponent from "react-file-input-previews-base64";
 import { useRef } from "react";
 import { positions } from "@mui/system";
+import pageBackImg from "../assets/image/pageBackButton.jpg";
 
 function TripDetail() {
   const inputRef = useRef(null);
@@ -33,6 +34,9 @@ function TripDetail() {
   return (
     <>
       <Header />
+      <Link to="/tripsummary">
+        <img src={pageBackImg} alt="#" className="content-pageBackImg" />
+      </Link>
       <div className="trip-detail-content">
         <ul className="trip-detail-list">
           <li>
