@@ -20,10 +20,61 @@ function TripStart() {
 		url = 'http://localhost:3000';
 	}
 
+	//エリア選択欄を作成----------------------------
+	const [areas, setAreas] = useState(['']);
+	useEffect(()=>{
+		const getFetch = async () => {
+			try {
+				const response = await fetch(url + `/api/areas`, {
+					method: 'GET',
+					headers: {
+						Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+					},
+				});
+
+				if (!response.ok) {
+					console.error('Network response was not ok');
+					return;
+				}
+
+				const areas = await response.json();
+				if (areas.length > 0) {
+					setAreas(areas);
+					setSelectedArea(areas[0]);
+				}
+			} catch (error) {
+				console.error('Error during get trips:', error);
+				return;
+			}
+		};
+		getFetch();
+	},[])
+
+	const makeAreaSelect = () => {
+		return (
+			<select value={selectedArea} onChange={handleAreaChange}>
+				{areas.map((area, idx) => (
+					<option key={idx} value={area}>
+						{area}
+					</option>
+				))}
+			</select>
+		);
+	};
+
+
+	//選択されたエリアを検知--------------------------
+	const [selectedArea, setSelectedArea] = useState('');
+
+	const handleAreaChange = (e) => {
+		setSelectedArea(e.target.value);
+	};
+
+
 	//新しい冒険----------------------------------
 	const NewTrip = async () => {
 		try {
-      console.log('selectedArea',selectedArea);
+			console.log('selectedArea', selectedArea);
 			//新規トリップを作成(fetch)
 			const response = await fetch(url + `/api/trips/new/${userId}/${selectedArea}`, {
 				method: 'POST',
@@ -41,7 +92,7 @@ function TripStart() {
 			// 新たなtripsデータを受信して登録
 			const newTrpis = await response.json();
 			setTrips(newTrpis);
-      console.log('trips', trips)
+			console.log('trips', trips);
 
 			// tripsの最終要素のトリップを選んでトリップ開始
 			navigate(`/tripsummary/${newTrpis[newTrpis.length - 1]}`);
@@ -49,26 +100,6 @@ function TripStart() {
 			console.error('Error during get trips:', error);
 			return;
 		}
-	};
-
-	//エリア選択--------------------------------
-	const [areas, setAreas] = useState(['']);
-	const [selectedArea, setSelectedArea] = useState('');
-
-	const handleAreaChange = (e) => {
-		setSelectedArea(e.target.value);
-	};
-
-	const makeAreaSelect = () => {
-		return (
-			<select value={selectedArea} onChange={handleAreaChange}>
-				{areas.map((area, idx) => (
-					<option key={idx} value={area}>
-						{area}
-					</option>
-				))}
-			</select>
-		);
 	};
 
 	//過去の冒険--------------------------------
@@ -92,13 +123,6 @@ function TripStart() {
 
 				const data = await response.json();
 				setSummary(data);
-
-				//areasも作る(エリア名を重複なく抜き出す)
-        const displayArea = Array.from(new Set(data.map((dt) => dt.area)));
-				setAreas(displayArea);
-        if (displayArea.length > 0){
-          setSelectedArea(displayArea[0]);
-        }
 			} catch (error) {
 				console.error('Error during get trips:', error);
 				return;

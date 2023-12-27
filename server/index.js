@@ -217,6 +217,13 @@ app.post('/api/tripsummary', verifyToken, async (req, res) => {
 	res.status(200).send(result);
 });
 
+// エリア一覧を取得
+app.get('/api/areas', verifyToken, async(req, res) => {
+	const areas = await knex('spot').select('area');
+	const uniquAreas = Array.from(new Set(areas.map(area => area.area)));
+	res.status(200).json(uniquAreas);
+})
+
 // tripをランダム生成
 app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 	try {
