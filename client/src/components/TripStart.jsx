@@ -7,6 +7,7 @@ import pageBackImg from "../assets/image/pageBackButton.jpg";
 
 function TripStart() {
   //   useEffect(() => {}, []);
+  // first commit
   return (
     <>
       <Header />
