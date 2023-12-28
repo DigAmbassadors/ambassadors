@@ -266,8 +266,10 @@ app.get('/api/users/record/:userId', verifyToken, async (req, res) => {
     const record = await knex('users')
       .where({ id: userId })
       .then((ArrOfData) => {
-        const ArrOfSpot = ArrOfData[0].record; //[9,3,8]
+        const ArrOfSpot = ArrOfData[0].record || []; //[9,3,8]
+        console.log(ArrOfSpot);
         const finishSpot = ArrOfSpot.filter((obj) => {
+          console.log(obj);
           return obj.finish === true;
         }).map((obj) => obj.spot_id);
         return finishSpot;

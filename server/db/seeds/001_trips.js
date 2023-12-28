@@ -10,5 +10,17 @@ exports.seed = async function (knex) {
       trips: [1, 2, 3, 4, 5],
       users_id: 1,
     },
+    {
+      trips: [1, 2, 3, 4, 5],
+      users_id: 2,
+    },
+    {
+      trips: [1, 2, 3, 4, 5],
+      users_id: 3,
+    },
+    {
+      trips: [1, 2, 3, 4, 5],
+      users_id: 4,
+    },
   ]);
 };

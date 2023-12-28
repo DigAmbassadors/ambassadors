@@ -1,10 +1,6 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-// import morikoroImg from "./assets/image/morikoro.jpg";
-import morikoroImg from '../assets/image/morikoroEntrance.jpg';
-// import legoLandImg from '../assets/image/legoLandEntrance.jpg';
-// import irakoImg from '../assets/image/irakoEntrance.jpg';
 import iconMapImg from '../assets/image/iconMap.jpg';
 import keyIconCloseImg from '../assets/image/keyIconClose.jpg';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
@@ -28,19 +24,6 @@ function TripSummary() {
     clearFlg2 ? setClearFlg2(false) : setClearFlg2(true);
   };
 
-  const place0 = {
-    name: 'モリコロ',
-    photo: morikoroImg,
-  };
-  // const place1 = {
-  //   name: 'レゴランド',
-  //   photo: legoLandImg,
-  // };
-  // const place2 = {
-  //   name: '伊良子岬',
-  //   photo: irakoImg,
-  // };
-
   let url;
   if (import.meta.env.VITE_NODE_ENV === 'production') {
     url = 'https://ambassadors-btc5.com';
@@ -51,7 +34,7 @@ function TripSummary() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(url + `/api/trip?tripId=1`, {
+        const response = await fetch(url + `/api/trip?tripId=${tripId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
