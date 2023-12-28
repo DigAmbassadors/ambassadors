@@ -1,17 +1,17 @@
-const express = require("express");
+const express = require('express');
 const app = express();
-const knex = require("./knex");
-const cors = require("cors");
-const fetch = require("node-fetch");
-const jwt = require("jsonwebtoken");
-const jwksClient = require("jwks-rsa");
+const knex = require('./knex');
+const cors = require('cors');
+const fetch = require('node-fetch');
+const jwt = require('jsonwebtoken');
+const jwksClient = require('jwks-rsa');
 
 //各種ミドルウェア
-const bodyParser = require("body-parser");
+const bodyParser = require('body-parser');
 // app.use(bodyParser.urlencoded({ extended: true }));
 // app.use(bodyParser.json());
-app.use(bodyParser.json({ limit: "50mb" })); // jsonをパースする際のlimitを設定
-app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.json({ limit: '50mb' })); // jsonをパースする際のlimitを設定
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.json()); //JSON形式のファイルを扱えるようにする
 app.use(cors());
@@ -186,28 +186,52 @@ app.post('/api/refresh-token', async (req, res) => {
 	}
 });
 
-// tripsを取得
+// trips配列を取得
 app.get('/api/trips/:userId', verifyToken, async (req, res) => {
 	try {
 		const userId = Number(req.params.userId);
 		const trips = await knex('trips').where({ users_id: userId }); //[{"id":1,"trips":[1,2,3,4,5],"users_id":1}]
-    if (trips.length === 0){
-      res.status(200).json([]);
-    } else {
-      res.status(200).json(trips[0].trips); // [1,2,3,4,5]
-    }
+		if (trips.length === 0) {
+			res.status(200).json([]);
+		} else {
+			res.status(200).json(trips[0].trips); // [1,2,3,4,5]
+		}
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ message: 'Error retrieving user data' });
 	}
 });
 
+// trips配列からtrip概要を取得
+app.post('/api/tripsummary', verifyToken, async (req, res) => {
+	const { trips } = req.body;
+	const result = [];
+
+	for (const curr of trips) {
+		const trip = await knex('trip').where({ id: curr });
+		if (trip.length > 0) {
+			result.push({ area: trip[0].area, created_at: trip[0].created_at });
+		}
+	}
+
+	res.status(200).send(result);
+});
+
+// エリア一覧を取得
+app.get('/api/areas', verifyToken, async(req, res) => {
+	const areas = await knex('spot').select('area');
+	const uniquAreas = Array.from(new Set(areas.map(area => area.area)));
+	res.status(200).json(uniquAreas);
+})
+
 // tripをランダム生成
-app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
+app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 	try {
 		const userId = Number(req.params.userId);
+		const area = req.params.area;
 		// ランダムでプランを作成
 		const newTrip = await knex('spot')
+			.where({ area: area })
 			.select('id')
 			.then((spotData) => {
 				spotData = spotData.map((e) => e.id);
@@ -235,7 +259,7 @@ app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
 			.where({ users_id: userId })
 			.update({ trips: newTrips })
 			.then(() => {
-				res.status(200).send('完了');
+				res.status(200).json(newTrips);
 			});
 	} catch (error) {
 		console.error('Error:', error);
@@ -245,131 +269,126 @@ app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
 
 // ミッション遂行(GPS)
 // app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
-app.post("/api/mission/gps/:userId", async (req, res) => {
-  try {
-    const userId = Number(req.params.userId);
-    const { latitude, longitude, spot_id } = req.body;
-    console.log("spot_id", spot_id);
+app.post('/api/mission/gps/:userId', async (req, res) => {
+	try {
+		const userId = Number(req.params.userId);
+		const { latitude, longitude, spot_id } = req.body;
+		console.log('spot_id', spot_id);
 
-    //目標地点の取得
-    const arrOfLatLon = await knex("spot")
-      .select("latitude", "longitude")
-      .where({ id: spot_id })
-      .then((spot) => {
-        const result = [];
-        console.log("spotの中身確認:", spot);
-        result.push(spot[0].latitude);
-        result.push(spot[0].longitude);
-        return result;
-      });
+		//目標地点の取得
+		const arrOfLatLon = await knex('spot')
+			.select('latitude', 'longitude')
+			.where({ id: spot_id })
+			.then((spot) => {
+				const result = [];
+				console.log('spotの中身確認:', spot);
+				result.push(spot[0].latitude);
+				result.push(spot[0].longitude);
+				return result;
+			});
 
-    //距離の比較
-    const distance = getDistanceFromLatLonInKm(
-      arrOfLatLon[0],
-      arrOfLatLon[1],
-      latitude,
-      longitude
-    );
+		//距離の比較
+		const distance = getDistanceFromLatLonInKm(arrOfLatLon[0], arrOfLatLon[1], latitude, longitude);
 
-    if (distance < 1000) {
-      const record = await knex("users")
-        .select("record")
-        .where({ id: userId })
-        .then((record) => {
-          let arrOfRecord = [];
-          if (record && record[0] && record[0].record) {
-            arrOfRecord = record[0].record;
-          }
-          return arrOfRecord;
-        });
+		if (distance < 1000) {
+			const record = await knex('users')
+				.select('record')
+				.where({ id: userId })
+				.then((record) => {
+					let arrOfRecord = [];
+					if (record && record[0] && record[0].record) {
+						arrOfRecord = record[0].record;
+					}
+					return arrOfRecord;
+				});
 
-      let addFlag = true;
-      for (const obj of record) {
-        if (obj.spot_id === spot_id && obj.photo) {
-          obj.arrived = true;
-          obj.finish = true;
-          addFlag = false;
-        }
-      }
+			let addFlag = true;
+			for (const obj of record) {
+				if (obj.spot_id === spot_id && obj.photo) {
+					obj.arrived = true;
+					obj.finish = true;
+					addFlag = false;
+				}
+			}
 
-      if (addFlag) {
-        const newRecord = {
-          photo: null,
-          arrived: true,
-          finish: false,
-          spot_id: spot_id,
-        };
-        record.push(newRecord);
-      }
-      console.log("確認：", JSON.stringify(record));
-      await knex("users")
-        .select("users")
-        .where({ id: userId })
-        .update({ record: JSON.stringify(record) })
-        .then(() => {
-          res.status(200).send("完了");
-        });
-    } else {
-      res.status(404).send("スポットに到着していないようです");
-    }
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: "Error retrieving user data" });
-  }
+			if (addFlag) {
+				const newRecord = {
+					photo: null,
+					arrived: true,
+					finish: false,
+					spot_id: spot_id,
+				};
+				record.push(newRecord);
+			}
+			console.log('確認：', JSON.stringify(record));
+			await knex('users')
+				.select('users')
+				.where({ id: userId })
+				.update({ record: JSON.stringify(record) })
+				.then(() => {
+					res.status(200).send('完了');
+				});
+		} else {
+			res.status(404).send('スポットに到着していないようです');
+		}
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ message: 'Error retrieving user data' });
+	}
 });
 
 // ミッション遂行(photo)
 // app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
-app.post("/api/mission/photo/:userId", async (req, res) => {
-  try {
-    const userId = Number(req.params.userId);
-    const { photo, spot_id } = req.body;
+app.post('/api/mission/photo/:userId', async (req, res) => {
+	try {
+		const userId = Number(req.params.userId);
+		const { photo, spot_id } = req.body;
 
-    const record = await knex("users")
-      .select("record")
-      .where({ id: userId })
-      .then((record) => {
-        let arrOfRecord = [];
-        if (record && record[0] && record[0].record) {
-          arrOfRecord = record[0].record;
-        }
-        return arrOfRecord;
-      });
+		const record = await knex('users')
+			.select('record')
+			.where({ id: userId })
+			.then((record) => {
+				let arrOfRecord = [];
+				if (record && record[0] && record[0].record) {
+					arrOfRecord = record[0].record;
+				}
+				return arrOfRecord;
+			});
 
-    let addFlag = true;
-    for (const obj of record) {
-      if (obj.spot_id === spot_id) {
-        obj.photo = photo;
-        obj.arrived = true;
-        obj.finish = true;
-        addFlag = false;
-      }
-    }
+		let addFlag = true;
+		for (const obj of record) {
+			if (obj.spot_id === spot_id) {
+				obj.photo = photo;
+				obj.arrived = true;
+				obj.finish = true;
+				addFlag = false;
+			}
+		}
 
-    if (addFlag) {
-      const newRecord = {
-        photo: photo,
-        arrived: false,
-        finish: false,
-        spot_id: spot_id,
-      };
-      record.push(newRecord);
-    }
+		if (addFlag) {
+			const newRecord = {
+				photo: photo,
+				arrived: false,
+				finish: false,
+				spot_id: spot_id,
+			};
+			record.push(newRecord);
+		}
 
-    await knex("users")
-      .select("users")
-      .where({ id: userId })
-      .update({ record: JSON.stringify(record) })
-      .then(() => {
-        console.log("確認：", JSON.stringify(record));
-        res.status(200).send("完了");
-      });
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ message: "Error retrieving user data" });
-  }
+		await knex('users')
+			.select('users')
+			.where({ id: userId })
+			.update({ record: JSON.stringify(record) })
+			.then(() => {
+				console.log('確認：', JSON.stringify(record));
+				res.status(200).send('完了');
+			});
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ message: 'Error retrieving user data' });
+	}
 });
 
 app.listen(3000, () => {
-  console.log("server on PORT3000");
+	console.log('server on PORT3000');
 });
