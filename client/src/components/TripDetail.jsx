@@ -1,32 +1,32 @@
-import { Link } from "react-router-dom";
-import Header from "./Header";
-import Button from "@mui/material/Button";
-import StarIcon from "@mui/icons-material/Star";
-import Img from "../assets/image/kabirawan.jpg";
-import morikoroMapImg from "../assets/image/morikoroMap.jpg";
-import loadingGif from "../assets/image/loading.gif";
+import { Link, useParams } from 'react-router-dom';
+import Header from './Header';
+import Button from '@mui/material/Button';
+import StarIcon from '@mui/icons-material/Star';
+import Img from '../assets/image/kabirawan.jpg';
+import morikoroMapImg from '../assets/image/morikoroMap.jpg';
+import loadingGif from '../assets/image/loading.gif';
 // import FileInputComponent from "react-file-input-previews-base64";
-import { useState, useRef } from "react";
-import { positions } from "@mui/system";
+import { useState, useRef } from 'react';
+import { positions } from '@mui/system';
 
-import pageBackImg from "../assets/image/pageBackButton.jpg";
-import irakoMapImg from "../assets/image/irakoMap.jpg";
-import legoLandMapImg from "../assets/image/legoLandMap.jpg";
+import pageBackImg from '../assets/image/pageBackButton.jpg';
+import irakoMapImg from '../assets/image/irakoMap.jpg';
+import legoLandMapImg from '../assets/image/legoLandMap.jpg';
 
-import { useAuth } from "../contexts/AuthContext";
-
+import { useAuth } from '../contexts/AuthContext';
 
 function TripDetail() {
+  const { tripsId } = useParams();
   const inputRef = useRef(null);
   const { userId } = useAuth();
-  console.log("ユーザID", userId);
+  console.log('ユーザID', userId);
 
   //url定義
   let url;
-  if (import.meta.env.VITE_NODE_ENV === "production") {
-    url = "https://ambassadors-btc5.com";
+  if (import.meta.env.VITE_NODE_ENV === 'production') {
+    url = 'https://ambassadors-btc5.com';
   } else {
-    url = "http://localhost:3000";
+    url = 'http://localhost:3000';
   }
 
   const handleSpotCheck = () => {
@@ -36,9 +36,10 @@ function TripDetail() {
         const longitude = position.coords.longitude;
 
         fetch(url + `/api/mission/gps/${userId}`, {
-          method: "POST",
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
           },
           body: JSON.stringify({
             latitude: latitude,
@@ -50,17 +51,17 @@ function TripDetail() {
         })
           .then((response) => {
             if (!response.ok) {
-              throw new Error("エラー");
+              throw new Error('エラー');
             }
             console.log(response.body);
           })
           .catch((error) => {
-            console.error("Error:", error);
+            console.error('Error:', error);
           });
       },
       (error) => {
         //失敗した場合
-        console.log("失敗");
+        console.log('失敗');
       }
     );
 
@@ -88,27 +89,28 @@ function TripDetail() {
     // console.log("ここ2", inputRef.current.files[0].name);
 
     fetch(url + `/api/mission/photo/${userId}`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
       body: JSON.stringify({ photo: base64string, spot_id: 9 }),
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("エラー");
+          throw new Error('エラー');
         }
         console.log(response.body);
       })
       .catch((error) => {
-        console.error("Error:", error);
+        console.error('Error:', error);
       });
   };
 
   const detailInfo = {
-    name: "モリコロ",
-    mission1: "現地でボタンを押そう！",
-    mission2: "〇〇している写真を撮ろう！",
+    name: 'モリコロ',
+    mission1: '現地でボタンを押そう！',
+    mission2: '〇〇している写真を撮ろう！',
     photo: morikoroMapImg,
   };
 
@@ -132,7 +134,7 @@ function TripDetail() {
               <button onClick={controlClearFlg}>クリアフラグ</button>
               {clearFlg ? (
                 <div>
-                  <StarIcon sx={{ color: "red" }} fontSize="large" />
+                  <StarIcon sx={{ color: 'red' }} fontSize="large" />
                 </div>
               ) : (
                 <></>
@@ -172,7 +174,7 @@ function TripDetail() {
                     type="file"
                     capture="environment"
                     accept="image/*"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     ref={inputRef}
                     onChange={handleSelectPicture}
                   />
