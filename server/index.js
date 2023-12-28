@@ -297,6 +297,7 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
     // 作成したプランをtripテーブルに追加
     const tripId = await knex('trip')
       .insert({
+        area: area,
         trip: newTrip,
       })
       .returning('id');

@@ -11,19 +11,19 @@ exports.seed = async function (knex) {
 			trip: [9, 3, 8],
 		},
 		{
-      area: '名古屋市内',
+			area: '名古屋市内',
 			trip: [10, 5, 6],
 		},
 		{
-      area: '名古屋市内',
+			area: '名古屋市内',
 			trip: [5, 2, 8],
 		},
 		{
-      area: '名古屋市内',
+			area: '名古屋市内',
 			trip: [7, 9, 1],
 		},
 		{
-      area: '名古屋市内',
+			area: '名古屋市内',
 			trip: [3, 8, 4],
 		},
 	]);
