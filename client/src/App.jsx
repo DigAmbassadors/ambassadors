@@ -9,54 +9,54 @@ import UserTop from './components/UserTop';
 import TripStart from './components/TripStart';
 import TripSummary from './components/TripSummary';
 import TripDetail from './components/TripDetail';
+import PostSpot from './components/PostSpot';
 import './assets/style/App.css';
 
 function App() {
-  return (
-    <AuthProvider>
-      <TripsProvider>
-        <Routes>
-          <Route path="/" element={<Login />}></Route>
-          <Route path="/login" element={<Login />}></Route>
-          <Route path="/cognito" element={<LoginCallback />} />
-          <Route
-            path="/usertop"
-            element={
-              <ProtectedRoute>
-                <UserTop />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/usertopsub" element={<UserTop />} />
-          <Route
-            path="/tripstart"
-            element={
-              <ProtectedRoute>
-                <TripStart />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tripsummary/:tripId"
-            element={
-              <ProtectedRoute>
-                <TripSummary />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/tripdetail/:spotId"
-            element={
-              <ProtectedRoute>
-                <TripDetail />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/tripdetailsub" element={<TripDetail />} />
-        </Routes>
-      </TripsProvider>
-    </AuthProvider>
-  );
+	return (
+		<AuthProvider>
+			<TripsProvider>
+				<Routes>
+					<Route path='/' element={<Login />}></Route>
+					<Route path='/login' element={<Login />}></Route>
+					<Route path='/cognito' element={<LoginCallback />} />
+					<Route
+						path='/usertop'
+						element={
+							<ProtectedRoute>
+								<UserTop />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/tripstart'
+						element={
+							<ProtectedRoute>
+								<TripStart />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/tripsummary/:tripId'
+						element={
+							<ProtectedRoute>
+								<TripSummary />
+							</ProtectedRoute>
+						}
+					/>
+					<Route
+						path='/tripdetail/:spotId'
+						element={
+							<ProtectedRoute>
+								<TripDetail />
+							</ProtectedRoute>
+						}
+					/>
+					<Route path='/newspot' element={<PostSpot />}></Route>
+				</Routes>
+			</TripsProvider>
+		</AuthProvider>
+	);
 }
 
 export default App;
