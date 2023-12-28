@@ -197,7 +197,7 @@ app.post('/api/refresh-token', async (req, res) => {
   }
 });
 
-// tripsを取得
+// trips配列を取得
 app.get('/api/trips/:userId', verifyToken, async (req, res) => {
   try {
     const userId = Number(req.params.userId);
@@ -211,6 +211,28 @@ app.get('/api/trips/:userId', verifyToken, async (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ message: 'Error retrieving user data' });
   }
+});
+
+// trips配列からtrip概要を取得
+app.post('/api/tripsummary', verifyToken, async (req, res) => {
+  const { trips } = req.body;
+  const result = [];
+
+  for (const curr of trips) {
+    const trip = await knex('trip').where({ id: curr });
+    if (trip.length > 0) {
+      result.push({ area: trip[0].area, created_at: trip[0].created_at });
+    }
+  }
+
+  res.status(200).send(result);
+});
+
+// エリア一覧を取得
+app.get('/api/areas', verifyToken, async (req, res) => {
+  const areas = await knex('spot').select('area');
+  const uniquAreas = Array.from(new Set(areas.map((area) => area.area)));
+  res.status(200).json(uniquAreas);
 });
 
 // tripを取得
@@ -259,11 +281,13 @@ app.get('/api/users/record/:userId', verifyToken, async (req, res) => {
 });
 
 // tripをランダム生成
-app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
+app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
   try {
     const userId = Number(req.params.userId);
+    const area = req.params.area;
     // ランダムでプランを作成
     const newTrip = await knex('spot')
+      .where({ area: area })
       .select('id')
       .then((spotData) => {
         spotData = spotData.map((e) => e.id);
@@ -291,7 +315,7 @@ app.post('/api/trips/new/:userId', verifyToken, async (req, res) => {
       .where({ users_id: userId })
       .update({ trips: newTrips })
       .then(() => {
-        res.status(200).send('完了');
+        res.status(200).json(newTrips);
       });
   } catch (error) {
     console.error('Error:', error);
