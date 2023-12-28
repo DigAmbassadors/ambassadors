@@ -267,14 +267,11 @@ app.get('/api/users/record/:userId', verifyToken, async (req, res) => {
       .where({ id: userId })
       .then((ArrOfData) => {
         const ArrOfSpot = ArrOfData[0].record || []; //[9,3,8]
-        console.log(ArrOfSpot);
         const finishSpot = ArrOfSpot.filter((obj) => {
-          console.log(obj);
           return obj.finish === true;
         }).map((obj) => obj.spot_id);
         return finishSpot;
       });
-    console.log('recordは', record);
     res.status(200).json(record);
   } catch (error) {
     console.error('Error:', error);
@@ -327,11 +324,10 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 });
 
 // ミッション遂行(GPS)
-app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
+app.post('/api/mission/gps/:userId', verifyToken, async (req, res) => {
   try {
     const userId = Number(req.params.userId);
     const { latitude, longitude, spot_id } = req.body;
-    console.log('spot_id', spot_id);
 
     //目標地点の取得
     const arrOfLatLon = await knex('spot')
@@ -339,7 +335,6 @@ app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
       .where({ id: spot_id })
       .then((spot) => {
         const result = [];
-        console.log('spotの中身確認:', spot);
         result.push(spot[0].latitude);
         result.push(spot[0].longitude);
         return result;
@@ -383,7 +378,6 @@ app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
         };
         record.push(newRecord);
       }
-      console.log('確認：', JSON.stringify(record));
       await knex('users')
         .select('users')
         .where({ id: userId })
@@ -442,7 +436,6 @@ app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
       .where({ id: userId })
       .update({ record: JSON.stringify(record) })
       .then(() => {
-        console.log('確認：', JSON.stringify(record));
         res.status(200).send('完了');
       });
   } catch (error) {

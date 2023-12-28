@@ -45,7 +45,7 @@ function App() {
             }
           />
           <Route
-            path="/tripdetail"
+            path="/tripdetail/:spotId"
             element={
               <ProtectedRoute>
                 <TripDetail />

@@ -6,23 +6,15 @@ import keyIconCloseImg from '../assets/image/keyIconClose.jpg';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Header from './Header';
 import { useAuth } from '../contexts/AuthContext';
+import { useTrips } from '../contexts/TripContext';
 
 function TripSummary() {
-  // const navigate = useNavigate();
-  // navigate("/TripSummary");
+  const navigate = useNavigate();
   const { userId } = useAuth();
   const { tripId } = useParams();
-  const [trip, setTrip] = useState([]); // ここでデータを管理
+  const { trip, setTrip, finFlag, setFinFlag } = useTrips();
+  const { setSpot } = useTrips();
   const [finishSpot, setFinishSpot] = useState([]); // ここでデータを管理
-
-  const [clearFlg1, setClearFlg1] = useState(false);
-  const controlClearFlg1 = () => {
-    clearFlg1 ? setClearFlg1(false) : setClearFlg1(true);
-  };
-  const [clearFlg2, setClearFlg2] = useState(false);
-  const controlClearFlg2 = () => {
-    clearFlg2 ? setClearFlg2(false) : setClearFlg2(true);
-  };
 
   let url;
   if (import.meta.env.VITE_NODE_ENV === 'production') {
@@ -70,20 +62,61 @@ function TripSummary() {
   return (
     <>
       <Header />
-      <Link to="/tripstart">
-        <img src={pageBackImg} alt="#" className="content-pageBackImg" />
-      </Link>
+
+      <img
+        src={pageBackImg}
+        alt="#"
+        className="content-pageBackImg"
+        onClick={() => {
+          navigate(-1);
+        }}
+      />
+
       {trip.map((e, index) => (
         <div className="tripsummary-content">
           <br />
-          {finishSpot.includes(e.id) || index === 0 ? (
+          {finishSpot.includes(e.id) ? (
             <>
-              <p>次の行き先はここだ！！</p>
-              <Link to="/tripdetail">
+              <p>完了</p>
+              <Link to={`/tripdetail/${e.id}`}>
                 <img
                   src={e.photo}
                   alt="#"
                   className="tripsummary-content-image"
+                  onClick={() => {
+                    setSpot(e);
+                  }}
+                />
+                <br />
+              </Link>
+            </>
+          ) : index === 0 ? (
+            <>
+              <p>次の行き先はここだ！！</p>
+              <Link to={`/tripdetail/${e.id}`}>
+                <img
+                  src={e.photo}
+                  alt="#"
+                  className="tripsummary-content-image"
+                  onClick={() => {
+                    setSpot(e);
+                  }}
+                />
+                <br />
+              </Link>
+            </>
+          ) : finishSpot.includes(trip[index - 1].id) &&
+            finishSpot.includes(trip[0].id) ? (
+            <>
+              <p>次の行き先はここだ！！</p>
+              <Link to={`/tripdetail/${e.id}`}>
+                <img
+                  src={e.photo}
+                  alt="#"
+                  className="tripsummary-content-image"
+                  onClick={() => {
+                    setSpot(e);
+                  }}
                 />
                 <br />
               </Link>

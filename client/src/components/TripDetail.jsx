@@ -1,25 +1,20 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from './Header';
 import Button from '@mui/material/Button';
 import StarIcon from '@mui/icons-material/Star';
-import Img from '../assets/image/kabirawan.jpg';
 import morikoroMapImg from '../assets/image/morikoroMap.jpg';
-import loadingGif from '../assets/image/loading.gif';
-// import FileInputComponent from "react-file-input-previews-base64";
 import { useState, useRef } from 'react';
-import { positions } from '@mui/system';
-
-import pageBackImg from '../assets/image/pageBackButton.jpg';
-import irakoMapImg from '../assets/image/irakoMap.jpg';
-import legoLandMapImg from '../assets/image/legoLandMap.jpg';
-
+import { useTrips } from '../contexts/TripContext';
 import { useAuth } from '../contexts/AuthContext';
 
+import pageBackImg from '../assets/image/pageBackButton.jpg';
+
 function TripDetail() {
-  const { tripsId } = useParams();
+  const navigate = useNavigate();
   const inputRef = useRef(null);
   const { userId } = useAuth();
-  console.log('ユーザID', userId);
+  const { spot } = useTrips();
+  const { tripsId } = useParams();
 
   //url定義
   let url;
@@ -29,6 +24,7 @@ function TripDetail() {
     url = 'http://localhost:3000';
   }
 
+  //Mission1:GPSの登録
   const handleSpotCheck = () => {
     navigator.geolocation.getCurrentPosition(
       (position) => {
@@ -44,16 +40,14 @@ function TripDetail() {
           body: JSON.stringify({
             latitude: latitude,
             longitude: longitude,
-            // latitude: 35.1654,
-            // longitude: 136.899,
-            spot_id: 9,
+            spot_id: spot.id,
           }),
         })
           .then((response) => {
             if (!response.ok) {
               throw new Error('エラー');
             }
-            console.log(response.body);
+            alert('登録が完了しました');
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -64,10 +58,9 @@ function TripDetail() {
         console.log('失敗');
       }
     );
-
-    // alert("来たぜボタンクリックされました！実装はまだです🙏");
   };
 
+  //Mission2:写真時のBase64変換
   const getFileAsBase64 = (filePath) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
@@ -83,7 +76,7 @@ function TripDetail() {
       // https://into-the-program.com/javascript-read-the-file/
     });
   };
-
+  //Mission2:写真の登録
   const handleSelectPicture = async (e) => {
     const base64string = await getFileAsBase64(e.target.files[0]);
     // console.log("ここ2", inputRef.current.files[0].name);
@@ -94,24 +87,17 @@ function TripDetail() {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
       },
-      body: JSON.stringify({ photo: base64string, spot_id: 9 }),
+      body: JSON.stringify({ photo: 'base64string', spot_id: spot.id }),
     })
       .then((response) => {
         if (!response.ok) {
           throw new Error('エラー');
         }
-        console.log(response.body);
+        alert('登録が完了しました');
       })
       .catch((error) => {
         console.error('Error:', error);
       });
-  };
-
-  const detailInfo = {
-    name: 'モリコロ',
-    mission1: '現地でボタンを押そう！',
-    mission2: '〇〇している写真を撮ろう！',
-    photo: morikoroMapImg,
   };
 
   const [clearFlg, setClearFlg] = useState(false);
@@ -122,14 +108,20 @@ function TripDetail() {
   return (
     <>
       <Header />
-      <Link to="/tripsummary">
-        <img src={pageBackImg} alt="#" className="content-pageBackImg" />
-      </Link>
+      <img
+        src={pageBackImg}
+        alt="#"
+        className="content-pageBackImg"
+        onClick={() => {
+          navigate(-1);
+        }}
+      />
+
       <div className="trip-detail-content">
         <ul className="trip-detail-list">
           <li>
             <div className="trip-detail-mission">
-              <div>{detailInfo.name}</div>
+              <div>{spot.name}</div>
 
               <button onClick={controlClearFlg}>クリアフラグ</button>
               {clearFlg ? (
@@ -139,29 +131,21 @@ function TripDetail() {
               ) : (
                 <></>
               )}
-              {/* <div>
-                達成したら→
-
-
-
-                <StarIcon sx={{ color: "red" }} fontSize="large" />
-              </div> */}
             </div>
           </li>
           <div className="trip-detail-img">
-            <img src={detailInfo.photo} alt="仮の画像" />
+            <img src={spot.photo} alt="仮の画像" />
           </div>
           <li>
             <div className="trip-detail-mission">
               <div>Mission 1</div>
               <div>
-                {/* <input type="button" value="来たぜ！" /> */}
                 <Button variant="contained" onClick={handleSpotCheck}>
                   来たぜ！
                 </Button>
               </div>
             </div>
-            <p>{detailInfo.mission1}</p>
+            <p>現地に行った記録を残そう！</p>
           </li>
           <li>
             <div className="trip-detail-mission">
@@ -198,7 +182,7 @@ function TripDetail() {
                 /> */}
               </div>
             </div>
-            <p>{detailInfo.mission2}</p>
+            <p>{spot.mission}</p>
           </li>
         </ul>
       </div>
