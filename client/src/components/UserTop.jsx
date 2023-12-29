@@ -11,22 +11,13 @@ const UserTop = () => {
 						<Link to='/tripstart'>📸　冒険に出かける</Link>
 					</li>
 					<li>
-						<Link>👀　過去の冒険を見る＠</Link>
-					</li>
-					<li>
-						<Link>👫　みんなの冒険を見る＠</Link>
-					</li>
-					<li>
 						<Link to='/newspot'>📮　おもしろスポットを投稿する＠</Link>
 					</li>
 					<li>
+						<Link to='/imgpreview'>👫　みんなの冒険写真を見る＠</Link>
+					</li>
+					<li>
 						<Link>🏆　ランキング＠</Link>
-					</li>
-					<li>
-						<Link>ー以下、開発用リンクー</Link>
-					</li>
-					<li>
-						<Link to='/tripdetail'>(to tripDetail)</Link>
 					</li>
 				</ul>
 			</div>

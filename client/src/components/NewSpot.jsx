@@ -2,6 +2,7 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/style/map.css';
+import Header from './Header';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Registrations from './Registrations';
 
@@ -29,6 +30,7 @@ const PostSpot = () => {
 
 	return (
 		<>
+    <Header />
     <img
 				src={pageBackImg}
 				alt='#'
