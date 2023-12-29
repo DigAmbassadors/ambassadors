@@ -61,17 +61,7 @@ function TripSummary() {
 
   return (
     <>
-      <Header />
-
-      <img
-        src={pageBackImg}
-        alt="#"
-        className="content-pageBackImg"
-        onClick={() => {
-          navigate(-1);
-        }}
-      />
-
+      <Header show={true}/>
       {trip.map((e, index) => (
         <div className="tripsummary-content">
           <br />

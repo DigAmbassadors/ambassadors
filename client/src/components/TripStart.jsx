@@ -22,13 +22,13 @@ function TripStart() {
 
 	//エリア選択欄を作成----------------------------
 	const [areas, setAreas] = useState(['']);
-	useEffect(()=>{
+	useEffect(() => {
 		const getFetch = async () => {
 			try {
 				const response = await fetch(url + `/api/areas`, {
 					method: 'GET',
 					headers: {
-						Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+						Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 					},
 				});
 
@@ -48,7 +48,7 @@ function TripStart() {
 			}
 		};
 		getFetch();
-	},[])
+	}, []);
 
 	const makeAreaSelect = () => {
 		return (
@@ -62,14 +62,12 @@ function TripStart() {
 		);
 	};
 
-
 	//選択されたエリアを検知--------------------------
 	const [selectedArea, setSelectedArea] = useState('');
 
 	const handleAreaChange = (e) => {
 		setSelectedArea(e.target.value);
 	};
-
 
 	//新しい冒険----------------------------------
 	const NewTrip = async () => {
@@ -161,10 +159,7 @@ function TripStart() {
 	//lender---------------------------------
 	return (
 		<>
-			<Header />
-			<Link to='/usertop'>
-				<img src={pageBackImg} alt='#' className='content-pageBackImg' />
-			</Link>
+			<Header show={true} />
 			<div className='tripstart-content'>
 				<p>新しい冒険を始める</p>
 				{makeAreaSelect()}

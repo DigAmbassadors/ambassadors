@@ -153,7 +153,7 @@ function TripDetail() {
 			})
 			.catch((error) => {
 				console.error('Error:', error);
-        alert('写真登録エラー');
+				alert('写真登録エラー');
 			});
 	};
 
@@ -164,16 +164,7 @@ function TripDetail() {
 
 	return (
 		<>
-			<Header />
-			<img
-				src={pageBackImg}
-				alt='#'
-				className='content-pageBackImg'
-				onClick={() => {
-					navigate(-1);
-				}}
-			/>
-
+			<Header show={true} />
 			<div className='trip-detail-content'>
 				<ul className='trip-detail-list'>
 					<li>
