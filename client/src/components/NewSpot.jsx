@@ -26,7 +26,7 @@ const PostSpot = () => {
 
 	return (
 		<>
-			<h2>React_Google Map_Sample</h2>
+			<h2>新スポット登録</h2>
 			<div className='wrap'>
 				<LoadScript googleMapsApiKey={import.meta.env.VITE_APIkey}>
 					<GoogleMap
@@ -38,7 +38,9 @@ const PostSpot = () => {
 						{selectedPosition && <Marker position={selectedPosition} />}
 					</GoogleMap>
 				</LoadScript>
-				<Registrations selectedPosition={selectedPosition}/>
+				<div className='registrations-container'>
+					<Registrations selectedPosition={selectedPosition} />
+				</div>
 			</div>
 		</>
 	);

@@ -9,7 +9,7 @@ import UserTop from './components/UserTop';
 import TripStart from './components/TripStart';
 import TripSummary from './components/TripSummary';
 import TripDetail from './components/TripDetail';
-import PostSpot from './components/PostSpot';
+import NewSpot from './components/NewSpot';
 import './assets/style/App.css';
 
 function App() {
@@ -52,7 +52,7 @@ function App() {
 							</ProtectedRoute>
 						}
 					/>
-					<Route path='/newspot' element={<PostSpot />}></Route>
+					<Route path='/newspot' element={<NewSpot />}></Route>
 				</Routes>
 			</TripsProvider>
 		</AuthProvider>
