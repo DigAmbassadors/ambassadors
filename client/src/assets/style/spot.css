@@ -1,0 +1,16 @@
+.spotContainer {
+	height: 20vh;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background-color: rgba(255, 255, 255, 0.6);
+
+	display: flex; /* フレックスコンテナにする */
+	align-items: center; /* 垂直方向の中央揃え */
+	justify-content: space-around; /* 要素間と両端に均等のスペースを配置 */
+	padding: 0 10px; /* 左右にパディングを追加 */
+}
+
+.spotImg {
+	height: 80%;
+	width: auto;
+}

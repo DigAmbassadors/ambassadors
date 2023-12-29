@@ -4,7 +4,7 @@ import Header from './Header';
 import '../assets/style/imgpreview.css';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
 
-const ImgPreview = () => {
+const RecordPreview = () => {
 	const navigate = useNavigate();
 
 	//url定義-----------------------------------
@@ -73,4 +73,4 @@ const ImgPreview = () => {
 		</>
 	);
 };
-export default ImgPreview;
+export default RecordPreview;

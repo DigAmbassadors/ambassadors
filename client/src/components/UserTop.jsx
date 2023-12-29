@@ -19,6 +19,9 @@ const UserTop = () => {
 					<li>
 						<Link>🏆　ランキング＠</Link>
 					</li>
+          <li>
+						<Link to='/spotpreview'>👫　スポット一覧を見る＠</Link>
+					</li>
 				</ul>
 			</div>
 		</div>
