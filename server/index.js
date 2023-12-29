@@ -441,7 +441,7 @@ app.post('/api/newspot', verifyToken, async (req, res) => {
 });
 
 // mission2画像を取得
-app.get('/api/imgs', async (req, res) => {
+app.get('/api/imgs', verifyToken, async (req, res) => {
 	try {
 		const extra = await knex('users').select('record');
 		const imgs = [];
@@ -454,6 +454,32 @@ app.get('/api/imgs', async (req, res) => {
 			}
 		}
 		res.status(200).json(imgs);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error });
+	}
+});
+
+// スポット一覧を取得(ユーザーのクリア成否を追記)
+app.get('/api/spots/:userId', async (req, res) => {
+	try {
+    //ユーザーのrecordを取得
+    const userId = Number(req.params.userId);
+    const records = await knex('users').where({id:userId}).select('record');
+
+    //スポットを取得し、ユーザーのクリア成否を追記
+		const spots = await knex('spot');
+    for(const spot of spots){
+      //ユーザのrecordsから該当するものを探す
+      const rec = records[0].record.filter(record=>record.spot_id===spot.id);
+      //record内容をspotに追記
+      if(rec.length===0){
+        spot.finish = false;
+      } else {
+        spot.finish = rec[0].finish ? true : false;
+      }
+    }
+		res.status(200).json(spots);
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: error });
