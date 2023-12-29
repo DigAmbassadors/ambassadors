@@ -50,15 +50,7 @@ const RecordPreview = () => {
 
 	return (
 		<>
-			<Header />
-			<img
-				src={pageBackImg}
-				alt='#'
-				className='content-pageBackImg'
-				onClick={() => {
-					navigate(-1);
-				}}
-			/>
+			<Header show={true} />
 			<h2>冒険の記録</h2>
 			{selectedImg && (
 				<div className='modal' onClick={() => setSelectedImg(null)}>

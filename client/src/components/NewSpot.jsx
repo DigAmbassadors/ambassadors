@@ -7,7 +7,7 @@ import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Registrations from './Registrations';
 
 const PostSpot = () => {
-  const navigate = useNavigate();
+	const navigate = useNavigate();
 	const [selectedPosition, setSelectedPosition] = useState(null);
 
 	const container = {
@@ -30,15 +30,7 @@ const PostSpot = () => {
 
 	return (
 		<>
-    <Header />
-    <img
-				src={pageBackImg}
-				alt='#'
-				className='content-pageBackImg'
-				onClick={() => {
-					navigate(-1);
-				}}
-			/>
+			<Header show={true} />
 			<h2>新スポット登録</h2>
 			<div className='wrap'>
 				<LoadScript googleMapsApiKey={import.meta.env.VITE_APIkey}>

@@ -72,15 +72,7 @@ const SpotPreview = () => {
 
 	return (
 		<>
-			<Header />
-			<img
-				src={pageBackImg}
-				alt='#'
-				className='content-pageBackImg'
-				onClick={() => {
-					navigate(-1);
-				}}
-			/>
+			<Header show={true} />
       {showSpots()}
 		</>
 	);

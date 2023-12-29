@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 const UserTop = () => {
 	return (
 		<div>
-			<Header />
+			<Header show={false}/>
 			<div className='user-menu-content'>
 				<ul className='user-menu-list'>
 					<li>
