@@ -101,7 +101,7 @@ function TripDetail() {
 				const img = new Image();
 				img.onload = () => {
 					const canvas = document.createElement('canvas');
-					const maxSize = 100; // 最大サイズ
+					const maxSize = 400; // 最大サイズ
 					let width = img.width;
 					let height = img.height;
 

@@ -440,6 +440,26 @@ app.post('/api/newspot', verifyToken, async (req, res) => {
 	}
 });
 
+// mission2画像を取得
+app.get('/api/imgs', async (req, res) => {
+	try {
+		const extra = await knex('users').select('record');
+		const imgs = [];
+		for (const objOfId of extra) {
+			const recordOfId = objOfId.record;
+			if (recordOfId) {
+				for (const record of recordOfId) {
+					imgs.push(record.photo);
+				}
+			}
+		}
+		res.status(200).json(imgs);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error });
+	}
+});
+
 app.listen(3000, () => {
 	console.log('server on PORT3000');
 });

@@ -13,15 +13,14 @@ h2 {
 }
 
 .registrations-container {
-    margin-top: 20px;
+	margin-top: 20px;
 }
 
 .vertical-button {
-    display: block;
+	display: block;
 }
 
-
 .spotImg {
-    width: 70vw;  /* ビューポートの幅の100% */
-    height: auto;  /* 高さは自動で調整 */
+	max-width: 70vw; /* ビューポートの幅の100% */
+	max-height: auto; /* 高さは自動で調整 */
 }

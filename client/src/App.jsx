@@ -11,6 +11,7 @@ import TripSummary from './components/TripSummary';
 import TripDetail from './components/TripDetail';
 import NewSpot from './components/NewSpot';
 import './assets/style/App.css';
+import ImgPreview from './components/ImgPreview';
 
 function App() {
 	return (
@@ -52,7 +53,22 @@ function App() {
 							</ProtectedRoute>
 						}
 					/>
-					<Route path='/newspot' element={<NewSpot />}></Route>
+					<Route
+						path='/newspot'
+						element={
+							<ProtectedRoute>
+								<NewSpot />
+							</ProtectedRoute>
+						}
+					></Route>
+					<Route
+						path='/imgpreview'
+						element={
+							<ProtectedRoute>
+								<ImgPreview />
+							</ProtectedRoute>
+						}
+					></Route>
 				</Routes>
 			</TripsProvider>
 		</AuthProvider>
