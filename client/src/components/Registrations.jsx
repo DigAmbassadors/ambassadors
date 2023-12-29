@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../assets/style/map.css';
 
 const Registrations = (props) => {
 	const { selectedPosition } = props;
@@ -141,33 +142,45 @@ const Registrations = (props) => {
 		}
 	};
 
-  // `戻るボタン---------------------------------------------------------------
-  const handleBack = () => {
-    navigate('/usertop');
-  }
+	// `戻るボタン---------------------------------------------------------------
+	const handleBack = () => {
+		navigate('/usertop');
+	};
 
 	//表示 --------------------------------------------------------------------
 	return (
 		<div>
-			<p>スポット名</p>
-			<input type='text' onChange={(e) => setSpotName(e.target.value)} />
+			<section>
+				<p>スポット名</p>
+				<input type='text' onChange={(e) => setSpotName(e.target.value)} />
+			</section>
 
-			<p>エリア選択</p>
-			{makeAreaSelect()}
-			{selectedArea === '新エリア名を記入' && (
-				<input type='text' placeholder='新エリア名' onChange={(e) => setNewName(e.target.value)} />
-			)}
+			<section>
+				<p>エリア選択</p>
+				{makeAreaSelect()}
+				{selectedArea === '新エリア名を記入' && (
+					<input type='text' placeholder='新エリア名' onChange={(e) => setNewName(e.target.value)} />
+				)}
+			</section>
 
-			<p>ミッション２</p>
-			<input type='text' onChange={(e) => setMission2(e.target.value)} />
+			<section>
+				<p>ミッション２</p>
+				<input type='text' onChange={(e) => setMission2(e.target.value)} />
+			</section>
 
-			<p>スポット写真</p>
-			<button onClick={handleClickPhoto}>画像を選択</button>
-			<input type='file' style={{ display: 'none' }} ref={refPhoto} onChange={(e) => handleSetPhoto(e, setSpotPhoto)} />
-			{spotPhoto && <img src={spotPhoto} alt='スポット写真'></img>}
+			<section>
+				<p>スポット写真</p>
+				<button className='vertical-button' onClick={handleClickPhoto}>画像を選択</button>
+				<input
+					type='file'
+					style={{ display: 'none' }}
+					ref={refPhoto}
+					onChange={(e) => handleSetPhoto(e, setSpotPhoto)}
+				/>
+				{spotPhoto && <img className='spotImg' src={spotPhoto} alt='スポット写真'></img>}
+			</section>
 
-			<button onClick={handleSubmit}>上記の内容で保存する</button>
-      <button onClick={handleBack}>ユーザートップ画面に戻る</button>
+			<button className='vertical-button' onClick={handleSubmit}>上記の内容で保存する</button>
 		</div>
 	);
 };

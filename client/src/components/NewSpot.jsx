@@ -1,9 +1,12 @@
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../assets/style/map.css';
+import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Registrations from './Registrations';
 
 const PostSpot = () => {
+  const navigate = useNavigate();
 	const [selectedPosition, setSelectedPosition] = useState(null);
 
 	const container = {
@@ -26,6 +29,14 @@ const PostSpot = () => {
 
 	return (
 		<>
+    <img
+				src={pageBackImg}
+				alt='#'
+				className='content-pageBackImg'
+				onClick={() => {
+					navigate(-1);
+				}}
+			/>
 			<h2>新スポット登録</h2>
 			<div className='wrap'>
 				<LoadScript googleMapsApiKey={import.meta.env.VITE_APIkey}>
