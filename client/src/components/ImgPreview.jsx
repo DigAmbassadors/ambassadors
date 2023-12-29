@@ -5,8 +5,8 @@ import '../assets/style/imgpreview.css';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
 
 const ImgPreview = () => {
-  const navigate = useNavigate();
-  
+	const navigate = useNavigate();
+
 	//url定義-----------------------------------
 	let url;
 	if (import.meta.env.VITE_NODE_ENV === 'production') {
@@ -42,6 +42,12 @@ const ImgPreview = () => {
 		getFetch();
 	}, []);
 
+	//画像拡大表示---------------------------------
+	const [selectedImg, setSelectedImg] = useState(null);
+	const handleImgClick = (img) => {
+		setSelectedImg(img);
+	};
+
 	return (
 		<>
 			<Header />
@@ -54,9 +60,14 @@ const ImgPreview = () => {
 				}}
 			/>
 			<h2>冒険の記録</h2>
+			{selectedImg && (
+				<div className='modal' onClick={() => setSelectedImg(null)}>
+					<img src={selectedImg} alt='Expanded' />
+				</div>
+			)}
 			<div className='img_container'>
 				{imgs.map((img, idx) => (
-					<img key={idx} src={img} alt='img' className='image imageCell' onClick={() => {}} />
+					<img key={idx} src={img} alt='img' className='image imageCell' onClick={() => handleImgClick(img)} />
 				))}
 			</div>
 		</>
