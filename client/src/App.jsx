@@ -13,6 +13,7 @@ import NewSpot from './components/NewSpot';
 import './assets/style/App.css';
 import RecordPreview from './components/RecordPreview';
 import SpotPreview from './components/SpotPreview';
+import Ranking from './components/Ranking';
 
 function App() {
 	return (
@@ -75,6 +76,14 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<SpotPreview />
+							</ProtectedRoute>
+						}
+					></Route>
+					<Route
+						path='/ranking'
+						element={
+							<ProtectedRoute>
+								<Ranking />
 							</ProtectedRoute>
 						}
 					></Route>

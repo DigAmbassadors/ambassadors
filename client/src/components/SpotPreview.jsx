@@ -10,7 +10,7 @@ const SpotPreview = () => {
 	const { userId } = useAuth();
   const navigate = useNavigate();
 
-  	//url定義-----------------------------------------------------------------
+  //url定義-----------------------------------------------------------------
 	let url;
 	if (import.meta.env.VITE_NODE_ENV === 'production') {
 		url = 'https://ambassadors-btc5.com';
@@ -73,6 +73,7 @@ const SpotPreview = () => {
 	return (
 		<>
 			<Header show={true} />
+      <h2>スポット一覧</h2>
       {showSpots()}
 		</>
 	);
