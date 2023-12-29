@@ -17,7 +17,7 @@ const UserTop = () => {
 						<Link>👫　みんなの冒険を見る＠</Link>
 					</li>
 					<li>
-						<Link>📮　おもしろスポットを投稿する＠</Link>
+						<Link to='/newspot'>📮　おもしろスポットを投稿する＠</Link>
 					</li>
 					<li>
 						<Link>🏆　ランキング＠</Link>
