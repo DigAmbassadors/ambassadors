@@ -87,10 +87,55 @@ function TripDetail() {
 			// https://into-the-program.com/javascript-read-the-file/
 		});
 	};
+
+	const getFileAsBase64_2 = (e) => {
+		return new Promise((resolve, reject) => {
+			const file = e.target.files[0];
+			if (!file) {
+				reject(new Error('ファイルが選択されていません。'));
+				return;
+			}
+
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const img = new Image();
+				img.onload = () => {
+					const canvas = document.createElement('canvas');
+					const maxSize = 100; // 最大サイズ
+					let width = img.width;
+					let height = img.height;
+
+					// アスペクト比を保持しながらサイズを調整
+					if (width > height && width > maxSize) {
+						height *= maxSize / width;
+						width = maxSize;
+					} else if (height > maxSize) {
+						width *= maxSize / height;
+						height = maxSize;
+					}
+
+					canvas.width = width;
+					canvas.height = height;
+					const ctx = canvas.getContext('2d');
+					ctx.drawImage(img, 0, 0, width, height);
+					resolve(canvas.toDataURL()); // DataURLをPromiseとして返す
+				};
+				img.onerror = () => {
+					reject(new Error('画像の読み込みに失敗しました。'));
+				};
+				img.src = e.target.result;
+			};
+			reader.onerror = () => {
+				reject(new Error('ファイルの読み込みに失敗しました。'));
+			};
+			reader.readAsDataURL(file);
+		});
+	};
+
 	//Mission2:写真の登録
 	const handleSelectPicture = async (e) => {
-		const base64string = await getFileAsBase64(e.target.files[0]);
-		// console.log("ここ2", inputRef.current.files[0].name);
+		// const base64string = await getFileAsBase64(e.target.files[0]);
+		const base64string = await getFileAsBase64_2(e);
 
 		fetch(url + `/api/mission/photo/${userId}`, {
 			method: 'POST',
@@ -98,7 +143,7 @@ function TripDetail() {
 				'Content-Type': 'application/json',
 				Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 			},
-			body: JSON.stringify({ photo: 'base64string', spot_id: spot.id }),
+			body: JSON.stringify({ photo: base64string, spot_id: spot.id }),
 		})
 			.then((response) => {
 				if (!response.ok) {
@@ -108,6 +153,7 @@ function TripDetail() {
 			})
 			.catch((error) => {
 				console.error('Error:', error);
+        alert('写真登録エラー');
 			});
 	};
 
