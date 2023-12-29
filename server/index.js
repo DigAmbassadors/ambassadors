@@ -486,6 +486,27 @@ app.get('/api/spots/:userId', async (req, res) => {
 	}
 });
 
+// ランキングを取得
+app.get('/api/ranking', async (req, res) => {
+	try {
+		const users = await knex('users');
+    for(const user of users){
+      if(user.record){
+        user.num_record = user.record.length;
+      }else{
+        user.num_record = 0;
+      }
+    }
+    const sorted = users.sort((a, b) => b.num_record - a.num_record);
+    const extra = sorted.map(({ record, ...rest }) => rest);
+		res.status(200).json(extra);
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ message: 'Error retrieving user data' });
+	}
+});
+
+
 app.listen(3000, () => {
 	console.log('server on PORT3000');
 });
