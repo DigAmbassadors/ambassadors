@@ -397,7 +397,7 @@ app.post('/api/mission/photo/:userId', verifyToken, async (req, res) => {
 
 		let addFlag = true;
 		for (const obj of record) {
-			if (obj.spot_id === spot_id) {
+			if (obj.spot_id === spot_id && obj.arrived) {
 				obj.photo = photo;
 				obj.arrived = true;
 				obj.finish = true;
