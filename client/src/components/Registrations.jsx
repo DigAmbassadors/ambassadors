@@ -81,15 +81,38 @@ const Registrations = (props) => {
 	const refPhoto = React.useRef();
 	const handleClickPhoto = () => refPhoto.current.click();
 	const handleSetPhoto = (e, setfunc) => {
-		const file = e.target.files[0];
-		if (file) {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				setfunc(e.target.result);
-			};
-			reader.readAsDataURL(file);
-		}
-	};
+    const file = e.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement('canvas');
+                const maxSize = 400; // 最大サイズ
+                let width = img.width;
+                let height = img.height;
+
+                // アスペクト比を保持しながらサイズを調整
+                if (width > height && width > maxSize) {
+                    height *= maxSize / width;
+                    width = maxSize;
+                } else if (height > maxSize) {
+                    width *= maxSize / height;
+                    height = maxSize;
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(img, 0, 0, width, height);
+                setfunc(canvas.toDataURL()); // DataURLを設定
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+};
+
 
 	// 登録ボタン---------------------------------------------------------------
 	const handleSubmit = async () => {
@@ -140,11 +163,6 @@ const Registrations = (props) => {
 		} catch (error) {
 			console.log(error);
 		}
-	};
-
-	// `戻るボタン---------------------------------------------------------------
-	const handleBack = () => {
-		navigate('/usertop');
 	};
 
 	//表示 --------------------------------------------------------------------
