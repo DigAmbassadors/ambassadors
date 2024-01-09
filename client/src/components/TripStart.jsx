@@ -21,7 +21,7 @@ function TripStart() {
     url = 'http://localhost:3000';
   }
 
-  //エリア選択欄を作成----------------------------
+  //テーマ選択欄を作成----------------------------
   const [areas, setAreas] = useState(['']);
   useEffect(() => {
     const getFetch = async () => {
@@ -63,7 +63,7 @@ function TripStart() {
     );
   };
 
-  //選択されたエリアを検知--------------------------
+  //選択されたテーマを検知--------------------------
   const [selectedArea, setSelectedArea] = useState('');
 
   const handleAreaChange = (e) => {

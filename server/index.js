@@ -217,7 +217,7 @@ app.post('/api/tripsummary', verifyToken, async (req, res) => {
 	res.status(200).send(result);
 });
 
-// エリア一覧を取得
+// テーマ一覧を取得
 app.get('/api/areas', verifyToken, async (req, res) => {
 	const areas = await knex('spot').select('area');
 	const uniquAreas = Array.from(new Set(areas.map((area) => area.area)));
