@@ -51,7 +51,7 @@ const RecordPreview = () => {
   return (
     <>
       <Header show={true} />
-      <h1>冒険の記録</h1>
+      <h1>探検の記録</h1>
       {selectedImg && (
         <div className="modal" onClick={() => setSelectedImg(null)}>
           <img src={selectedImg} alt="Expanded" />

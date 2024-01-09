@@ -70,7 +70,7 @@ function TripStart() {
     setSelectedArea(e.target.value);
   };
 
-  //新しい冒険----------------------------------
+  //新しい探検----------------------------------
   const NewTrip = async () => {
     try {
       console.log('selectedArea', selectedArea);
@@ -104,7 +104,7 @@ function TripStart() {
     }
   };
 
-  //過去の冒険--------------------------------
+  //過去の探検--------------------------------
   const [summary, setSummary] = useState([]);
   useEffect(() => {
     const getFetch = async () => {
@@ -157,7 +157,7 @@ function TripStart() {
                 onClick={() => handleTripClick(tripId)}
               >
                 <div className="past-trip-left">
-                  <p className="past-trip-name">冒険 {tripId}</p>
+                  <p className="past-trip-name">探検 {tripId}</p>
                 </div>
                 <div className="past-trip-right">
                   <p className="past-trip-area">{tripSummary.area}</p>
@@ -176,13 +176,13 @@ function TripStart() {
     <>
       <Header show={true} />
       <div className="trip-start-content">
-        <h1>冒険を始めよう！</h1>
+        <h1>探検を始めよう！</h1>
         <div className="new-trip-content">
-          <h2>新しい冒険を始める</h2>
+          <h2>新しい探検を始める</h2>
           {makeAreaSelect()}
           <br />
           <div className="trip-start-button">
-            <Button onClick={NewTrip}>冒険スタート</Button>
+            <Button onClick={NewTrip}>探検スタート</Button>
           </div>
         </div>
         <div className="past-trip-content">

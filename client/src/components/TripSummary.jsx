@@ -64,7 +64,7 @@ function TripSummary() {
     <>
       <Header show={true} />
       <div className="trip-summary-body">
-        <h1>冒険一覧</h1>
+        <h1>探検一覧</h1>
         {trip.map((e, index) => {
           const dir = index % 2 === 0 ? 'left' : 'right';
 
