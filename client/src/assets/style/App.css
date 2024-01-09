@@ -379,6 +379,17 @@ body {
   padding: 10px 0 0 10px;
 }
 
+.trip-detail-fin-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.trip-detail-fin-button button {
+  background-color: #959595;
+  height: 30px;
+}
+
 .trip-detail-button1 {
   position: absolute;
   top: 5px;
