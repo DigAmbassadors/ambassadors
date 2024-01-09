@@ -156,11 +156,8 @@ function TripStart() {
                 className="past-trip-button"
                 onClick={() => handleTripClick(tripId)}
               >
-                <div className="past-trip-left">
-                  <p className="past-trip-name">探検 {tripId}</p>
-                </div>
-                <div className="past-trip-right">
-                  <p className="past-trip-area">{tripSummary.area}</p>
+                <div className="past-trip-center">
+                  <p className="past-trip-area">{tripId}:{tripSummary.area}</p>
                   <p className="past-trip-date">{date.toLocaleString()}</p>
                 </div>
               </div>

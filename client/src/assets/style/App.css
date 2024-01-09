@@ -186,6 +186,8 @@ body {
   margin: 10px 30px;
   padding: 5px 10px;
   display: flex;
+  justify-content: center; /* 中央揃え */
+  align-items: center; /* 中央揃え */
 }
 
 .past-trip-left {
@@ -196,17 +198,22 @@ body {
   width: 50%;
 }
 
+.past-trip-center {
+  text-align: center;
+}
+
 .past-trip-name {
   margin-top: 6px;
   font-weight: bold;
 }
 .past-trip-area {
-  text-align: right;
+  /* text-align: right; */
+  font-weight: bold;
   font-size: 18px;
 }
 .past-trip-date {
   margin-top: 5px;
-  text-align: right;
+  /* text-align: right; */
   font-size: 14px;
 }
 
