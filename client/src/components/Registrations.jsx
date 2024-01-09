@@ -19,7 +19,7 @@ const Registrations = (props) => {
   // スポット名---------------------------------------------------------------
   const [spotName, setSpotName] = useState(false);
 
-  // エリア選択欄を作成--------------------------------------------------------
+  // テーマ選択欄を作成--------------------------------------------------------
   const [areas, setAreas] = useState(['']);
   useEffect(() => {
     const getFetch = async () => {
@@ -37,7 +37,7 @@ const Registrations = (props) => {
         }
 
         const areas = await response.json();
-        areas.unshift('新エリア名を記入');
+        areas.unshift('新テーマ名を記入');
         if (areas.length > 0) {
           setAreas(areas);
           setSelectedArea(areas[0]);
@@ -62,16 +62,16 @@ const Registrations = (props) => {
     );
   };
 
-  // 選択されたエリアを検知
+  // 選択されたテーマを検知
   const [selectedArea, setSelectedArea] = useState(false);
   const handleAreaChange = (e) => {
     setSelectedArea(e.target.value);
-    if (e.target.value === '新エリア名を記入') {
+    if (e.target.value === '新テーマ名を記入') {
       setNewName(false);
     }
   };
 
-  // 新エリア名の入力欄
+  // 新テーマ名の入力欄
   const [newName, setNewName] = useState(false);
 
   // ミッション２-----------------------------------------------------------------
@@ -116,9 +116,9 @@ const Registrations = (props) => {
 
   // 登録ボタン---------------------------------------------------------------
   const handleSubmit = async () => {
-    // エリア名を検出
+    // テーマ名を検出
     let areaFinal = false;
-    if (selectedArea === '新エリア名を記入') {
+    if (selectedArea === '新テーマ名を記入') {
       areaFinal = newName;
     } else {
       areaFinal = selectedArea;
@@ -126,7 +126,7 @@ const Registrations = (props) => {
 
     //未入力チェック
     console.log('スポット名', spotName);
-    console.log('エリア選択', areaFinal);
+    console.log('テーマ選択', areaFinal);
     console.log('ミッション２', mission2);
     console.log('画像', spotPhoto ? true : false);
     console.log('緯度経度', selectedPosition);
@@ -174,12 +174,12 @@ const Registrations = (props) => {
       </section>
 
       <section>
-        <p>・エリア選択</p>
+        <p>・テーマ選択</p>
         {makeAreaSelect()}
-        {selectedArea === '新エリア名を記入' && (
+        {selectedArea === '新テーマ名を記入' && (
           <input
             type="text"
-            placeholder="新エリア名"
+            placeholder="新テーマ名"
             onChange={(e) => setNewName(e.target.value)}
           />
         )}
