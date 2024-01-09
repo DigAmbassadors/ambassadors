@@ -59,10 +59,8 @@ function Header(props) {
             </Link>
           </li>
           <li>
-            <Link to={`#`} onClick={handleDrawerClose}>
+            <Link to={'/login'} onClick={handleDrawerClose}>
               <strong>LOGOUT</strong>
-              <br />
-              (リンク未)
             </Link>
           </li>
         </ul>
