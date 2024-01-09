@@ -40,7 +40,7 @@ function TripSummary() {
       }
     };
 
-    const getFinishSpotId = async () => {
+    const getFinishSpot = async () => {
       try {
         // url + `/api/trips/${userId}?tripId=${tripId}`
         const response = await fetch(url + `/api/users/record/${userId}`, {
@@ -50,15 +50,17 @@ function TripSummary() {
           },
         });
         const data = await response.json();
-        setFinishSpot(data);
+        setFinishSpot(data); //[{},{},{}]
       } catch (error) {
         console.error('データの取得に失敗しました:', error);
       }
     };
 
     fetchData();
-    getFinishSpotId();
+    getFinishSpot();
   }, []);
+
+  let finishSpotId = finishSpot.map((obj) => obj.spot_id) || [];
 
   return (
     <>
@@ -68,7 +70,7 @@ function TripSummary() {
         {trip.map((e, index) => {
           const dir = index % 2 === 0 ? 'left' : 'right';
 
-          return finishSpot.includes(e.id) ? (
+          return finishSpotId.includes(e.id) ? (
             <div className={`trip-summary-content-${dir}`}>
               <p style={{ color: '#FAC710' }}>⭐️完了</p>
               <div className="trip-summary-spot">
@@ -112,8 +114,8 @@ function TripSummary() {
                 )}
               </div>
             </div>
-          ) : finishSpot.includes(trip[index].id) &&
-            finishSpot.includes(trip[0].id) ? (
+          ) : finishSpotId.includes(trip[0].id) &&
+            finishSpotId.includes(trip[index - 1].id) ? (
             <div className={`trip-summary-content-${dir}`}>
               <p style={{ color: '#ec2761' }}>次はここ！</p>
               <div className="trip-summary-spot">

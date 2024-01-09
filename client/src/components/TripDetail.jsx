@@ -3,9 +3,11 @@ import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import Header from './Header';
 import Button from '@mui/material/Button';
 import StarIcon from '@mui/icons-material/Star';
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTrips } from '../contexts/TripContext';
 import { useAuth } from '../contexts/AuthContext';
+import Achieve from '../assets/image/achieve.jpg';
+import NotAchieve from '../assets/image/notachieve.jpg';
 
 function TripDetail() {
   const navigate = useNavigate();
@@ -13,6 +15,7 @@ function TripDetail() {
   const { userId } = useAuth();
   const { spot } = useTrips();
   const { tripsId } = useParams();
+  const [singleRecord, setSingleRecord] = useState([]);
 
   //url定義
   let url;
@@ -155,10 +158,27 @@ function TripDetail() {
       });
   };
 
-  const [clearFlg, setClearFlg] = useState(false);
-  const controlClearFlg = () => {
-    clearFlg ? setClearFlg(false) : setClearFlg(true);
-  };
+  useEffect(() => {
+    const getSingleRecord = async () => {
+      try {
+        const response = await fetch(
+          url + `/api/users/${userId}/record/${spot.id}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setSingleRecord(data); //[{},{},{}]
+      } catch (error) {
+        console.error('データの取得に失敗しました:', error);
+      }
+    };
+
+    getSingleRecord();
+  });
 
   return (
     <>
@@ -167,10 +187,9 @@ function TripDetail() {
         <h2>{spot.name}</h2>
 
         <div className="trip-detail-fin">
-          <button onClick={controlClearFlg}>クリアフラグ</button>
-          {clearFlg ? (
+          {singleRecord[0]?.finish ? (
             <div>
-              <StarIcon sx={{ color: 'red' }} fontSize="large" />
+              <StarIcon sx={{ color: 'yellow' }} fontSize="large" />
             </div>
           ) : (
             <></>
@@ -196,32 +215,58 @@ function TripDetail() {
         <div className="trip-detail-mission">
           <p className="mission-title">Mission 1</p>
           <p className="mission-content">現地に行った記録を残そう！</p>
-          <div className="trip-detail-button1">
-            <Button variant="contained" onClick={handleSpotCheck}>
-              来たぜ！
-            </Button>
-          </div>
+          {singleRecord[0]?.arrived ? (
+            <div className="trip-detail-fin-button">
+              <Button variant="contained">完了</Button>
+            </div>
+          ) : (
+            <div className="trip-detail-button1">
+              <Button variant="contained" onClick={handleSpotCheck}>
+                来たぜ！
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="trip-detail-mission">
           <p className="mission-title">Mission 2</p>
           <p className="mission-content">{spot.mission}</p>
-          <div className="trip-detail-button2">
-            {/* スマホの場合はカメラ起動、PCの場合は画像選択 */}
-            <Button variant="contained" component="label">
-              写真を撮る
-              <input
-                type="file"
-                capture="environment"
-                accept="image/*"
-                style={{ display: 'none' }}
-                ref={inputRef}
-                onChange={handleSelectPicture}
-              />
-            </Button>
+          {singleRecord[0]?.photo ? (
+            <div className="trip-detail-button2">
+              <Button
+                variant="contained"
+                component="label"
+                style={{ backgroundColor: '#959595' }}
+              >
+                完了(再撮影)
+                <input
+                  type="file"
+                  capture="environment"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={inputRef}
+                  onChange={handleSelectPicture}
+                />
+              </Button>
+            </div>
+          ) : (
+            <div className="trip-detail-button2">
+              {/* スマホの場合はカメラ起動、PCの場合は画像選択 */}
 
-            {/* 以下はカメラ起動が実装できれば不要 */}
-            {/* <FileInputComponent
+              <Button variant="contained" component="label">
+                写真を撮る
+                <input
+                  type="file"
+                  capture="environment"
+                  accept="image/*"
+                  style={{ display: 'none' }}
+                  ref={inputRef}
+                  onChange={handleSelectPicture}
+                />
+              </Button>
+
+              {/* 以下はカメラ起動が実装できれば不要 */}
+              {/* <FileInputComponent
                   parentStyle={{}} //スタイル
                   labelStyle={{ display: "none" }}
                   imagePreview={true} //ファイルのプレビュー
@@ -236,8 +281,21 @@ function TripDetail() {
                   }
                   accept="image/*" //許可するファイルのtype
                 /> */}
-          </div>
+            </div>
+          )}
         </div>
+        {singleRecord[0]?.photo ? (
+          <>
+            <p>{'- 投稿した写真 -'}</p>
+            <img
+              className="trip-detail-img"
+              src={singleRecord[0]?.photo}
+              alt={`${spot.name}で撮影した画像`}
+            />
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </>
   );
