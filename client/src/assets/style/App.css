@@ -2,17 +2,16 @@
 
 /* # 共通で使用するスタイル ########################################### */
 h1 {
+  text-align: center;
   font-size: 30px;
+  padding-top: 15px;
 }
 
 h2 {
-  font-size: 26px;
-}
-
-h3 {
-  font-size: 26px;
-  color: rgb(61, 182, 242);
-  margin-top: 10px;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  margin: 0 auto;
 }
 
 .small {
@@ -32,15 +31,15 @@ h3 {
 header {
   height: 60px;
   width: 100%;
-  padding: 0px 20px 0px 30px;
+  padding: 0px 20px;
   /* background-color: white; */
-  background-color: #ffd700;
+  background-color: #358867;
   position: sticky;
   top: 0;
   z-index: 10;
   display: flex;
-  border-bottom: 1.5px solid;
-  border-bottom-color: rgb(225, 225, 225);
+  /* border-bottom: 1.5px solid; */
+  /* border-bottom-color: rgb(225, 225, 225); */
 
   justify-content: space-between;
   align-items: center;
@@ -67,13 +66,17 @@ header {
   padding: 8px 0;
 }
 
-.logo {
-  /* margin-top: 15px; */
-  font-size: 25px;
+.ham-menu li a {
+  color: black;
+  font-size: 1.2em;
 }
 
 .logo {
-  color: rgb(61, 182, 242);
+  /* margin-top: 15px; */
+  font-size: 13px;
+  text-align: center;
+  margin: 0 auto;
+  color: rgb(255, 255, 255);
   font-family: Hiragino Kaku Gothic Std;
   text-decoration: none;
 }
@@ -98,7 +101,7 @@ header {
 }
 
 body {
-  background-color: hsl(50, 100%, 80%);
+  background-color: #fffae7;
 }
 
 .content-pageBackImg {
@@ -107,232 +110,349 @@ body {
 }
 
 /* # userMenu ########################################### */
+.title-box {
+  background-color: #358867;
+  width: 100%;
+  height: 200px;
+  border-radius: 0 0 40% 0;
+
+  text-align: center;
+  line-height: 150px;
+  color: white;
+  font-size: 40px;
+  font-weight: bold;
+}
+
 .user-menu-content {
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  width: 100%;
 }
 .user-menu-list {
-  margin-top: 40px;
-  margin-bottom: 100px;
-  padding-left: 5%;
+  margin: 40px 0 100px 0;
 }
 
 .user-menu-list li {
+  background-color: #75c0a2;
   padding: 16px 0;
-  font-size: 1.3em;
+  margin: 15px 0 0 60px;
+  border-radius: 12px 0 0 12px;
+  text-align: center;
+}
+
+.user-menu-list li a {
+  font-size: 1.5em;
+  color: white;
+  font-weight: bold;
 }
 
 /* # tripstart ########################################### */
-.tripstart-content {
+.trip-start-content {
   font-family: arial;
   font-size: 24px;
   text-align: center;
 }
-.tripstart-button {
-  background-color: hotpink;
-  border-radius: 10%;
+
+.new-trip-content {
+  background-color: #75c0a2;
+  margin: 10px;
+  padding: 10px;
+}
+
+.new-trip-content select {
+  margin: 5px auto;
+  padding: 5px;
+  width: 250px;
+}
+
+.trip-start-button button {
+  margin: 0 auto;
+  padding: 5px;
+  width: 250px;
+  background-color: #ec2761;
+  color: white;
+  font-weight: bold;
+}
+
+.past-trip-content {
+  background-color: #75c0a2;
+  margin: 10px;
+  padding: 10px;
+  min-height: 400px;
+}
+
+.past-trip-button {
+  background-color: white;
+  margin: 10px 30px;
+  padding: 5px 10px;
+  display: flex;
+}
+
+.past-trip-left {
+  width: 50%;
+}
+
+.past-trip-right {
+  width: 50%;
+}
+
+.past-trip-name {
+  margin-top: 6px;
+  font-weight: bold;
+}
+.past-trip-area {
+  text-align: right;
+  font-size: 18px;
+}
+.past-trip-date {
+  margin-top: 5px;
+  text-align: right;
+  font-size: 14px;
 }
 
 /* # tripsummary ########################################### */
-.tripsummary-content {
-  font-family: arial;
-  font-size: 24px;
+.trip-summary-body {
+  background-color: #75c0a2;
+  text-align: center;
+  min-height: 100vh;
+}
+
+.trip-summary-body h1 {
+  margin-bottom: 20px;
+  color: white;
+}
+
+.trip-summary-content-left {
+  width: 200px;
+  height: 170px;
+  margin: 0 20px 20px 20px;
   text-align: center;
 }
 
-.tripsummary-content-image {
-  width: 300px;
-  height: 300px;
+.trip-summary-content-right {
+  width: 200px;
+  height: 170px;
+  margin: 0 20px 20px auto;
+  text-align: center;
+}
+
+.trip-summary-content-left p,
+.trip-summary-content-right p {
+  color: white;
+  font-weight: bold;
+  margin-bottom: 2px;
+  font-size: 20px;
+}
+
+.trip-summary-spot {
+  background-color: #fffae7;
+  width: 200px;
+  height: 150px;
+  border-radius: 30px;
+  position: relative;
+}
+
+.arrow-left {
+  position: absolute;
+  top: 140px;
+  left: -20px;
+
+  margin-left: 120px;
+  width: 100px;
+  height: 120px;
+  border-left: 8px solid #fffae7;
+  border-bottom: 8px solid #fffae7;
+  box-sizing: border-box;
+}
+
+.arrow-right {
+  position: absolute;
+  top: 140px;
+  right: 90px;
+
+  margin-left: 120px;
+  width: 100px;
+  height: 120px;
+  border-right: 8px solid #fffae7;
+  border-bottom: 8px solid #fffae7;
+  box-sizing: border-box;
+}
+
+.trip-summary-content-image {
+  max-width: 170px;
+  max-height: 140px;
   border-radius: 1em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
 }
 
-.tripsummary-content-image-filter {
-  width: 300px;
-  height: 300px;
-  border-radius: 1em;
-  filter: opacity(5%);
-}
-
-.tripsummary-content-image-icon {
-  width: 50px;
-  height: 50px;
-}
-
-.tripsummary-content-wrapped {
+.trip-summary-content-wrapped {
   position: relative;
   /* background-color: black; */
-  height: 300px;
-  width: 300px;
+  width: 200px;
+  height: 150px;
   border: solid 0px;
   border-radius: 1em;
   margin: 0 auto;
   overflow: hidden;
-  opacity: 0.3;
 }
 
-.tripsummary-content-image-keyclose {
+.trip-summary-content-image-filter {
+  max-width: 170px;
+  max-height: 140px;
+  border-radius: 1em;
   position: absolute;
-  width: 50px;
-  height: 50px;
-  top: 150px;
-  right: 120px;
-  /* opacity: 1; */
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  opacity: 0.2;
+  /* filter: opacity(5%); */
+}
+
+.trip-summary-content-image-keyclose {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 80px;
+  opacity: 1;
+}
+
+.trip-summary-content-wrapped p {
+  position: absolute;
+  top: 110px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  font-size: 10px;
+  color: black;
 }
 
 /* # tripdetail ########################################### */
 .trip-detail-content {
-  display: flex;
-  justify-content: center;
-}
-.trip-detail-list {
-  margin-top: 20px;
-
-  /* padding-left: 5%; */
-}
-
-.trip-detail-list li {
-  padding: 8px 0;
-  font-size: 1.4em;
-  font-weight: bold;
-}
-.trip-detail-list li p {
-  padding: 8px 0;
-  padding-left: 16px;
-  font-size: 0.8em;
-  font-weight: normal;
+  position: relative;
+  background-color: #75c0a2;
+  text-align: center;
+  min-height: 100vh;
+  margin: 20px 20px 0 20px;
+  padding: 20px;
 }
 
-.trip-detail-img img {
-  width: 90vw;
-  margin-bottom: 32px;
+.trip-detail-fin {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.trip-detail-img {
+  width: 100%;
+  margin: 10px 0;
 }
 
 .trip-detail-mission {
-  display: flex;
-  justify-content: space-between;
-}
-
-/* # navber ########################################### */
-
-.img-container {
-  margin-top: 60px;
   position: relative;
+
+  background-color: white;
+  margin: 10px 0;
+  height: 70px;
 }
 
-.mainImg {
-  width: 100%;
-  object-fit: cover;
-  aspect-ratio: 5 / 2;
+.trip-detail-mission .mission-title {
+  text-align: left;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 10px 0 0 10px;
 }
 
-nav {
-  width: 600px;
-  height: 400px;
-  padding: 20px;
-  background-color: rgb(255, 255, 255);
-  opacity: 0.8;
-  /* ポシション設定 */
+.trip-detail-mission .mission-content {
+  text-align: left;
+  font-size: 14px;
+  padding: 10px 0 0 10px;
+}
+
+.trip-detail-button1 {
   position: absolute;
-  left: 27%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  top: 5px;
+  right: 5px;
 }
 
-nav form {
-  /* display: flex; */
-  justify-content: center;
+.trip-detail-button1 button {
+  background-color: #ec2761;
+  height: 30px;
 }
 
-/* # MainBody ########################################### */
-
-.MainBody {
-  background-color: rgb(139, 222, 218);
-  width: 100%;
-  /* height: 1000px; */
-}
-
-.loading-container {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  z-index: 9000;
-  /* 背景色を指定 */
-  background-color: rgba(0, 0, 0, 0.7); /* 最後の数値（0.7）が透明度を表す */
-}
-
-.loadingImg {
-  width: 30%;
-  height: 55%;
+.trip-detail-button2 {
   position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 9999;
-  /* 画像自体を透過させる */
-  opacity: 1; /* 1は完全不透明、0は完全透明 */
+  top: 5px;
+  right: 5px;
 }
 
-.timeline {
-  list-style: none;
-  margin: 0px auto;
-  padding: 10px 20px;
-  width: 80%;
+.trip-detail-button2 label {
+  height: 30px;
+}
+
+/* # NewSpot ########################################### */
+.new-spot-container {
+  position: relative;
+  text-align: center;
+  min-height: 100vh;
+  margin: 10px 20px;
+  padding: 0px 20px;
   background-color: white;
 }
-.timeline > li {
-  margin-bottom: 60px;
-  font-size: 20px;
+
+.registrations-container {
+  margin-top: 10px;
 }
 
-@media (min-width: 640px) {
-  .timeline > li {
-    overflow: hidden;
-    margin: 0;
-    position: relative;
-  }
-  .timeline-date {
-    width: 120px;
-    float: left;
-    margin-top: 20px;
-  }
-  .timeline-content {
-    width: 75%;
-    float: left;
-    border-left: 3px #e5e5d1 solid;
-    padding-left: 30px;
-  }
-  .timeline-content:before {
-    content: '';
-    width: 12px;
-    height: 12px;
-    background: #0080ff;
-    position: absolute;
-    left: 116px;
-    top: 24px;
-    border-radius: 100%;
-  }
+.new-spot-container p {
+  text-align: left;
+  padding: 10px 0 5px 0;
+  font-weight: bold;
 }
 
-.timeline-content-img {
-  width: 300px;
-  height: 300px;
-  object-fit: cover;
-  border-radius: 50px;
+.new-spot-container input,
+.new-spot-container select {
+  margin-bottom: 5px;
+  width: 100%;
+  height: 30px;
 }
 
-.timeline-content-child {
-  display: flex;
-  justify-content: space-between;
+.vertical-photo-button button {
+  margin-bottom: 5px;
+  width: 100%;
+  height: 30px;
+  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  background-color: rgb(53, 110, 225);
 }
 
-/* .timeline-content-child p {
-  max-width: 300px;
-} */
+.vertical-submit-button button {
+  margin-bottom: 5px;
+  width: 100%;
+  height: 30px;
+  font-weight: bold;
+  color: white;
+  border-radius: 10px;
+  background-color: #ec2761;
+}
 
+.spotImg {
+  max-width: 70vw; /* ビューポートの幅の100% */
+  max-height: auto; /* 高さは自動で調整 */
+}
 /* # footer ########################################### */
-footer {
+/* footer {
   height: 300px;
   background-color: rgb(111, 111, 255);
-}
+} */

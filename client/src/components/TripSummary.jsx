@@ -7,6 +7,7 @@ import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Header from './Header';
 import { useAuth } from '../contexts/AuthContext';
 import { useTrips } from '../contexts/TripContext';
+import { colors } from '@mui/material';
 
 function TripSummary() {
   const navigate = useNavigate();
@@ -61,81 +62,109 @@ function TripSummary() {
 
   return (
     <>
-      <Header show={true}/>
-      {trip.map((e, index) => (
-        <div className="tripsummary-content">
-          <br />
-          {finishSpot.includes(e.id) ? (
-            <>
-              <p>完了</p>
-              <Link to={`/tripdetail/${e.id}`}>
-                <img
-                  src={e.photo}
-                  alt="#"
-                  className="tripsummary-content-image"
-                  onClick={() => {
-                    setSpot(e);
-                  }}
-                />
-                <br />
-              </Link>
-            </>
-          ) : index === 0 ? (
-            <>
-              <p>次の行き先はここだ！！</p>
-              <Link to={`/tripdetail/${e.id}`}>
-                <img
-                  src={e.photo}
-                  alt="#"
-                  className="tripsummary-content-image"
-                  onClick={() => {
-                    setSpot(e);
-                  }}
-                />
-                <br />
-              </Link>
-            </>
-          ) : finishSpot.includes(trip[index - 1].id) &&
-            finishSpot.includes(trip[0].id) ? (
-            <>
-              <p>次の行き先はここだ！！</p>
-              <Link to={`/tripdetail/${e.id}`}>
-                <img
-                  src={e.photo}
-                  alt="#"
-                  className="tripsummary-content-image"
-                  onClick={() => {
-                    setSpot(e);
-                  }}
-                />
-                <br />
-              </Link>
-            </>
-          ) : (
-            <>
-              <div className="tripsummary-content-wrapped">
-                <img
-                  src={e.photo}
-                  alt="#"
-                  className="tripsummary-content-image-filter"
-                />
-                <img
-                  src={keyIconCloseImg}
-                  alt="#"
-                  className="tripsummary-content-image-keyclose"
-                />
+      <Header show={true} />
+      <div className="trip-summary-body">
+        <h1>冒険一覧</h1>
+        {trip.map((e, index) => {
+          const dir = index % 2 === 0 ? 'left' : 'right';
+
+          return finishSpot.includes(e.id) ? (
+            <div className={`trip-summary-content-${dir}`}>
+              <p style={{ color: '#FAC710' }}>⭐️完了</p>
+              <div className="trip-summary-spot">
+                <Link to={`/tripdetail/${e.id}`}>
+                  <img
+                    src={e.photo}
+                    alt="#"
+                    className="trip-summary-content-image"
+                    onClick={() => {
+                      setSpot(e);
+                    }}
+                  />
+                </Link>
+
+                {index === trip.length - 1 ? (
+                  <></>
+                ) : (
+                  <div className={`arrow-${dir}`}></div>
+                )}
               </div>
-              <br />
-              <img
-                src={iconMapImg}
-                alt="#"
-                className="tripsummary-content-image-icon"
-              />
-              <p>前のミッションをクリアするまで表示できません</p>
-            </>
-          )}
-        </div>
-      ))}
+            </div>
+          ) : index === 0 ? (
+            <div className={`trip-summary-content-${dir}`}>
+              <p style={{ color: '#ec2761' }}>次はここ！</p>
+              <div className="trip-summary-spot">
+                <Link to={`/tripdetail/${e.id}`}>
+                  <img
+                    src={e.photo}
+                    alt="#"
+                    className="trip-summary-content-image"
+                    onClick={() => {
+                      setSpot(e);
+                    }}
+                  />
+                  <br />
+                </Link>
+                {index === trip.length - 1 ? (
+                  <></>
+                ) : (
+                  <div className={`arrow-${dir}`}></div>
+                )}
+              </div>
+            </div>
+          ) : finishSpot.includes(trip[index].id) &&
+            finishSpot.includes(trip[0].id) ? (
+            <div className={`trip-summary-content-${dir}`}>
+              <p style={{ color: '#ec2761' }}>次はここ！</p>
+              <div className="trip-summary-spot">
+                <Link to={`/tripdetail/${e.id}`}>
+                  <img
+                    src={e.photo}
+                    alt="#"
+                    className="trip-summary-content-image"
+                    onClick={() => {
+                      setSpot(e);
+                    }}
+                  />
+                  <br />
+                </Link>
+                {index === trip.length - 1 ? (
+                  <></>
+                ) : (
+                  <div className={`arrow-${dir}`}></div>
+                )}
+              </div>
+            </div>
+          ) : (
+            <div className={`trip-summary-content-${dir}`}>
+              <div className="trip-summary-spot">
+                <div className="trip-summary-content-wrapped">
+                  <img
+                    src={e.photo}
+                    alt="#"
+                    className="trip-summary-content-image-filter"
+                  />
+                  <img
+                    src={keyIconCloseImg}
+                    alt="#"
+                    className="trip-summary-content-image-keyclose"
+                  />
+                  <p>
+                    前のミッションをクリアするまで
+                    <br />
+                    表示できません
+                  </p>
+                </div>
+                {index === trip.length - 1 ? (
+                  <></>
+                ) : (
+                  <div className={`arrow-${dir}`}></div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
     </>
   );
 }
