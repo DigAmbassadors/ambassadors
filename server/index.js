@@ -371,14 +371,12 @@ app.post('/api/mission/gps/:userId', verifyToken, async (req, res) => {
 		const distance = getDistanceFromLatLonInKm(arrOfLatLon[0], arrOfLatLon[1], latitude, longitude);
 
 		if (distance < 1000) {
-			const recordData = await knex('users')
-            .select('record')
-            .where({ id: userId });
+			const recordData = await knex('users').select('record').where({ id: userId });
 
-        let record = recordData[0].record;
-        // recordが配列でなければ空の配列に変換
-        record = Array.isArray(record) ? record : [];
-        
+			let record = recordData[0].record;
+			// recordが配列でなければ空の配列に変換
+			record = Array.isArray(record) ? record : [];
+
 			let addFlag = true;
 			for (const obj of record) {
 				if (obj.spot_id === spot_id && obj.photo) {
@@ -482,8 +480,14 @@ app.get('/api/imgs', verifyToken, async (req, res) => {
 		const imgs = [];
 		for (const objOfId of extra) {
 			const recordOfId = objOfId.record;
-			if (recordOfId) {
-				for (const record of recordOfId) {
+
+			// recordOfIdが配列でなければスキップ
+			if (!Array.isArray(recordOfId)) {
+				continue;
+			}
+
+			for (const record of recordOfId) {
+				if (record.photo) {
 					imgs.push(record.photo);
 				}
 			}
