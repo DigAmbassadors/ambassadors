@@ -53,30 +53,82 @@ function TripStart() {
 
   const makeAreaSelect = () => {
     return (
-      <select value={selectedArea} onChange={handleAreaChange}>
-        {areas.map((area, idx) => (
-          <option key={idx} value={area}>
-            {area}
-          </option>
-        ))}
-      </select>
+      <>
+        <select value={selectedArea} onChange={handleAreaChange}>
+          {areas.map((area, idx) => (
+            <option key={idx} value={area}>
+              {area}
+            </option>
+          ))}
+        </select>
+        <br />
+        <select
+          value={selectedNum}
+          onChange={handleNumChange}
+          style={{
+            width: '50px',
+          }}
+        >
+          {Array.from({ length: num }, (_, index) => index + 1).map(
+            (number, idx) => (
+              <option key={idx} value={number}>
+                {number}
+              </option>
+            )
+          )}
+        </select>
+        <a
+          style={{
+            fontSize: '16.6px',
+          }}
+        >
+          個のスポットでプラン生成
+        </a>
+      </>
     );
   };
 
   //選択されたテーマを検知--------------------------
   const [selectedArea, setSelectedArea] = useState('');
+  const [num, setNum] = useState(3);
+  const [selectedNum, setSelectedNum] = useState(1);
 
-  const handleAreaChange = (e) => {
+  const handleAreaChange = async (e) => {
     setSelectedArea(e.target.value);
   };
+
+  const handleNumChange = (e) => {
+    setSelectedNum(e.target.value);
+  };
+
+  useEffect(() => {
+    const getNum = async () => {
+      try {
+        const response = await fetch(
+          url + `/api/spots/${userId}?area=${selectedArea}`,
+          {
+            method: 'GET',
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setNum(data.length);
+      } catch (error) {
+        console.error('データの取得に失敗しました:', error);
+      }
+    };
+    getNum();
+  }, [selectedArea]);
 
   //新しい探検----------------------------------
   const NewTrip = async () => {
     try {
-      console.log('selectedArea', selectedArea);
+      // console.log('selectedArea', selectedArea);
       //新規トリップを作成(fetch)
       const response = await fetch(
-        url + `/api/trips/new/${userId}/${selectedArea}`,
+        url + `/api/trips/new/${userId}/${selectedArea}?num=${selectedNum}`,
         {
           method: 'POST',
           headers: {
@@ -157,7 +209,9 @@ function TripStart() {
                 onClick={() => handleTripClick(tripId)}
               >
                 <div className="past-trip-center">
-                  <p className="past-trip-area">{tripId}:{tripSummary.area}</p>
+                  <p className="past-trip-area">
+                    {tripId}:{tripSummary.area}
+                  </p>
                   <p className="past-trip-date">{date.toLocaleString()}</p>
                 </div>
               </div>

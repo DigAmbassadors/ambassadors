@@ -94,7 +94,7 @@ function TripSummary() {
             </div>
           ) : index === 0 ? (
             <div className={`trip-summary-content-${dir}`}>
-              <p style={{ color: '#ec2761' }}>次はここ！</p>
+              <p style={{ color: 'white' }}>次はここ！</p>
               <div className="trip-summary-spot">
                 <Link to={`/tripdetail/${e.id}`}>
                   <img
@@ -117,7 +117,7 @@ function TripSummary() {
           ) : finishSpotId.includes(trip[0].id) &&
             finishSpotId.includes(trip[index - 1].id) ? (
             <div className={`trip-summary-content-${dir}`}>
-              <p style={{ color: '#ec2761' }}>次はここ！</p>
+              <p style={{ color: 'white' }}>次はここ！</p>
               <div className="trip-summary-spot">
                 <Link to={`/tripdetail/${e.id}`}>
                   <img

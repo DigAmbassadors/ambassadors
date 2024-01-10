@@ -5,6 +5,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import Drawer from '@mui/material/Drawer';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
+import LogoImg from '../assets/image/logo.jpg';
 
 function Header(props) {
   const { show } = props;
@@ -34,9 +35,12 @@ function Header(props) {
           }}
         />
       )}
-      <div className="logo" onClick={goHome}>
-        AMBASSADORS
-      </div>
+      <img
+        className="logo"
+        onClick={goHome}
+        src={LogoImg}
+        alt="ロゴのイメージ"
+      />
       <div className="hamburger-menu">
         <MenuIcon onClick={handleDrawerOpen} fontSize="large" />
       </div>
