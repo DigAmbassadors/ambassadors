@@ -305,13 +305,14 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
   try {
     const userId = Number(req.params.userId);
     const area = req.params.area;
+    const num = req.query.num;
     // ランダムでプランを作成
     const newTrip = await knex('spot')
       .where({ area: area })
       .select('id')
       .then((spotData) => {
         spotData = spotData.map((e) => e.id);
-        return getRandomSpot(spotData, 3);
+        return getRandomSpot(spotData, num);
       });
 
     // 作成したプランをtripテーブルに追加
@@ -504,23 +505,29 @@ app.get('/api/spots/:userId', async (req, res) => {
   try {
     //ユーザーのrecordを取得
     const userId = Number(req.params.userId);
+    const area = req.query.area;
     const records = await knex('users').where({ id: userId }).select('record');
 
-    //スポットを取得し、ユーザーのクリア成否を追記
-    const spots = await knex('spot');
-    for (const spot of spots) {
-      //ユーザのrecordsから該当するものを探す
-      const rec = records[0].record.filter(
-        (record) => record.spot_id === spot.id
-      );
-      //record内容をspotに追記
-      if (rec.length === 0) {
-        spot.finish = false;
-      } else {
-        spot.finish = rec[0].finish ? true : false;
+    if (!area) {
+      //スポットを取得し、ユーザーのクリア成否を追記
+      const spots = await knex('spot');
+      for (const spot of spots) {
+        //ユーザのrecordsから該当するものを探す
+        const rec = records[0].record.filter(
+          (record) => record.spot_id === spot.id
+        );
+        //record内容をspotに追記
+        if (rec.length === 0) {
+          spot.finish = false;
+        } else {
+          spot.finish = rec[0].finish ? true : false;
+        }
       }
+      res.status(200).json(spots);
+    } else {
+      const spots = await knex('spot').where({ area: area }).select('id');
+      res.status(200).json(spots);
     }
-    res.status(200).json(spots);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: error });

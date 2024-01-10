@@ -5,7 +5,7 @@ const UserTop = () => {
   return (
     <div>
       <Header show={false} />
-      <div className="title-box">探検アプリ</div>
+      <div className="title-box">Take Me!</div>
       <div className="user-menu-content">
         <ul className="user-menu-list">
           <li>

@@ -7,7 +7,8 @@ import { useState, useRef, useEffect } from 'react';
 import { useTrips } from '../contexts/TripContext';
 import { useAuth } from '../contexts/AuthContext';
 import Achieve from '../assets/image/achieve.jpg';
-import NotAchieve from '../assets/image/notachieve.jpg';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 
 function TripDetail() {
   const navigate = useNavigate();
@@ -16,6 +17,15 @@ function TripDetail() {
   const { spot } = useTrips();
   const { tripsId } = useParams();
   const [singleRecord, setSingleRecord] = useState([]);
+
+  // 達成時のイベント
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   //url定義
   let url;
@@ -59,7 +69,8 @@ function TripDetail() {
             if (!response.ok) {
               throw new Error('エラー');
             }
-            alert('登録が完了しました');
+            getSingleRecord();
+            setOpen(true);
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -150,7 +161,8 @@ function TripDetail() {
         if (!response.ok) {
           throw new Error('エラー');
         }
-        alert('登録が完了しました');
+        getSingleRecord();
+        setOpen(true);
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -158,44 +170,43 @@ function TripDetail() {
       });
   };
 
-  useEffect(() => {
-    const getSingleRecord = async () => {
-      try {
-        const response = await fetch(
-          url + `/api/users/${userId}/record/${spot.id}`,
-          {
-            method: 'GET',
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-            },
-          }
-        );
-        const data = await response.json();
-        setSingleRecord(data); //[{},{},{}]
-      } catch (error) {
-        console.error('データの取得に失敗しました:', error);
-      }
-    };
+  //達成状況の取得
+  const getSingleRecord = async () => {
+    try {
+      const response = await fetch(
+        url + `/api/users/${userId}/record/${spot.id}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        }
+      );
+      const data = await response.json();
+      setSingleRecord(data); //[{},{},{}]
+    } catch (error) {
+      console.error('データの取得に失敗しました:', error);
+    }
+  };
 
+  useEffect(() => {
     getSingleRecord();
-  });
+  }, []);
 
   return (
     <>
       <Header show={true} />
+      <h1>{spot.name}</h1>
+      <div className="trip-detail-fin">
+        {singleRecord[0]?.finish ? (
+          <div>
+            <StarIcon sx={{ color: 'yellow' }} fontSize="large" />
+          </div>
+        ) : (
+          <></>
+        )}
+      </div>
       <div className="trip-detail-content">
-        <h2>{spot.name}</h2>
-
-        <div className="trip-detail-fin">
-          {singleRecord[0]?.finish ? (
-            <div>
-              <StarIcon sx={{ color: 'yellow' }} fontSize="large" />
-            </div>
-          ) : (
-            <></>
-          )}
-        </div>
-
         <img
           className="trip-detail-img"
           src={spot.photo}
@@ -253,7 +264,11 @@ function TripDetail() {
             <div className="trip-detail-button2">
               {/* スマホの場合はカメラ起動、PCの場合は画像選択 */}
 
-              <Button variant="contained" component="label">
+              <Button
+                variant="contained"
+                component="label"
+                style={{ backgroundColor: '#ec2761' }}
+              >
                 写真を撮る
                 <input
                   type="file"
@@ -286,7 +301,15 @@ function TripDetail() {
         </div>
         {singleRecord[0]?.photo ? (
           <>
-            <p>{'- 投稿した写真 -'}</p>
+            <p
+              style={{
+                fontSize: '20px',
+                marginTop: '20px',
+                marginBottom: '10px',
+              }}
+            >
+              {'- 投稿した写真 -'}
+            </p>
             <img
               className="trip-detail-img"
               src={singleRecord[0]?.photo}
@@ -297,6 +320,15 @@ function TripDetail() {
           <></>
         )}
       </div>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          <img
+            src={Achieve}
+            alt="Your Image"
+            style={{ width: '100%', height: 'auto' }}
+          />
+        </DialogContent>
+      </Dialog>
     </>
   );
 }
