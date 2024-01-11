@@ -117,7 +117,7 @@ exports.seed = async function(knex) {
       area: '愛知のB級スポット',
       latitude: 35.40539137900559,  
       longitude:  136.96613722343676,
-      photo: await convertImageToBase64('./db/imgs/桃太郎神社.jpg')
+      photo: await convertImageToBase64('./db/imgs/桃太郎.jpg')
     },
     {
       name: '名古屋大仏',

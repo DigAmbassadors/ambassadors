@@ -1,6 +1,11 @@
 /* reset.cssを適用しているのでcss使用時は全て自分でスタイルを作成すること */
 
 /* # 共通で使用するスタイル ########################################### */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&family=M+PLUS+Rounded+1c:wght@300&display=swap');
+body {
+  font-family: 'IBM Plex Sans JP', sans-serif;
+}
+
 h1 {
   text-align: center;
   font-size: 30px;
@@ -21,11 +26,11 @@ h2 {
 /* # header ########################################### */
 * {
   box-sizing: border-box;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  -moz-osx-font-smoothing: grayscale; */
 }
 
 header {
@@ -110,6 +115,7 @@ body {
   width: 100%;
   height: 260px;
   border-radius: 0 0 40% 0;
+  font-weight:bold;
 
   margin-top: -60px;
   text-align: center;
@@ -144,7 +150,7 @@ body {
 
 /* # tripstart ########################################### */
 .trip-start-content {
-  font-family: arial;
+  /* font-family: arial; */
   font-size: 24px;
   text-align: center;
 }
