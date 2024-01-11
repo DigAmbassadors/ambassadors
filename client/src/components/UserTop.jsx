@@ -12,6 +12,9 @@ const UserTop = () => {
             <Link to="/tripstart">探検に出かける</Link>
           </li>
           <li>
+            <Link to="/grouping">グループ設定</Link>
+          </li>
+          <li>
             <Link to="/newspot">スポットを投稿する</Link>
           </li>
           <li>

@@ -143,11 +143,12 @@ app.post('/api/token-exchange', async (req, res) => {
 				.insert({
 					name: name,
 					record: [],
+          group: [],
 				})
 				.returning('id');
 			const newUserId = insertedIds[0].id; // オブジェクトからidを取り出す
 			console.log('newUserId', newUserId); // newUserIdの値を確認
-			user = { id: newUserId, name: name, record: [] };
+			user = { id: newUserId, name: name, record: [], group: [] };
 
 			// tripsテーブルに関連するレコードを追加
 			await knex('trips').insert({

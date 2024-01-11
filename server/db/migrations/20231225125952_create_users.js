@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.increments('id').primary();
     table.string('name', 32);
     table.specificType('record', 'jsonb'); //数値データを格納する配列
+    table.specificType('group', 'jsonb'); //数値データを格納する配列
   });
 };
 
