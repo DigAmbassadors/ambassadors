@@ -6,7 +6,9 @@ import StarIcon from '@mui/icons-material/Star';
 import { useState, useRef, useEffect } from 'react';
 import { useTrips } from '../contexts/TripContext';
 import { useAuth } from '../contexts/AuthContext';
-import Achieve from '../assets/image/achieve.jpg';
+// import Achieve from '../assets/image/くす玉.gif';
+import Achieve from '../assets/image/チェック.gif';
+import Finish from '../assets/image/印鑑.gif';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
@@ -20,11 +22,23 @@ function TripDetail() {
 
   // 達成時のイベント
   const [open, setOpen] = useState(false);
+  const [finishOpen, setFinishOpen] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
+    setTimeout(() => handleClose(), 1500);
   };
-  const handleClose = () => {
+  const handleClose = async () => {
+    const judge = await getSingleRecord();
     setOpen(false);
+
+    if (judge[0]?.finish) {
+      setTimeout(() => setFinishOpen(true), 500);
+      setTimeout(() => setFinishOpen(false), 4000);
+    }
+  };
+
+  const handleFinClose = () => {
+    setFinishOpen(false);
   };
 
   //url定義
@@ -70,7 +84,7 @@ function TripDetail() {
               throw new Error('エラー');
             }
             getSingleRecord();
-            setOpen(true);
+            handleClickOpen();
           })
           .catch((error) => {
             console.error('Error:', error);
@@ -162,7 +176,7 @@ function TripDetail() {
           throw new Error('エラー');
         }
         getSingleRecord();
-        setOpen(true);
+        handleClickOpen();
       })
       .catch((error) => {
         console.error('Error:', error);
@@ -184,6 +198,7 @@ function TripDetail() {
       );
       const data = await response.json();
       setSingleRecord(data); //[{},{},{}]
+      return data;
     } catch (error) {
       console.error('データの取得に失敗しました:', error);
     }
@@ -320,12 +335,35 @@ function TripDetail() {
           <></>
         )}
       </div>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogContent>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        PaperProps={{ style: { backgroundColor: 'transparent' } }}
+      >
+        <DialogContent style={{ backgroundColor: 'rgba(255, 0, 0, 0)' }}>
           <img
             src={Achieve}
             alt="Your Image"
-            style={{ width: '100%', height: 'auto' }}
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        </DialogContent>
+      </Dialog>
+      <Dialog
+        open={finishOpen}
+        onClose={handleFinClose}
+        PaperProps={{ style: { backgroundColor: 'transparent' } }}
+      >
+        <DialogContent style={{ backgroundColor: 'rgba(255, 0, 0, 0)' }}>
+          <img
+            src={Finish}
+            alt="Your Image"
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
           />
         </DialogContent>
       </Dialog>
