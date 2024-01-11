@@ -150,7 +150,6 @@ exports.seed = async function (knex) {
 			longitude: 137.55379238564643,
 			photo: await convertImageToBase64('./db/imgs/飛騨高山.jpg'),
 		},
-
 		{
 			name: 'ホテルアソシア高山リゾート',
 			mission: '温上がりに一杯',
