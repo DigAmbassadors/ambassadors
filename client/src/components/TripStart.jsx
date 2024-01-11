@@ -210,7 +210,7 @@ function TripStart() {
               >
                 <div className="past-trip-center">
                   <p className="past-trip-area">
-                    {tripId}:{tripSummary.area}
+                    {idx+1}:{tripSummary.area}
                   </p>
                   <p className="past-trip-date">{date.toLocaleString()}</p>
                 </div>
