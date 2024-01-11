@@ -2,12 +2,49 @@ import { useState } from 'react';
 import Header from './Header';
 import Button from '@mui/material/Button';
 import '../assets/style/grouping.css';
-import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Grouping = () => {
+    // 汎用フックス-------------------------------
+    const { userId } = useAuth();
+
+    //url定義-----------------------------------------------------------------
+    let url;
+    if (import.meta.env.VITE_NODE_ENV === 'production') {
+      url = 'https://ambassadors-btc5.com';
+    } else {
+      url = 'http://localhost:3000';
+    }
+
 	// 新規グループ作成-------------------------------
 	const [newName, setNewName] = useState('');
-	const newGroup = () => {};
+	const newGroup = async() => {
+    //判定
+    if (!newName) {
+      console.log('未入力だよ');
+      window.alert('入力内容に不備があるよ！');
+      return;
+    }
+
+    // fetch
+    const response = await fetch(url + '/api/newgroup', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        userId: userId,
+        groupName: newName
+      }),
+    });
+
+    if (response.ok) {
+      window.alert('登録しました！');
+    } else {
+      window.alert('登録に失敗しました！');
+    }
+  };
 
 	// 既存グループに参加-----------------------------
 	const [joinId, setJoinId] = useState('');

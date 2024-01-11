@@ -143,7 +143,7 @@ app.post('/api/token-exchange', async (req, res) => {
 				.insert({
 					name: name,
 					record: [],
-          group: [],
+					group: [],
 				})
 				.returning('id');
 			const newUserId = insertedIds[0].id; // オブジェクトからidを取り出す
@@ -549,6 +549,71 @@ app.get('/api/ranking', async (req, res) => {
 		const sorted = users.sort((a, b) => b.num_record - a.num_record);
 		const extra = sorted.map(({ record, ...rest }) => rest);
 		res.status(200).json(extra);
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ message: 'Error retrieving user data' });
+	}
+});
+
+// 新規グループを作成
+app.post('/api/newgroup', verifyToken, async (req, res) => {
+	try {
+		const { userId, groupName } = req.body;
+
+		// 新しいグループを作成
+		const newGroupId = await knex('groups').insert({
+			name: groupName,
+			record: [],
+			pass: Math.floor(1000 + Math.random() * 9000) // 1000から9999までのランダムな数字
+		}).returning('id'); // 新しいレコードのIDを返す
+
+		// ユーザーの現在のグループ情報を取得
+		const user = await knex('users').where('id', userId).first();
+		let currentGroups = user.group;
+		if (Array.isArray(currentGroups)) {
+			currentGroups.push(newGroupId[0].id);
+		} else {
+			currentGroups = [newGroupId[0].id];
+		}
+
+		// ユーザーのグループ情報を更新（JSON文字列に変換）
+    await knex('users').where('id', userId).update({
+      group: JSON.stringify(currentGroups)
+    });
+
+		res.status(200).json({ newGroupId: newGroupId[0] });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error.message });
+	}
+});
+
+//ユーザが所属するグループを取得
+app.get('/api/groups/:userId', verifyToken, async (req, res) => {
+	try {
+		const userId = Number(req.params.userId);
+
+		// グループid配列を得る
+		const idArr = await knex('users')
+			.where({ id: userId })
+			.then((Arr) => {
+				return Array.isArray(Arr[0].group) ? Arr[0].group : [];
+			});
+
+		// 詳細なグループ情報を得る
+		const result = [];
+		for (const groupId of idArr) {
+			await knex('groups')
+				.where({ id: groupId })
+				.then((arr) => {
+          result.push({
+            name: arr[0].name,
+            id: groupId,
+            pass: arr[0].pass,
+          })
+        });
+		}
+		res.status(200).json(result);
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ message: 'Error retrieving user data' });
