@@ -147,7 +147,6 @@ app.post('/api/token-exchange', async (req, res) => {
 				})
 				.returning('id');
 			const newUserId = insertedIds[0].id; // オブジェクトからidを取り出す
-			console.log('newUserId', newUserId); // newUserIdの値を確認
 			user = { id: newUserId, name: name, record: [], group: [] };
 
 			// tripsテーブルに関連するレコードを追加
@@ -312,6 +311,8 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 		const userId = Number(req.params.userId);
 		const area = req.params.area;
 		const num = req.query.num;
+		console.log('new', userId, area, num);
+
 		// ランダムでプランを作成
 		const newTrip = await knex('spot')
 			.where({ area: area })
@@ -540,7 +541,7 @@ app.get('/api/ranking', async (req, res) => {
 	try {
 		const users = await knex('users');
 		for (const user of users) {
-			if (user.record) {
+			if (Array.isArray(user.record)) {
 				user.num_record = user.record.length;
 			} else {
 				user.num_record = 0;
@@ -560,28 +561,46 @@ app.post('/api/newgroup', verifyToken, async (req, res) => {
 	try {
 		const { userId, groupName } = req.body;
 
-		// 新しいグループを作成
-		const newGroupId = await knex('groups').insert({
-			name: groupName,
-			record: [],
-			pass: Math.floor(1000 + Math.random() * 9000) // 1000から9999までのランダムな数字
-		}).returning('id'); // 新しいレコードのIDを返す
+		// usersテーブルに新しいユーザーを追加
+		const insertedIds = await knex('users')
+			.insert({
+				name: groupName,
+				record: [],
+				group: [],
+			})
+			.returning('id');
+		const newUserId = insertedIds[0].id;
 
-		// ユーザーの現在のグループ情報を取得
+		// tripsテーブルに関連するレコードを追加
+		await knex('trips').insert({
+			users_id: newUserId, // 整数型のIDを使用
+			trips: knex.raw('ARRAY[]::integer[]'), // 空の整数配列
+		});
+
+		//登録すべきgroupオブジェクトを定義
+		const gData = {
+			groupId: newUserId,
+			groupName: groupName,
+			groupPass: Math.floor(1000 + Math.random() * 9000), // 1000から9999までのランダムな数字
+		};
+
+		// ログインuserのgroup列に新設グループを追加
 		const user = await knex('users').where('id', userId).first();
 		let currentGroups = user.group;
 		if (Array.isArray(currentGroups)) {
-			currentGroups.push(newGroupId[0].id);
+			currentGroups.push(gData);
 		} else {
-			currentGroups = [newGroupId[0].id];
+			currentGroups = [gData];
 		}
 
 		// ユーザーのグループ情報を更新（JSON文字列に変換）
-    await knex('users').where('id', userId).update({
-      group: JSON.stringify(currentGroups)
-    });
+		await knex('users')
+			.where('id', userId)
+			.update({
+				group: JSON.stringify(currentGroups),
+			});
 
-		res.status(200).json({ newGroupId: newGroupId[0] });
+		res.status(200).json();
 	} catch (error) {
 		console.error(error);
 		res.status(500).json({ error: error.message });
@@ -590,41 +609,50 @@ app.post('/api/newgroup', verifyToken, async (req, res) => {
 
 // 既存グループに参加
 app.post('/api/joingroup', verifyToken, async (req, res) => {
-  try {
-    const { userId, groupId, groupPass } = req.body;
+	try {
+		const { userId, groupId, groupPass } = req.body;
 
-    // グループが存在し、パスワードが一致するか確認
-    const group = await knex('groups').where({ id: Number(groupId), pass: Number(groupPass) }).first();
-    if (!group) {
-      return res.status(404).json({ error: 'グループが存在しないか、パスワードが間違っています。' });
-    }
+		// ユーザーが既にグループに参加しているか確認--------------
+		const user = await knex('users').where('id', userId).first();
+		let userGroups = user.group;
+		// user.groupが文字列の場合、JSONオブジェクトに変換
+		if (typeof userGroups === 'string') {
+			userGroups = JSON.parse(userGroups);
+		}
+		// user.groupが配列でない場合、空の配列に設定
+		if (!Array.isArray(userGroups)) {
+			userGroups = [];
+		}
+		if (userGroups.some((g) => g.groupId === groupId)) {
+			return res.status(400).json({ error: '既にグループに参加しています。' });
+		}
 
-    // ユーザーの現在のグループ情報を取得
-    const user = await knex('users').where('id', userId).first();
-    let currentGroups = user.group;
+		// 指定されたgroupが存在するか確認--------------------
+		// 指定されたグループを所有するユーザーを検索
+		const other = await knex('users')
+			.whereRaw('"group" != \'{}\'::jsonb')
+			.andWhereRaw('jsonb_path_exists("group", ?::jsonpath)', [
+				`$.** ? (@.groupId == ${groupId} && @.groupPass == ${groupPass})`,
+			])
+			.first();
 
-    // 既にグループに参加しているか確認
-    if (Array.isArray(currentGroups) && currentGroups.includes(groupId)) {
-      return res.status(400).json({ error: '既にこのグループに参加しています。' });
-    }
+		if (!other) {
+			return res.status(404).json({ error: 'グループが見つかりません。' });
+		}
 
-    // 新たにグループIDを追加
-    if (Array.isArray(currentGroups)) {
-      currentGroups.push(groupId);
-    } else {
-      currentGroups = [groupId];
-    }
+		// ユーザーのgroup列に新しいグループを追加
+		userGroups.push({ groupId: groupId, groupName: other.group[0].groupName, groupPass: groupPass });
+		await knex('users')
+			.where('id', userId)
+			.update({
+				group: JSON.stringify(userGroups),
+			});
 
-    // ユーザーのグループ情報を更新
-    await knex('users').where('id', userId).update({
-      group: JSON.stringify(currentGroups)
-    });
-
-    res.status(200).json({ message: 'グループに参加しました。' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: error.message });
-  }
+		res.status(200).json({ message: 'グループに参加しました。' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error.message });
+	}
 });
 
 //ユーザが所属するグループを取得
@@ -633,26 +661,13 @@ app.get('/api/groups/:userId', verifyToken, async (req, res) => {
 		const userId = Number(req.params.userId);
 
 		// グループid配列を得る
-		const idArr = await knex('users')
+		const groupArr = await knex('users')
 			.where({ id: userId })
 			.then((Arr) => {
 				return Array.isArray(Arr[0].group) ? Arr[0].group : [];
 			});
 
-		// 詳細なグループ情報を得る
-		const result = [];
-		for (const groupId of idArr) {
-			await knex('groups')
-				.where({ id: groupId })
-				.then((arr) => {
-          result.push({
-            name: arr[0].name,
-            id: groupId,
-            pass: arr[0].pass,
-          })
-        });
-		}
-		res.status(200).json(result);
+		res.status(200).json(groupArr);
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ message: 'Error retrieving user data' });

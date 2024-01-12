@@ -24,7 +24,7 @@ const UserTop = () => {
             <Link to="/ranking">ランキングを見る</Link>
           </li>
           <li>
-            <Link to="/spotpreview">過去の探検を見る</Link>
+            <Link to="/spotpreview">スポット図鑑を見る</Link>
           </li>
         </ul>
       </div>

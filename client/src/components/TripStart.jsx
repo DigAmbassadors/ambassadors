@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useTrips } from '../contexts/TripContext';
 import Header from './Header';
@@ -10,8 +10,7 @@ function TripStart() {
 	// 汎用フックス-------------------------------
 	const { userId } = useAuth();
 	const navigate = useNavigate();
-	const { trips, setTrips } = useTrips();
-  const [selectedGroup, setSelectedGroup] = useState(-1);
+	const { trips, setTrips, execUserId, setExecUserId } = useTrips();
 
 	//url定義-----------------------------------
 	let url;
@@ -49,19 +48,19 @@ function TripStart() {
 
 	const makeGroupSelect = () => {
 		return (
-			<select value={selectedGroup} onChange={handleGroupChange}>
+			<select value={execUserId} onChange={handleGroupChange}>
 				{groups.map((group, idx) => (
-					<option key={idx} value={group.id}>
-						{group.name}
+					<option key={idx} value={group.groupId}>
+						{group.groupName}
 					</option>
 				))}
-        <option value='-1'>個人</option>
+        <option value={userId}>個人</option>
 			</select>
 		);
 	};
 
 	const handleGroupChange = async (e) => {
-		setSelectedGroup(Number(e.target.value));
+    setExecUserId(Number(e.target.value));
 	};
 
 	//テーマ選択欄を作成----------------------------
@@ -145,7 +144,7 @@ function TripStart() {
 	useEffect(() => {
 		const getNum = async () => {
 			try {
-				const response = await fetch(url + `/api/spots/${userId}?area=${selectedArea}`, {
+				const response = await fetch(url + `/api/spots/${execUserId}?area=${selectedArea}`, {
 					method: 'GET',
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -158,14 +157,13 @@ function TripStart() {
 			}
 		};
 		getNum();
-	}, [selectedArea]);
+	}, [selectedArea, execUserId]);
 
 	//新しい探検----------------------------------
 	const NewTrip = async () => {
 		try {
-			// console.log('selectedArea', selectedArea);
 			//新規トリップを作成(fetch)
-			const response = await fetch(url + `/api/trips/new/${userId}/${selectedArea}?num=${selectedNum}`, {
+			const response = await fetch(url + `/api/trips/new/${execUserId}/${selectedArea}?num=${selectedNum}`, {
 				method: 'POST',
 				headers: {
 					Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
@@ -195,13 +193,30 @@ function TripStart() {
 	useEffect(() => {
 		const getFetch = async () => {
 			try {
-				const response = await fetch(url + `/api/tripsummary`, {
+        // tripsを更新 ------------------
+        let response = await fetch(url + `/api/trips/${execUserId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+        });
+  
+        if (!response.ok) {
+          console.error('Network response was not ok');
+          return false;
+        }
+  
+        const trips_res = await response.json();
+        setTrips(trips_res)
+
+        // summaryを更新------------------
+				response = await fetch(url + `/api/tripsummary`, {
 					method: 'POST',
 					headers: {
 						Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({ trips: trips }),
+					body: JSON.stringify({ trips: trips_res }),
 				});
 
 				if (!response.ok) {
@@ -217,7 +232,7 @@ function TripStart() {
 			}
 		};
 		getFetch();
-	}, []);
+	}, [execUserId]);
 
 	const handleTripClick = (tripId) => {
 		console.log('Selected Trip ID:', tripId);

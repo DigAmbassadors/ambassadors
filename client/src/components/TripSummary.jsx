@@ -1,20 +1,13 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import iconMapImg from '../assets/image/iconMap.jpg';
 import keyIconCloseImg from '../assets/image/keyIconClose.jpg';
-import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Header from './Header';
-import { useAuth } from '../contexts/AuthContext';
 import { useTrips } from '../contexts/TripContext';
-import { colors } from '@mui/material';
 
 function TripSummary() {
-  const navigate = useNavigate();
-  const { userId } = useAuth();
   const { tripId } = useParams();
-  const { trip, setTrip, finFlag, setFinFlag } = useTrips();
-  const { setSpot } = useTrips();
+  const { trip, setTrip, setSpot, execUserId } = useTrips();
   const [finishSpot, setFinishSpot] = useState([]); // ここでデータを管理
 
   let url;
@@ -42,8 +35,7 @@ function TripSummary() {
 
     const getFinishSpot = async () => {
       try {
-        // url + `/api/trips/${userId}?tripId=${tripId}`
-        const response = await fetch(url + `/api/users/record/${userId}`, {
+        const response = await fetch(url + `/api/users/record/${execUserId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,

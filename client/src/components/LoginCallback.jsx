@@ -7,7 +7,7 @@ const LoginCallback = () => {
 	//各種フックス
 	const navigate = useNavigate();
 	const { login, setUserId, setUserName } = useAuth();
-	const { setTrips } = useTrips();
+	const { setTrips, setExecUserId } = useTrips();
 
 	// バックエンドに認可コードを送信し、ログイン情報を入手
 	const getAuthData = async (url, code) => {
@@ -48,8 +48,8 @@ const LoginCallback = () => {
 				return false;
 			}
 
-			const reply = await response.json();
-			return reply;
+			const trips_res = await response.json();
+			return trips_res;
 		} catch (error) {
 			console.error('Error during get trips:', error);
 			return false;
@@ -87,6 +87,7 @@ const LoginCallback = () => {
 			// ユーザー名、ユーザーIDを保存
 			setUserName(authData.name);
 			setUserId(authData.id);
+      setExecUserId(authData.id);
 			console.log('user', authData.name, authData.id);
 
 			//tripsデータを入手して保存

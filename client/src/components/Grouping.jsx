@@ -138,9 +138,9 @@ const Grouping = () => {
 				<h2>参加済みチーム</h2>
 				{joined.map((group, idx) => (
 					<div key={idx}>
-						<p className='groupName'>{group.name}</p>
-						<p>ID  : {group.id}</p>
-						<p>Pass: {group.pass}</p>
+						<p className='groupName'>{group.groupName}</p>
+						<p>ID  : {group.groupId}</p>
+						<p>Pass: {group.groupPass}</p>
 					</div>
 				))}
 			</div>

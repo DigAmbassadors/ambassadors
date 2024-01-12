@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useTrips } from '../contexts/TripContext';
 import { useNavigate } from 'react-router-dom';
 import Header from './Header';
-import pageBackImg from '../assets/image/pageBackButton.jpg';
 import '../assets/style/spot.css';
 
 const SpotPreview = () => {
   // 汎用フックス-------------------------------
-  const { userId } = useAuth();
+	const { execUserId } = useTrips();
   const navigate = useNavigate();
 
   //url定義-----------------------------------------------------------------
@@ -23,7 +22,7 @@ const SpotPreview = () => {
   useEffect(() => {
     const getFetch = async () => {
       try {
-        const response = await fetch(url + `/api/spots/${userId}`, {
+        const response = await fetch(url + `/api/spots/${execUserId}`, {
           method: 'GET',
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
