@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { useTrips } from '../contexts/TripContext';
 import Header from './Header';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 function TripStart() {
 	// 汎用フックス-------------------------------
@@ -96,7 +97,13 @@ function TripStart() {
 	const makeAreaSelect = () => {
 		return (
 			<>
-				<select value={selectedArea} onChange={handleAreaChange}>
+				<select
+          value={selectedArea}
+          onChange={handleAreaChange}
+          style={{
+            fontFamily: 'Yusei Magic',
+          }}
+        >
 					{areas.map((area, idx) => (
 						<option key={idx} value={area}>
 							{area}
@@ -109,6 +116,7 @@ function TripStart() {
 					onChange={handleNumChange}
 					style={{
 						width: '50px',
+            fontFamily: 'Yusei Magic',
 					}}
 				>
 					{Array.from({ length: num }, (_, index) => index + 1).map((number, idx) => (
@@ -285,7 +293,11 @@ function TripStart() {
 					{makeAreaSelect()}
 					<br />
 					<div className='trip-start-button'>
-						<Button onClick={NewTrip}>探検スタート</Button>
+          <Button onClick={NewTrip}>
+              <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                探検スタート
+              </Typography>
+            </Button>
 					</div>
 				</div>
 

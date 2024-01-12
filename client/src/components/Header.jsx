@@ -50,7 +50,7 @@ function Header(props) {
         open={open}
         onClose={handleDrawerClose}
         PaperProps={{
-          style: { width: '35%', backgroundColor: 'rgba(250, 250, 50,0.8)' },
+          style: { width: '35%', backgroundColor: 'rgba(222, 184, 135, 0.8)' },
         }}
       >
         <div className="ham-close-icon">

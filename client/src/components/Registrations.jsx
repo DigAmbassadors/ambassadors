@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../assets/style/map.css';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 const Registrations = (props) => {
   const { selectedPosition } = props;
@@ -195,7 +196,9 @@ const Registrations = (props) => {
 
         <div className="vertical-photo-button">
           <Button variant="contained" onClick={handleClickPhoto}>
-            画像を選択
+            <Typography style={{ fontFamily: 'Yusei Magic' }}>
+              画像を選択
+            </Typography>
           </Button>
         </div>
         <input
@@ -211,7 +214,9 @@ const Registrations = (props) => {
 
       <div className="vertical-submit-button">
         <Button variant="contained" onClick={handleSubmit}>
-          上記の内容で保存する
+          <Typography style={{ fontFamily: 'Yusei Magic' }}>
+            上記の内容で保存する
+          </Typography>
         </Button>
       </div>
     </div>

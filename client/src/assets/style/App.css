@@ -1,9 +1,10 @@
 /* reset.cssを適用しているのでcss使用時は全て自分でスタイルを作成すること */
 
 /* # 共通で使用するスタイル ########################################### */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+JP&family=M+PLUS+Rounded+1c:wght@300&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Potta+One&family=Yusei+Magic&display=swap');
 body {
-  font-family: 'IBM Plex Sans JP', sans-serif;
+  font-family: 'Yusei Magic', sans-serif;
 }
 
 h1 {
@@ -115,7 +116,7 @@ body {
   width: 100%;
   height: 260px;
   border-radius: 0 0 40% 0;
-  font-weight:bold;
+  font-weight: bold;
 
   margin-top: -60px;
   text-align: center;
@@ -123,6 +124,8 @@ body {
   color: #342523;
   font-size: 60px;
   font-weight: bold;
+  text-shadow: 5px 5px 5px burlywood;
+  font-family: 'Potta One', system-ui;
 }
 
 .user-menu-content {
