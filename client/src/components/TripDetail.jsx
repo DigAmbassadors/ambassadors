@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import Header from './Header';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import StarIcon from '@mui/icons-material/Star';
 import { useState, useRef, useEffect } from 'react';
 import { useTrips } from '../contexts/TripContext';
@@ -243,12 +244,18 @@ function TripDetail() {
           <p className="mission-content">現地に行った記録を残そう！</p>
           {singleRecord[0]?.arrived ? (
             <div className="trip-detail-fin-button">
-              <Button variant="contained">完了</Button>
+              <Button variant="contained">
+                <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                  完了
+                </Typography>
+              </Button>
             </div>
           ) : (
             <div className="trip-detail-button1">
               <Button variant="contained" onClick={handleSpotCheck}>
-                来たぜ！
+                <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                  来たぜ！
+                </Typography>
               </Button>
             </div>
           )}
@@ -264,7 +271,9 @@ function TripDetail() {
                 component="label"
                 style={{ backgroundColor: '#959595' }}
               >
-                完了(再撮影)
+                <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                  完了(再撮影)
+                </Typography>
                 <input
                   type="file"
                   capture="environment"
@@ -284,7 +293,9 @@ function TripDetail() {
                 component="label"
                 style={{ backgroundColor: '#ec2761' }}
               >
-                写真を撮る
+                <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                  写真を撮る
+                </Typography>
                 <input
                   type="file"
                   capture="environment"

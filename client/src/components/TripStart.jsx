@@ -6,6 +6,7 @@ import { useTrips } from '../contexts/TripContext';
 import Header from './Header';
 import pageBackImg from '../assets/image/pageBackButton.jpg';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 
 function TripStart() {
   // 汎用フックス-------------------------------
@@ -54,7 +55,13 @@ function TripStart() {
   const makeAreaSelect = () => {
     return (
       <>
-        <select value={selectedArea} onChange={handleAreaChange}>
+        <select
+          value={selectedArea}
+          onChange={handleAreaChange}
+          style={{
+            fontFamily: 'Yusei Magic',
+          }}
+        >
           {areas.map((area, idx) => (
             <option key={idx} value={area}>
               {area}
@@ -67,6 +74,7 @@ function TripStart() {
           onChange={handleNumChange}
           style={{
             width: '50px',
+            fontFamily: 'Yusei Magic',
           }}
         >
           {Array.from({ length: num }, (_, index) => index + 1).map(
@@ -210,7 +218,7 @@ function TripStart() {
               >
                 <div className="past-trip-center">
                   <p className="past-trip-area">
-                    {idx+1}:{tripSummary.area}
+                    {idx + 1}:{tripSummary.area}
                   </p>
                   <p className="past-trip-date">{date.toLocaleString()}</p>
                 </div>
@@ -233,7 +241,11 @@ function TripStart() {
           {makeAreaSelect()}
           <br />
           <div className="trip-start-button">
-            <Button onClick={NewTrip}>探検スタート</Button>
+            <Button onClick={NewTrip}>
+              <Typography style={{ fontFamily: 'Yusei Magic' }}>
+                探検スタート
+              </Typography>
+            </Button>
           </div>
         </div>
         <div className="past-trip-content">
