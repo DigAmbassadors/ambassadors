@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import StarIcon from '@mui/icons-material/Star';
 import { useState, useRef, useEffect } from 'react';
 import { useTrips } from '../contexts/TripContext';
-import { useAuth } from '../contexts/AuthContext';
 // import Achieve from '../assets/image/くす玉.gif';
 import Achieve from '../assets/image/チェック.gif';
 import Finish from '../assets/image/印鑑.gif';
@@ -14,11 +13,8 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 
 function TripDetail() {
-  const navigate = useNavigate();
   const inputRef = useRef(null);
-  const { userId } = useAuth();
-  const { spot } = useTrips();
-  const { tripsId } = useParams();
+  const { spot, execUserId } = useTrips();
   const [singleRecord, setSingleRecord] = useState([]);
 
   // 達成時のイベント
@@ -68,7 +64,7 @@ function TripDetail() {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
 
-        fetch(url + `/api/mission/gps/${userId}`, {
+        fetch(url + `/api/mission/gps/${execUserId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -164,7 +160,7 @@ function TripDetail() {
     // const base64string = await getFileAsBase64(e.target.files[0]);
     const base64string = await getFileAsBase64_2(e);
 
-    fetch(url + `/api/mission/photo/${userId}`, {
+    fetch(url + `/api/mission/photo/${execUserId}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -189,7 +185,7 @@ function TripDetail() {
   const getSingleRecord = async () => {
     try {
       const response = await fetch(
-        url + `/api/users/${userId}/record/${spot.id}`,
+        url + `/api/users/${execUserId}/record/${spot.id}`,
         {
           method: 'GET',
           headers: {

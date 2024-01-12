@@ -143,11 +143,11 @@ app.post('/api/token-exchange', async (req, res) => {
 				.insert({
 					name: name,
 					record: [],
+					group: [],
 				})
 				.returning('id');
 			const newUserId = insertedIds[0].id; // オブジェクトからidを取り出す
-			console.log('newUserId', newUserId); // newUserIdの値を確認
-			user = { id: newUserId, name: name, record: [] };
+			user = { id: newUserId, name: name, record: [], group: [] };
 
 			// tripsテーブルに関連するレコードを追加
 			await knex('trips').insert({
@@ -311,6 +311,8 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 		const userId = Number(req.params.userId);
 		const area = req.params.area;
 		const num = req.query.num;
+		console.log('new', userId, area, num);
+
 		// ランダムでプランを作成
 		const newTrip = await knex('spot')
 			.where({ area: area })
@@ -539,7 +541,7 @@ app.get('/api/ranking', async (req, res) => {
 	try {
 		const users = await knex('users');
 		for (const user of users) {
-			if (user.record) {
+			if (Array.isArray(user.record)) {
 				user.num_record = user.record.length;
 			} else {
 				user.num_record = 0;
@@ -548,6 +550,124 @@ app.get('/api/ranking', async (req, res) => {
 		const sorted = users.sort((a, b) => b.num_record - a.num_record);
 		const extra = sorted.map(({ record, ...rest }) => rest);
 		res.status(200).json(extra);
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ message: 'Error retrieving user data' });
+	}
+});
+
+// 新規グループを作成
+app.post('/api/newgroup', verifyToken, async (req, res) => {
+	try {
+		const { userId, groupName } = req.body;
+
+		// usersテーブルに新しいユーザーを追加
+		const insertedIds = await knex('users')
+			.insert({
+				name: groupName,
+				record: [],
+				group: [],
+			})
+			.returning('id');
+		const newUserId = insertedIds[0].id;
+
+		// tripsテーブルに関連するレコードを追加
+		await knex('trips').insert({
+			users_id: newUserId, // 整数型のIDを使用
+			trips: knex.raw('ARRAY[]::integer[]'), // 空の整数配列
+		});
+
+		//登録すべきgroupオブジェクトを定義
+		const gData = {
+			groupId: newUserId,
+			groupName: groupName,
+			groupPass: Math.floor(1000 + Math.random() * 9000), // 1000から9999までのランダムな数字
+		};
+
+		// ログインuserのgroup列に新設グループを追加
+		const user = await knex('users').where('id', userId).first();
+		let currentGroups = user.group;
+		if (Array.isArray(currentGroups)) {
+			currentGroups.push(gData);
+		} else {
+			currentGroups = [gData];
+		}
+
+		// ユーザーのグループ情報を更新（JSON文字列に変換）
+		await knex('users')
+			.where('id', userId)
+			.update({
+				group: JSON.stringify(currentGroups),
+			});
+
+		res.status(200).json();
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error.message });
+	}
+});
+
+// 既存グループに参加
+app.post('/api/joingroup', verifyToken, async (req, res) => {
+	try {
+		const { userId, groupId, groupPass } = req.body;
+
+		// ユーザーが既にグループに参加しているか確認--------------
+		const user = await knex('users').where('id', userId).first();
+		let userGroups = user.group;
+		// user.groupが文字列の場合、JSONオブジェクトに変換
+		if (typeof userGroups === 'string') {
+			userGroups = JSON.parse(userGroups);
+		}
+		// user.groupが配列でない場合、空の配列に設定
+		if (!Array.isArray(userGroups)) {
+			userGroups = [];
+		}
+		if (userGroups.some((g) => g.groupId === groupId)) {
+			return res.status(400).json({ error: '既にグループに参加しています。' });
+		}
+
+		// 指定されたgroupが存在するか確認--------------------
+		// 指定されたグループを所有するユーザーを検索
+		const other = await knex('users')
+			.whereRaw('"group" != \'{}\'::jsonb')
+			.andWhereRaw('jsonb_path_exists("group", ?::jsonpath)', [
+				`$.** ? (@.groupId == ${groupId} && @.groupPass == ${groupPass})`,
+			])
+			.first();
+
+		if (!other) {
+			return res.status(404).json({ error: 'グループが見つかりません。' });
+		}
+
+		// ユーザーのgroup列に新しいグループを追加
+		userGroups.push({ groupId: groupId, groupName: other.group[0].groupName, groupPass: groupPass });
+		await knex('users')
+			.where('id', userId)
+			.update({
+				group: JSON.stringify(userGroups),
+			});
+
+		res.status(200).json({ message: 'グループに参加しました。' });
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({ error: error.message });
+	}
+});
+
+//ユーザが所属するグループを取得
+app.get('/api/groups/:userId', verifyToken, async (req, res) => {
+	try {
+		const userId = Number(req.params.userId);
+
+		// グループid配列を得る
+		const groupArr = await knex('users')
+			.where({ id: userId })
+			.then((Arr) => {
+				return Array.isArray(Arr[0].group) ? Arr[0].group : [];
+			});
+
+		res.status(200).json(groupArr);
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ message: 'Error retrieving user data' });

@@ -14,6 +14,7 @@ import './assets/style/App.css';
 import RecordPreview from './components/RecordPreview';
 import SpotPreview from './components/SpotPreview';
 import Ranking from './components/Ranking';
+import Grouping from './components/grouping';
 
 function App() {
 	return (
@@ -28,6 +29,14 @@ function App() {
 						element={
 							<ProtectedRoute>
 								<UserTop />
+							</ProtectedRoute>
+						}
+					/>
+          <Route
+						path='/grouping'
+						element={
+							<ProtectedRoute>
+								<Grouping />
 							</ProtectedRoute>
 						}
 					/>

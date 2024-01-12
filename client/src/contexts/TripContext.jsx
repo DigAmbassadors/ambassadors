@@ -5,10 +5,11 @@ const TripsContext = createContext();
 
 // データを提供するコンポーネント
 export const TripsProvider = ({ children }) => {
-  const [trips, setTrips] = useState([]); // ここでデータを管理
-  const [trip, setTrip] = useState([]); // ここでデータを管理
+  const [trips, setTrips] = useState([]);
+  const [trip, setTrip] = useState([]);
   const [spot, setSpot] = useState([]);
   const [finFlag, setFinFlag] = useState([]);
+  const [execUserId, setExecUserId] = useState(); //実際に使うuserIdのこと。loginIdとは別。グループIdが割り当てられる可能性あり。
 
   return (
     <TripsContext.Provider
@@ -21,6 +22,8 @@ export const TripsProvider = ({ children }) => {
         setSpot,
         finFlag,
         setFinFlag,
+        execUserId,
+        setExecUserId,
       }}
     >
       {children}
