@@ -588,6 +588,46 @@ app.post('/api/newgroup', verifyToken, async (req, res) => {
 	}
 });
 
+// 既存グループに参加
+app.post('/api/joingroup', verifyToken, async (req, res) => {
+  try {
+    const { userId, groupId, groupPass } = req.body;
+
+    // グループが存在し、パスワードが一致するか確認
+    const group = await knex('groups').where({ id: Number(groupId), pass: Number(groupPass) }).first();
+    if (!group) {
+      return res.status(404).json({ error: 'グループが存在しないか、パスワードが間違っています。' });
+    }
+
+    // ユーザーの現在のグループ情報を取得
+    const user = await knex('users').where('id', userId).first();
+    let currentGroups = user.group;
+
+    // 既にグループに参加しているか確認
+    if (Array.isArray(currentGroups) && currentGroups.includes(groupId)) {
+      return res.status(400).json({ error: '既にこのグループに参加しています。' });
+    }
+
+    // 新たにグループIDを追加
+    if (Array.isArray(currentGroups)) {
+      currentGroups.push(groupId);
+    } else {
+      currentGroups = [groupId];
+    }
+
+    // ユーザーのグループ情報を更新
+    await knex('users').where('id', userId).update({
+      group: JSON.stringify(currentGroups)
+    });
+
+    res.status(200).json({ message: 'グループに参加しました。' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
 //ユーザが所属するグループを取得
 app.get('/api/groups/:userId', verifyToken, async (req, res) => {
 	try {

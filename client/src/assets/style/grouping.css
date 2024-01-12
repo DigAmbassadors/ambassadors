@@ -1,57 +1,68 @@
 /* チームを作成 --------------------------------------------------- */
 .newGroup {
-  background-color: #bf8a49;
-  margin: 10px;
-  padding: 10px;
+	background-color: #bf8a49;
+	margin: 10px;
+	padding: 10px;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* これにより、子要素が中央揃えになります */
+	display: flex;
+	flex-direction: column;
+	align-items: center; /* これにより、子要素が中央揃えになります */
 }
 
 .newGroup > div {
-  display: flex;
-  justify-content: space-between; /* h2とボタンを左右に配置 */
-  width: 100%; /* コンテナを全幅に拡張 */
-  margin-bottom: 10px; /* 下段との間隔 */
+	display: flex;
+	justify-content: space-between; /* h2とボタンを左右に配置 */
+	width: 100%; /* コンテナを全幅に拡張 */
+	margin-bottom: 10px; /* 下段との間隔 */
 }
 
 .newGroup input {
-  text-align: center; /* inputのテキストを中央揃えに */
-  width: 100%; /* inputを全幅に拡張 */
-  font-size: 16px;
+	text-align: center; /* inputのテキストを中央揃えに */
+	width: 100%; /* inputを全幅に拡張 */
+	font-size: 16px;
 }
 
 /* チームに参加 --------------------------------------------------- */
-.joinGroup {
-  background-color: #bf8a49;
-  margin: 10px;
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+.joiningGroup {
+	background-color: #bf8a49;
+	margin: 10px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
 }
 
-.joinGroup > div {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
+.joiningGroup > div {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
 }
 
-.joinGroup input {
-  flex: 1;
-  font-size: 16px;
-  box-sizing: border-box; /* paddingとborderがwidthとheightに含まれる */
-  margin-bottom: 10px; /* 下のinput要素との間隔 */
+.joiningGroup input {
+	flex: 1;
+	font-size: 16px;
+	box-sizing: border-box; /* paddingとborderがwidthとheightに含まれる */
+	margin-bottom: 10px; /* 下のinput要素との間隔 */
 }
-
-
-
 
 /* 参加済みチーム ----------------------------------------------- */
-.joined {
-  background-color: #bf8a49;
-  margin: 10px;
-  padding: 10px;
-  min-height: 100px;
+.joinedGroup {
+	background-color: #bf8a49;
+	margin: 10px;
+	padding: 10px;
+	min-height: 100px;
+}
+
+.joinedGroup > div {
+	background-color: white;
+	margin: 10px 30px;
+	padding: 5px 10px;
+	display: flex;
+	flex-direction: column; /* 子要素を縦方向に並べる */
+	align-items: center; /* 中央揃え */
+}
+
+.groupName {
+	font-size: 20px;
+	font-weight: bold;
 }
