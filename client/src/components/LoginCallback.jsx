@@ -95,7 +95,6 @@ const LoginCallback = () => {
 				return;
 			}
 			setTrips(trips);
-			console.log('trips', trips);
 
 			// ログインしてユーザートップページにリダイレクト
 			login();

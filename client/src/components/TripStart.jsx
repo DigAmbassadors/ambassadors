@@ -11,6 +11,7 @@ function TripStart() {
 	const { userId } = useAuth();
 	const navigate = useNavigate();
 	const { trips, setTrips } = useTrips();
+  const [selectedGroup, setSelectedGroup] = useState(-1);
 
 	//url定義-----------------------------------
 	let url;
@@ -22,7 +23,6 @@ function TripStart() {
 
 	// グループ選択 -------------------------------
   const [groups, setGroups] = useState(['個人']);
-  const [selectedGroup, setSelectedGroup] = useState('個人');
   useEffect(()=>{
     getJoinedGroup();
   },[])
@@ -51,17 +51,17 @@ function TripStart() {
 		return (
 			<select value={selectedGroup} onChange={handleGroupChange}>
 				{groups.map((group, idx) => (
-					<option key={idx} value={group.name}>
+					<option key={idx} value={group.id}>
 						{group.name}
 					</option>
 				))}
-        <option value='個人'>個人</option>
+        <option value='-1'>個人</option>
 			</select>
 		);
 	};
 
 	const handleGroupChange = async (e) => {
-		setSelectedGroup(e.target.value);
+		setSelectedGroup(Number(e.target.value));
 	};
 
 	//テーマ選択欄を作成----------------------------
@@ -181,7 +181,6 @@ function TripStart() {
 			// 新たなtripsデータを受信して登録
 			const newTrpis = await response.json();
 			setTrips(newTrpis);
-			console.log('trips', trips);
 
 			// tripsの最終要素のトリップを選んでトリップ開始
 			navigate(`/tripsummary/${newTrpis[newTrpis.length - 1]}`);
