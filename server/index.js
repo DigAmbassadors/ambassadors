@@ -627,7 +627,6 @@ app.post('/api/joingroup', verifyToken, async (req, res) => {
   }
 });
 
-
 //ユーザが所属するグループを取得
 app.get('/api/groups/:userId', verifyToken, async (req, res) => {
 	try {

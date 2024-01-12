@@ -89,7 +89,7 @@ const Grouping = () => {
 			});
 
 			if (!response.ok) {
-				window.alert('登録に失敗しました！');
+				window.alert('取得に失敗しました！');
 			}
 
 			const data = await response.json();
