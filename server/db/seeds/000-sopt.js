@@ -60,7 +60,7 @@ exports.seed = async function (knex) {
 			area: '名古屋のB級スポット',
 			latitude: 35.159489043626714,
 			longitude: 136.9014996408462,
-			photo: await convertImageToBase64('./db/imgs/フルッタ・ジ・フルッタ.webp'),
+			photo: await convertImageToBase64('./db/imgs/フルッタ・ジ・フルッタ.webp'),
 		},
 		{
 			name: '小麦の禁断症状',
@@ -140,7 +140,7 @@ exports.seed = async function (knex) {
 			area: '飛騨高山で温泉ざんまい',
 			latitude: 36.123016478935156,
 			longitude: 137.24583805555082,
-			photo: await convertImageToBase64('./db/imgs/ホテルアソシア高山リゾート.jpg'),
+			photo: await convertImageToBase64('./db/imgs/ホテルアソシア高山リゾート.jpg'),
 		},
 		{
 			name: 'カフェ ド シエル',
