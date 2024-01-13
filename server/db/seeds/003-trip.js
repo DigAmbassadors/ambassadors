@@ -8,7 +8,7 @@ exports.seed = async function (knex) {
 	await knex('trip').insert([
 		{
 			area: '大須ぶらり旅',
-			trip: [1, 2, 3, 4, 5, 6, 7, 8],
+			trip: [2, 1, 3, 4, 5, 7, 6, 8],
 		},
 	]);
 };
