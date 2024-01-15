@@ -145,6 +145,10 @@ body {
   text-align: center;
 }
 
+.user-menu-list li:hover {
+  background-color: #ffdaa1;
+}
+
 .user-menu-list li a {
   font-size: 1.5em;
   color: white;
@@ -189,6 +193,11 @@ body {
   background-color: #ec2761;
   color: white;
   font-weight: bold;
+}
+
+.trip-start-button button:hover {
+  background-color: #f0a1ba;
+  /* color: black; */
 }
 
 .past-trip-content {
