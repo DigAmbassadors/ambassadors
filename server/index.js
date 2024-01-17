@@ -323,29 +323,33 @@ app.post('/api/trips/new/:userId/:area', verifyToken, async (req, res) => {
 			});
 
 		// 作成したプランをtripテーブルに追加
-		const tripId = await knex('trip')
+		const tripInsertResult = await knex('trip')
 			.insert({
 				area: area,
 				trip: newTrip,
 			})
 			.returning('id');
+      const tripId = tripInsertResult[0].id;
 
-		// tripテーブルに追加されたデータをtripsテーブルに追加
-		const newTrips = await knex('trips')
-			.select('trips')
-			.where({ users_id: userId })
-			.then((tripsData) => {
-				const arrOfTrips = tripsData[0].trips;
-				arrOfTrips.push(tripId[0].id);
-				return arrOfTrips;
-			});
-		await knex('trips')
-			.select('trips')
-			.where({ users_id: userId })
-			.update({ trips: newTrips })
-			.then(() => {
-				res.status(200).json(newTrips);
-			});
+      // tripsテーブルの更新または挿入
+      let arrOfTrips;
+      const existingTrips = await knex('trips').where({ users_id: userId });
+      if (existingTrips.length === 0) {
+        // レコードが存在しない場合は新しいレコードを挿入
+        await knex('trips').insert({
+          users_id: userId,
+          trips: [tripId],
+        });
+        arrOfTrips = [tripId];
+      } else {
+        // レコードが存在する場合は更新
+        arrOfTrips = existingTrips[0].trips;
+        arrOfTrips.push(tripId);
+        await knex('trips').where({ users_id: userId }).update({ trips: arrOfTrips });
+      }
+  
+      res.status(200).json(arrOfTrips);
+
 	} catch (error) {
 		console.error('Error:', error);
 		res.status(500).json({ message: 'Error retrieving user data' });

@@ -111,6 +111,22 @@ exports.seed = async function (knex) {
 			photo: await convertImageToBase64('./db/imgs/たこ咲.webp'),
 		},
 		{
+			name: '名古屋名物 コーチン・知多豚 秀よし',
+			mission: '豚しゃぶを食べる！',
+			area: '太閤通口で飲み歩き',
+			latitude: 35.172986161674366,
+			longitude: 136.8782364834244,
+			photo: await convertImageToBase64('./db/imgs/秀よし.png'),
+		},
+		{
+			name: '個室ダイニング 楽蔵うたげ',
+			mission: '串焼きを食べる！',
+			area: '太閤通口で飲み歩き',
+			latitude: 35.16992493418988,
+			longitude: 136.8813585207799,
+			photo: await convertImageToBase64('./db/imgs/楽蔵うたげ.png'),
+		},
+		{
 			name: 'あんかけ太郎',
 			mission: 'レギュラーサイズを完食',
 			area: '名古屋のB級スポット',
