@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
@@ -12,6 +12,11 @@ function TripStart() {
 	const { userId } = useAuth();
 	const navigate = useNavigate();
 	const { trips, setTrips, execUserId, setExecUserId } = useTrips();
+
+  //レンダリング時のポジション指定-----------------
+  useLayoutEffect(()=>{
+    window.scrollTo(0, 0);
+  },[]);
 
 	//url定義-----------------------------------
 	let url;
